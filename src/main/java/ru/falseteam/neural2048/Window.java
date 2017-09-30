@@ -9,8 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -36,28 +35,27 @@ public class Window extends Application implements Screen {
     }
 
     private void createMainWindow() {
-        primaryStage.setTitle("2048");
+        primaryStage.setTitle("2048 Game with neural network");
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, 700, 700);
         primaryStage.setScene(scene);
 
-        Label topLabel = new Label("Счет: " + score);
+        Label topLabel = new Label("Score: " + score);
         topLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
         topLabel.setAlignment(Pos.CENTER);
-        Button neuralButton = new Button("Запустить нейросеть");
-        Button restartButton = new Button("Начать заново");
+        Button neuralButton = new Button("Launch neural network");
+        Button restartButton = new Button("Restart");
+
 
         HBox topBox = new HBox();
         topBox.setPadding(new Insets(25, 10, 10, 10));
         topBox.getChildren().addAll(topLabel);
         topBox.setAlignment(Pos.CENTER);
 
-        HBox bottomBox = new HBox(450);
+        HBox bottomBox = new HBox(490);
         bottomBox.setPadding(new Insets(10, 10, 10, 10));
         bottomBox.getChildren().addAll(restartButton, neuralButton);
-
         Canvas canvas = createGameWindow();
-
         root.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP:
