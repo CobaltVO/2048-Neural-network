@@ -18,12 +18,12 @@ import javafx.stage.Stage;
 public class Window extends Application implements Screen {
     private Stage primaryStage;
     private GraphicsContext gc;
+
     private GameLogic gl;
 
-    private int score = 0;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         primaryStage = stage;
         createMainWindow();
         gl = new GameLogic(this);
@@ -63,16 +63,16 @@ public class Window extends Application implements Screen {
         root.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP:
-                    gl.move(Direction.UP);
+                    gl.move(Directions.UP);
                     break;
                 case DOWN:
-                    gl.move(Direction.DOWN);
+                    gl.move(Directions.DOWN);
                     break;
                 case LEFT:
-                    gl.move(Direction.LEFT);
+                    gl.move(Directions.LEFT);
                     break;
                 case RIGHT:
-                    gl.move(Direction.RIGHT);
+                    gl.move(Directions.RIGHT);
                     break;
             }
         });

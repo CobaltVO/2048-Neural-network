@@ -48,7 +48,7 @@ public class GameLogic {
         return true;
     }
 
-    public void move(Direction direction) {
+    public void move(Directions direction) {
         //screen.redraw(gd);
     }
 
