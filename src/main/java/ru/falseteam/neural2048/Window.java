@@ -19,14 +19,14 @@ public class Window extends Application implements Screen {
     private Stage primaryStage;
     private GraphicsContext gc;
 
-    private GameLogic gl;
+    private GameLogic gameLogic;
 
 
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
         createMainWindow();
-        gl = new GameLogic(this);
+        gameLogic = new GameLogic(this);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Window extends Application implements Screen {
         Button restartButton = new Button("Restart");
         restartButton.setOnAction(event -> {
             clearScreen();
-            gl.restart();
+            gameLogic.restart();
         });
 
         HBox topBox = new HBox();
@@ -63,18 +63,19 @@ public class Window extends Application implements Screen {
         root.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP:
-                    gl.move(Directions.UP);
+                    gameLogic.move(Directions.UP);
                     break;
                 case DOWN:
-                    gl.move(Directions.DOWN);
+                    gameLogic.move(Directions.DOWN);
                     break;
                 case LEFT:
-                    gl.move(Directions.LEFT);
+                    gameLogic.move(Directions.LEFT);
                     break;
                 case RIGHT:
-                    gl.move(Directions.RIGHT);
+                    gameLogic.move(Directions.RIGHT);
                     break;
             }
+            redraw(gameLogic);
         });
         root.setTop(topBox);
         root.setCenter(canvas);
@@ -100,38 +101,52 @@ public class Window extends Application implements Screen {
                     case 0:
                         continue;
                     case 1:
-                        gc.setFill(Color.LIGHTYELLOW);
+                        gc.setFill(Color.rgb(255, 252, 0, 0.7));
                         break;
                     case 2:
+                        gc.setFill(Color.rgb(255, 234, 0, 0.7));
+                        break;
                     case 3:
-                        gc.setFill(Color.YELLOWGREEN);
+                        gc.setFill(Color.rgb(255, 216, 0, 0.7));
                         break;
                     case 4:
+                        gc.setFill(Color.rgb(255, 198, 0, 0.7));
+                        break;
                     case 5:
-                        gc.setFill(Color.YELLOW);
+                        gc.setFill(Color.rgb(255, 180, 0, 0.7));
                         break;
                     case 6:
+                        gc.setFill(Color.rgb(255, 162, 0, 0.7));
+                        break;
                     case 7:
-                        gc.setFill(Color.ORANGE);
+                        gc.setFill(Color.rgb(255, 144, 0, 0.7));
                         break;
                     case 8:
+                        gc.setFill(Color.rgb(255, 126, 0, 0.7));
+                        break;
                     case 9:
-                        gc.setFill(Color.RED);
+                        gc.setFill(Color.rgb(255, 108, 0, 0.7));
                         break;
                     case 10:
+                        gc.setFill(Color.rgb(255, 90, 0, 0.7));
+                        break;
                     case 11:
-                        gc.setFill(Color.DARKRED);
+                        gc.setFill(Color.rgb(255, 72, 0, 0.7));
                         break;
                     case 12:
+                        gc.setFill(Color.rgb(255, 54, 0, 0.7));
+                        break;
                     case 13:
-                        gc.setFill(Color.LIGHTBLUE);
+                        gc.setFill(Color.rgb(255, 36, 0, 0.7));
                         break;
                     case 14:
+                        gc.setFill(Color.rgb(255, 18, 0, 0.7));
+                        break;
                     case 15:
-                        gc.setFill(Color.BLUEVIOLET);
+                        gc.setFill(Color.rgb(0, 170, 0, 0.7));
                         break;
                     default:
-                        gc.setFill(Color.DARKSLATEBLUE);
+                        gc.setFill(Color.rgb(0, 150, 150, 0.7));
                         break;
                 }
                 gc.fillRect(x * 100 + 11, y * 100 + 11, 98, 98);
