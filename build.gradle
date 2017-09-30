@@ -1,5 +1,5 @@
-group '2048-Neural-network'
-version '1.0-SNAPSHOT'
+group 'ru.falseteam'
+version '1.0'
 
 apply plugin: 'java'
 
