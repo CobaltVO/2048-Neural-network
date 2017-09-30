@@ -12,9 +12,7 @@ public class GameLogic {
 
     GameLogic(Screen screen) {
         this.screen = screen;
-        genRandomNumber();
-        genRandomNumber();
-        screen.redraw(gd);
+        restart();
     }
 
     public void restart() {
@@ -29,7 +27,7 @@ public class GameLogic {
     }
 
     private boolean genRandomNumber() {
-        Vector<Pair<Integer, Integer>> vector = new Vector<>();
+        Vector<Pair<Integer, Integer>> vector = new Vector<>(16);
         for (int x = 0; x < 4; ++x) {
             for (int y = 0; y < 4; ++y) {
                 if (gd.tiles[x][y] == 0) vector.add(new Pair<>(x, y));
