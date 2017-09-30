@@ -44,8 +44,12 @@ public class Window extends Application implements Screen {
         topLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
         topLabel.setAlignment(Pos.CENTER);
         Button neuralButton = new Button("Launch neural network");
+//        neuralButton.setOnAction(event -> {});
         Button restartButton = new Button("Restart");
-
+        restartButton.setOnAction(event -> {
+            clearScreen();
+            gl.restart();
+        });
 
         HBox topBox = new HBox();
         topBox.setPadding(new Insets(25, 10, 10, 10));
@@ -85,8 +89,8 @@ public class Window extends Application implements Screen {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
 
-        drawGrid();
-        redraw(new GameData());//TODO Переделать
+        clearScreen();
+        redraw(new GameData()); // TODO Переделать
 
         return canvas;
     }
@@ -94,17 +98,53 @@ public class Window extends Application implements Screen {
     private void drawTiles(GameData gd) {
         for (int x = 0; x < 4; ++x) {
             for (int y = 0; y < 4; ++y) {
-                if (gd.tiles[x][y] == 0) continue;
-                gc.setFill(Color.YELLOW);
+                switch (gd.tiles[x][y]) {
+                    case 0:
+                        continue;
+                    case 1:
+                        gc.setFill(Color.LIGHTYELLOW);
+                        break;
+                    case 2:
+                    case 3:
+                        gc.setFill(Color.YELLOWGREEN);
+                        break;
+                    case 4:
+                    case 5:
+                        gc.setFill(Color.YELLOW);
+                        break;
+                    case 6:
+                    case 7:
+                        gc.setFill(Color.ORANGE);
+                        break;
+                    case 8:
+                    case 9:
+                        gc.setFill(Color.RED);
+                        break;
+                    case 10:
+                    case 11:
+                        gc.setFill(Color.DARKRED);
+                        break;
+                    case 12:
+                    case 13:
+                        gc.setFill(Color.LIGHTBLUE);
+                        break;
+                    case 14:
+                    case 15:
+                        gc.setFill(Color.BLUEVIOLET);
+                        break;
+                    default:
+                        gc.setFill(Color.DARKSLATEBLUE);
+                        break;
+                }
                 gc.fillRect(x * 100 + 11, y * 100 + 11, 98, 98);
                 gc.setFill(Color.BLACK);
                 String tmp = String.valueOf((int) Math.pow(2, gd.tiles[x][y]));
-                gc.fillText(tmp, x * 100 + 11 + 50, y * 100 + 11 + 47);//TODO подумать
+                gc.fillText(tmp, x * 100 + 11 + 49, y * 100 + 11 + 49); // to center
             }
         }
     }
 
-    private void drawGrid() {//TODO Переделать
+    private void drawGrid() {
         gc.setFill(Color.BLACK);
         // borders
         gc.strokeLine(10, 10, 410, 10);
@@ -112,12 +152,16 @@ public class Window extends Application implements Screen {
         gc.strokeLine(410, 10, 410, 410);
         gc.strokeLine(10, 410, 410, 410);
         // rows
-        gc.strokeLine(10, 110, 410, 110);
-        gc.strokeLine(10, 210, 410, 210);
-        gc.strokeLine(10, 310, 410, 310);
+        for (int i = 0; i < 3; i++)
+            gc.strokeLine(10, (110 + i * 100), 410, (110 + i * 100));
         // columns
-        gc.strokeLine(110, 10, 110, 410);
-        gc.strokeLine(210, 10, 210, 410);
-        gc.strokeLine(310, 10, 310, 410);
+        for (int i = 0; i < 3; i++)
+            gc.strokeLine((110 + i * 100), 10, (110 + i * 100), 410);
+    }
+
+    private void clearScreen() {
+        gc.setFill(Color.LIGHTGRAY);
+        gc.fillRect(0, 0, 420, 420);
+        drawGrid();
     }
 }
