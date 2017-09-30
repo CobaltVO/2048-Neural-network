@@ -40,7 +40,7 @@ public class Window extends Application implements Screen {
         Scene scene = new Scene(root, 700, 700);
         primaryStage.setScene(scene);
 
-        Label topLabel = new Label("Score: " + score);
+        Label topLabel = new Label("Score: " + 0);//TODO
         topLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
         topLabel.setAlignment(Pos.CENTER);
         Button neuralButton = new Button("Launch neural network");
