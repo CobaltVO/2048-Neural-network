@@ -90,8 +90,6 @@ public class Window extends Application implements Screen {
         gc.setTextBaseline(VPos.CENTER);
 
         clearScreen();
-        redraw(new GameData()); // TODO Переделать
-
         return canvas;
     }
 
