@@ -1,5 +1,5 @@
-group '2048-Neural-network'
-version '1.0-SNAPSHOT'
+group 'ru.falseteam'
+version '1.0'
 
 apply plugin: 'java'
 
@@ -7,6 +7,18 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+task buildApplication(type: Jar) {
+    manifest {
+        attributes(
+                "Main-Class": "ru.falseteam.neural2048.Window"
+        )
+    }
+    baseName = "2048-Neural-network"
+    destinationDir = file("$rootDir/out")
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
 dependencies {
