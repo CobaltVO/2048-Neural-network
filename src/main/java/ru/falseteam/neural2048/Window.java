@@ -19,12 +19,12 @@ import javafx.stage.Stage;
 public class Window extends Application implements Screen {
     private Stage primaryStage;
     private GraphicsContext gc;
+
     private GameLogic gl;
 
-    private int score = 0;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         primaryStage = stage;
         createMainWindow();
         gl = new GameLogic(this);
@@ -41,11 +41,11 @@ public class Window extends Application implements Screen {
         Scene scene = new Scene(root, 700, 700);
         primaryStage.setScene(scene);
 
-        Label topLabel = new Label("Счет: " + score);
+        Label topLabel = new Label("Счет: " + 0);//TODO this
         topLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
         topLabel.setAlignment(Pos.CENTER);
-        Button neuralButton = new Button("Запустить нейросеть");
-        Button restartButton = new Button("Начать заново");
+        Button neuralButton = new Button("Запустить нейросеть");//TODO
+        Button restartButton = new Button("Начать заново");//TODO
 
         HBox topBox = new HBox();
         topBox.setPadding(new Insets(25, 10, 10, 10));
@@ -61,16 +61,16 @@ public class Window extends Application implements Screen {
         root.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP:
-                    gl.move(Direction.UP);
+                    gl.move(Directions.UP);
                     break;
                 case DOWN:
-                    gl.move(Direction.DOWN);
+                    gl.move(Directions.DOWN);
                     break;
                 case LEFT:
-                    gl.move(Direction.LEFT);
+                    gl.move(Directions.LEFT);
                     break;
                 case RIGHT:
-                    gl.move(Direction.RIGHT);
+                    gl.move(Directions.RIGHT);
                     break;
             }
         });

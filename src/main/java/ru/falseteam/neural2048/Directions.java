@@ -1,6 +1,6 @@
 package ru.falseteam.neural2048;
 
-public enum Direction {
+public enum Directions {
     UP,
     DOWN,
     LEFT,
