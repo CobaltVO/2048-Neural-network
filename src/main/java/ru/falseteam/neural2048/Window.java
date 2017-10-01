@@ -34,9 +34,9 @@ public class Window extends Application implements Screen {
     public void redraw(GameData gameData) {
         clearScreen();
         drawTiles(gameData);
-        topLabel.setText("Score: " + gameData.score);
-        if (gameData.state == GameState.WIN) topLabel.setText("YOU WIN!! Score: " + gameData.score);
-        if (gameData.state == GameState.END) topLabel.setText("GAME OVER. Score: " + gameData.score);
+        topLabel.setText((gameData.state.equals(GameState.WIN) ? "YOU WIN!!! " :
+                gameData.state.equals(GameState.END) ? "GAME OVER. " : "")
+                + "Score: " + gameData.score);
     }
 
     private void createMainWindow() {
