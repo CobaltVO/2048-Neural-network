@@ -32,8 +32,11 @@ public class Window extends Application implements Screen {
 
     @Override
     public void redraw(GameData gameData) {
+        clearScreen();
         drawTiles(gameData);
         topLabel.setText("Score: " + gameData.score);
+        if (gameData.state == GameState.WIN) topLabel.setText("YOU WIN!! Score: " + gameData.score);
+        if (gameData.state == GameState.END) topLabel.setText("GAME OVER. Score: " + gameData.score);
     }
 
     private void createMainWindow() {
@@ -96,7 +99,6 @@ public class Window extends Application implements Screen {
     }
 
     private void drawTiles(GameData gameData) {
-        clearScreen();
         for (int x = 0; x < 4; ++x) {
             for (int y = 0; y < 4; ++y) {
                 switch (gameData.theGrid[x][y]) {
