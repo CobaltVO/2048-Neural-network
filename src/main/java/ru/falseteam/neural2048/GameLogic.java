@@ -99,31 +99,25 @@ public class GameLogic extends GameData {
         for (int i = 0, j = 1, k = 0; k < row.length; ) {
             if (j > row.length - 1) {
                 if (i < row.length && row[i] != 0) {
-                    result.row[k] = row[i];
-                    ++i;
-                    ++k;
+                    result.row[k++] = row[i++];
                 } else {
-                    result.row[k] = 0;
-                    ++k;
+                    result.row[k++] = 0;
                 }
             } else if (row[i] == 0) {
-                ++i;
-                j = i + 1;
+                j = ++i + 1;
             } else if (row[j] == 0) {
                 ++j;
             } else if (row[i] == row[j]) {
                 result.row[k] = row[i] + 1;
                 result.score += 1 << result.row[k];
+                if (result.row[k] > maxTileExp) maxTileExp = result.row[k];
                 i = j + 1;
                 j = i + 1;
                 ++k;
                 result.change();
             } else {
-                result.row[k] = row[i];
-                i = j;
-                j = i + 1;
-                ++k;
-
+                result.row[k++] = row[i];
+                i = j++;
             }
         }
         result.changed = true;
