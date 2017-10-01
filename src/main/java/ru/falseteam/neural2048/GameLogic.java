@@ -41,8 +41,10 @@ public class GameLogic extends GameData {
         return true;
     }
 
+    private int mainFlag = 0;
+
     public void move(Directions direction) {
-        boolean flag = true;
+        boolean moved = false;
         switch (direction) {
             case UP:
             case DOWN:
@@ -52,8 +54,9 @@ public class GameLogic extends GameData {
                     if (shift(row)) {
                         if (direction.equals(Directions.DOWN)) ArrayUtils.reverse(row);
                         theGrid[i] = Arrays.copyOf(row, row.length);
-                        flag = false;
-                    }
+                        moved = true;
+                        mainFlag = 0;
+                    } else mainFlag |= direction.equals(Directions.UP) ? 0b1000 : 0b0100;
                 }
                 break;
             case LEFT:
@@ -66,12 +69,14 @@ public class GameLogic extends GameData {
                     if (shift(row)) {
                         if (direction.equals(Directions.RIGHT)) ArrayUtils.reverse(row);
                         for (int k = 0; k < row.length; ++k) theGrid[k][i] = row[k];
-                        flag = false;
-                    }
+                        moved = true;
+                        mainFlag = 0;
+                    } else mainFlag |= direction.equals(Directions.LEFT) ? 0b0010 : 0b0001;
                 }
         }
-        if (flag) return;
-        if (!genRandomNumber()) state = GameState.END;
+        if (mainFlag == 0b1111) state = GameState.END;
+        else if (moved) genRandomNumber();
+        else return;
         screen.redraw(this);
     }
 
@@ -85,6 +90,7 @@ public class GameLogic extends GameData {
                 reRow[k] = row[i] + 1;
                 score += 1 << reRow[k];
                 if (reRow[k++] > maxTileExp) maxTileExp = reRow[k - 1];
+                if (maxTileExp == 11) state = GameState.WIN;
                 i = j++;
             } else {
                 reRow[k++] = row[i];
