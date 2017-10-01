@@ -21,6 +21,8 @@ public class Window extends Application implements Screen {
     private GraphicsContext context;
     private GameLogic gameLogic;
 
+    private Label topLabel;
+
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
@@ -31,6 +33,7 @@ public class Window extends Application implements Screen {
     @Override
     public void redraw(GameData gameData) {
         drawTiles(gameData);
+        topLabel.setText("Score: " + gameData.score);
     }
 
     private void createMainWindow() {
@@ -39,7 +42,7 @@ public class Window extends Application implements Screen {
         Scene scene = new Scene(root, 700, 700);
         primaryStage.setScene(scene);
 
-        Label topLabel = new Label("Score: " + 0);//TODO
+        topLabel = new Label();
         topLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
         topLabel.setAlignment(Pos.CENTER);
         Button neuralButton = new Button("Launch neural network");
@@ -142,10 +145,10 @@ public class Window extends Application implements Screen {
                         context.setFill(Color.rgb(255, 18, 0, 0.7));
                         break;
                     case 15:
-                        context.setFill(Color.rgb(255, 0, 127, 0.7));
+                        context.setFill(Color.rgb(127, 0, 127, 0.7));
                         break;
                     case 16:
-                        context.setFill(Color.rgb(127, 0, 255, 0.7));
+                        context.setFill(Color.rgb(63, 0, 191, 0.7));
                         break;
                     default:
                         context.setFill(Color.rgb(0, 0, 255, 0.7));
