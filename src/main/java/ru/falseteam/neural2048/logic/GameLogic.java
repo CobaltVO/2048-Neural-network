@@ -7,6 +7,11 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Vector;
 
+/**
+ * Логика игры. Сложно и со вкусом.
+ *
+ * @version 1.0
+ */
 public class GameLogic extends GameData {
     private static final Random random = new Random();
     private final Screen screen;
@@ -17,53 +22,55 @@ public class GameLogic extends GameData {
     }
 
     public void restart() {
-        state = GameState.GAME;
         score = 0;
-        for (int x = 0; x < 4; x++) {
-            for (int y = 0; y < 4; y++) {
-                theGrid[x][y] = 0;
-            }
-        }
+        maxTileExp = 1;
+        state = GameState.GAME;
+        for (int i = 0; i < theGrid.length; ++i)
+            for (int j = 0; j < theGrid[0].length; ++j)
+                theGrid[i][j] = 0;
         genRandomNumber();
         genRandomNumber();
         if (screen != null) screen.redraw(this);
     }
 
-    private boolean genRandomNumber() {
-        Vector<Pair<Integer, Integer>> vector = new Vector<>(16);
-        for (int x = 0; x < 4; ++x) {
-            for (int y = 0; y < 4; ++y) {
-                if (theGrid[x][y] == 0) vector.add(new Pair<>(x, y));
-            }
-        }
-        if (vector.size() == 0) return false;
-        Pair<Integer, Integer> pair = vector.get(random.nextInt(vector.size()));
-        theGrid[pair.getKey()][pair.getValue()] = random.nextFloat() < 0.1f ? 2 : 1;
-        return true;
-    }
-
     public boolean move(Directions direction) {
         boolean moved = false;
+        // start magic
         boolean needReverse = direction == Directions.DOWN || direction == Directions.RIGHT;
         boolean needTranspose = direction == Directions.LEFT || direction == Directions.RIGHT;
+        int maxSize = theGrid[0].length > theGrid.length ? theGrid[0].length : theGrid.length;
         for (int i = 0; i < theGrid.length; ++i) {
-            int[] row = new int[theGrid.length];
+            int[] row = new int[maxSize];
             if (needTranspose) for (int k = 0; k < theGrid.length; ++k) row[k] = theGrid[k][i];
-            else row = theGrid[i];
+            else System.arraycopy(theGrid[i], 0, row, 0, theGrid[i].length);
             if (needReverse) reverse(row);
             if (shift(row)) {
                 if (needReverse) reverse(row);
                 if (needTranspose) for (int k = 0; k < row.length; ++k) theGrid[k][i] = row[k];
-                else theGrid[i] = row;
+                else System.arraycopy(row, 0, theGrid[i], 0, theGrid[i].length);
                 moved = true;
             }
         }
+        // end magic
         if (moved) genRandomNumber();
         if (!canShift()) state = GameState.END;
         if (screen != null) screen.redraw(this);
         return moved;
     }
 
+    private void genRandomNumber() {
+        Vector<Pair<Integer, Integer>> vector = new Vector<>(16);
+        for (int i = 0; i < theGrid.length; ++i)
+            for (int j = 0; j < theGrid[0].length; ++j)
+                if (theGrid[i][j] == 0) vector.add(new Pair<>(i, j));
+        if (vector.size() == 0) return;
+        Pair<Integer, Integer> pair = vector.get(random.nextInt(vector.size()));
+        theGrid[pair.getKey()][pair.getValue()] = random.nextFloat() < 0.1f ? 2 : 1;
+    }
+
+    /**
+     * @return true если есть ходы
+     */
     private boolean canShift() {
         for (int i = 0; i < theGrid.length; ++i) {
             for (int j = 0; j < theGrid[i].length - 1; ++j) {
@@ -76,8 +83,13 @@ public class GameLogic extends GameData {
         return false;
     }
 
+    /**
+     * @param row - строка, в которую записывается итоговая сдвинутая строка
+     * @return true если смог сдвинуть строку
+     */
     private boolean shift(int[] row) {
         int[] reRow = new int[row.length];
+        // start magic
         for (int i = 0, j = 1, k = 0; k < row.length; ) {
             if (j > row.length - 1) reRow[k++] = i < row.length && row[i] != 0 ? row[i++] : 0;
             else if (row[i] == 0) j = ++i + 1;
@@ -93,6 +105,7 @@ public class GameLogic extends GameData {
                 i = j - 1;
             }
         }
+        // end magic
         if (Arrays.equals(reRow, row)) return false;
         System.arraycopy(reRow, 0, row, 0, reRow.length);
         return true;

@@ -165,8 +165,11 @@ public class Window extends Application implements Screen {
                     case 16:
                         context.setFill(Color.rgb(63, 0, 191, 0.7));
                         break;
+                    case 17:
+                        context.setFill(Color.rgb(0, 127, 255, 0.7));
+                        break;
                     default:
-                        context.setFill(Color.rgb(0, 0, 255, 0.7));
+                        context.setFill(Color.rgb(0, 255, 127, 0.7));
                 }
                 context.fillRect(x * 100 + 11, y * 100 + 11, 98, 98);
                 context.setFill(Color.BLACK);
