@@ -37,7 +37,7 @@ public class RandomNeuralNetwork {
                     }
                 }
                 //double score = Double.MAX_VALUE - (double) gameLogic.score;
-                double score = 200_000.0 - (double) gameLogic.score;
+                double score = 0 - (double) gameLogic.score;
                 gameLogic.restart();
                 return score;
             };
@@ -45,26 +45,21 @@ public class RandomNeuralNetwork {
             GeneticAlgorithm<OptimizableNeuralNetwork, Double> env =
                     new GeneticAlgorithm<OptimizableNeuralNetwork, Double>(population, fit);
 
-            env.addIterationListener(new IterartionListener<OptimizableNeuralNetwork, Double>() {
-                private Random random = new Random();
-
-                @Override
-                public void update(GeneticAlgorithm<OptimizableNeuralNetwork, Double> environment) {
-                    OptimizableNeuralNetwork gene = environment.getBest();
-                    Double d = environment.fitness(gene);
-                    System.out.println(environment.getIteration() + "\t" + (200_000 - d));
+            //private Random random = new Random();
+            env.addIterationListener(environment -> {
+                OptimizableNeuralNetwork gene = environment.getBest();
+                Double d = environment.fitness(gene);
+                System.out.println(environment.getIteration() + "\t" + (0 - d));
 
 //                    if (d <= 0.1) {
 //                        environment.terminate();
 //                    }
 //                    environment.setParentChromosomesSurviveCount(this.random.nextInt(environment.getPopulation().getSize()));
-                    environment.setParentChromosomesSurviveCount(25);
-                    environment.evolve(10);
-                }
-
+                environment.setParentChromosomesSurviveCount(20);
+                //environment.evolve(10);
             });
 
-            env.evolve(100);
+            env.evolve(10000);
         }).start();
     }
 
