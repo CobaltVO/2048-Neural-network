@@ -15,14 +15,14 @@
  ******************************************************************************/
 package com.lagodiuk.nn.genetic.demo;
 
-import java.util.Random;
-
 import com.lagodiuk.ga.Fitness;
 import com.lagodiuk.ga.GeneticAlgorithm;
 import com.lagodiuk.ga.IterartionListener;
 import com.lagodiuk.ga.Population;
 import com.lagodiuk.nn.ThresholdFunction;
 import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
+
+import java.util.Random;
 
 public class Launcher {
 

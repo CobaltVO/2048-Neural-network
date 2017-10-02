@@ -15,15 +15,15 @@
  ******************************************************************************/
 package com.lagodiuk.agent.evolution;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
 import com.lagodiuk.agent.Agent;
 import com.lagodiuk.agent.AgentsEnvironment;
 import com.lagodiuk.agent.AgentsEnvironmentObserver;
 import com.lagodiuk.agent.Food;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Calculating eaten pieces of food

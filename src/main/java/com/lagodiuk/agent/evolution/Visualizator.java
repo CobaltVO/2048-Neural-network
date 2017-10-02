@@ -15,12 +15,11 @@
  ******************************************************************************/
 package com.lagodiuk.agent.evolution;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-
 import com.lagodiuk.agent.Agent;
 import com.lagodiuk.agent.AgentsEnvironment;
 import com.lagodiuk.agent.Food;
+
+import java.awt.*;
 
 public class Visualizator {
 

@@ -15,20 +15,14 @@
  ******************************************************************************/
 package com.lagodiuk.nn.genetic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import com.lagodiuk.ga.Chromosome;
 import com.lagodiuk.nn.NeuralNetwork;
 import com.lagodiuk.nn.Neuron;
 import com.lagodiuk.nn.ThresholdFunction;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import java.util.*;
 
 @XmlRootElement
 public class OptimizableNeuralNetwork extends NeuralNetwork implements Chromosome<OptimizableNeuralNetwork>, Cloneable {

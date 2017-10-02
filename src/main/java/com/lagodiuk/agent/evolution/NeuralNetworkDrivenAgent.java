@@ -15,9 +15,6 @@
  ******************************************************************************/
 package com.lagodiuk.agent.evolution;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.lagodiuk.agent.AbstractAgent;
 import com.lagodiuk.agent.Agent;
 import com.lagodiuk.agent.AgentsEnvironment;
@@ -25,6 +22,9 @@ import com.lagodiuk.agent.Food;
 import com.lagodiuk.nn.NeuralNetwork;
 import com.lagodiuk.nn.ThresholdFunction;
 import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class NeuralNetworkDrivenAgent extends Agent {
 

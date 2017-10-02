@@ -15,38 +15,6 @@
  ******************************************************************************/
 package com.lagodiuk.agent.evolution;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.prefs.Preferences;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-
 import com.lagodiuk.agent.AgentsEnvironment;
 import com.lagodiuk.agent.Food;
 import com.lagodiuk.agent.MovingFood;
@@ -56,6 +24,18 @@ import com.lagodiuk.ga.IterartionListener;
 import com.lagodiuk.ga.Population;
 import com.lagodiuk.nn.NeuralNetwork;
 import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.prefs.Preferences;
 
 public class Main {
 

@@ -15,15 +15,10 @@
  ******************************************************************************/
 package com.lagodiuk.nn;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
+import java.util.*;
 
 @XmlType(name = "basic-threshold-functions")
 @XmlEnum

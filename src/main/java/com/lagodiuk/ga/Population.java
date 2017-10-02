@@ -15,12 +15,7 @@
  ******************************************************************************/
 package com.lagodiuk.ga;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Population<C extends Chromosome<C>> implements Iterable<C> {
 

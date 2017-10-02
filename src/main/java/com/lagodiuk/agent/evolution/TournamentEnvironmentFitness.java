@@ -15,12 +15,12 @@
  ******************************************************************************/
 package com.lagodiuk.agent.evolution;
 
-import java.util.Random;
-
 import com.lagodiuk.agent.AgentsEnvironment;
 import com.lagodiuk.agent.Food;
 import com.lagodiuk.ga.Fitness;
 import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
+
+import java.util.Random;
 
 public class TournamentEnvironmentFitness implements Fitness<OptimizableNeuralNetwork, Double> {
 
