@@ -1,8 +1,9 @@
-package ru.falseteam.neural2048;
+package ru.falseteam.neural2048.gui;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -18,6 +19,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import ru.falseteam.neural2048.players.RandomNeuralNetwork;
+import ru.falseteam.neural2048.players.RandomPlayer;
+import ru.falseteam.neural2048.logic.Directions;
+import ru.falseteam.neural2048.logic.GameData;
+import ru.falseteam.neural2048.logic.GameLogic;
+import ru.falseteam.neural2048.logic.GameState;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,16 +48,21 @@ public class Window extends Application implements Screen {
         primaryStage.setMinHeight(700);
         createMainWindow();
         gameLogic = new GameLogic(this);
+        //new RandomPlayer(gameLogic);
+        //new CirclePlayer(gameLogic);
+        new RandomNeuralNetwork(gameLogic);
     }
 
     @Override
     public void redraw(GameData gameData) {
-        clearScreen();
-        drawTiles(gameData);
-        topLabel.setText((gameData.state.equals(GameState.WIN) ? "YOU WON!!! " :
+        Platform.runLater(() -> {
+            clearScreen();
+            drawTiles(gameData);
+            topLabel.setText((gameData.state.equals(GameState.WIN) ? "YOU WON!!! " :
                 gameData.state.equals(GameState.END) ? "GAME OVER. " : ""));
-        scoreLabel.setText("Score: " + gameData.score);
-        maxTileLabel.setText("The highest tile: " + (int)(Math.pow(2, gameData.maxTileExp)));
+            scoreLabel.setText("Score: " + gameData.score);
+            maxTileLabel.setText("The highest tile: " + (int)(Math.pow(2, gameData.maxTileExp)));
+        });
     }
 
     private void createMainWindow() {
@@ -237,8 +249,11 @@ public class Window extends Application implements Screen {
                     case 16:
                         context.setFill(Color.rgb(63, 0, 191, 0.7));
                         break;
+                    case 17:
+                        context.setFill(Color.rgb(0, 127, 255, 0.7));
+                        break;
                     default:
-                        context.setFill(Color.rgb(0, 0, 255, 0.7));
+                        context.setFill(Color.rgb(0, 255, 127, 0.7));
                 }
                 context.fillRect(x * 100 + 11, y * 100 + 11, 98, 98);
                 context.setFill(Color.BLACK);
