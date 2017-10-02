@@ -1,7 +1,6 @@
 package ru.falseteam.neural2048.logic;
 
 import javafx.util.Pair;
-import org.apache.commons.lang3.ArrayUtils;
 import ru.falseteam.neural2048.gui.Screen;
 
 import java.util.Arrays;
@@ -45,41 +44,30 @@ public class GameLogic extends GameData {
 
     public boolean move(Directions direction) {
         boolean moved = false;
-        switch (direction) {
-            case UP:
-            case DOWN:
-                for (int i = 0; i < 4; ++i) {
-                    int[] row = Arrays.copyOf(theGrid[i], theGrid.length);
 
-                    if (direction.equals(Directions.DOWN)) ArrayUtils.reverse(row);
-                    if (shift(row)) {
-                        if (direction.equals(Directions.DOWN)) ArrayUtils.reverse(row);
-                        theGrid[i] = Arrays.copyOf(row, row.length);
-                        moved = true;
-                    }
-                }
-                break;
-            case LEFT:
-            case RIGHT:
-                for (int i = 0; i < 4; ++i) {
-                    int[] row = new int[theGrid.length];
-                    for (int k = 0; k < row.length; ++k) row[k] = theGrid[k][i];
+        boolean needTranspose = direction == Directions.LEFT || direction == Directions.RIGHT;
+        boolean needReverse = direction == Directions.DOWN || direction == Directions.RIGHT;
+        int[][] transposed = null;
+        if (needTranspose) transposed = Utils.transpose(theGrid);
 
-                    if (direction.equals(Directions.RIGHT)) ArrayUtils.reverse(row);
-                    if (shift(row)) {
-                        if (direction.equals(Directions.RIGHT)) ArrayUtils.reverse(row);
-                        for (int k = 0; k < row.length; ++k) theGrid[k][i] = row[k];
-                        moved = true;
-                    }
-                }
+        for (int i = 0; i < 4; ++i) {
+            int[] row;
+            if (needTranspose) row = transposed[i];
+            else row = theGrid[i];
+
+            if (needReverse) Utils.reverse(row);
+            if (shift(row)) {
+                if (needReverse) Utils.reverse(row);
+                if (needTranspose) transposed[i] = row;
+                else theGrid[i] = row;
+                moved = true;
+            }
         }
-        if (moved) {
-            genRandomNumber();
-        }
-        if (!canShift()) {
-            state = GameState.END;
-        }
-        if (screen != null) screen.redraw(this);
+        if (needTranspose) theGrid = transposed;
+
+        if (moved) genRandomNumber();
+        if (!canShift()) state = GameState.END;
+        if (screen != null && (moved || state == GameState.END)) screen.redraw(this);
         return moved;
     }
 
