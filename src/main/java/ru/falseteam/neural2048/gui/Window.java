@@ -34,7 +34,8 @@ public class Window extends Application implements Screen {
         primaryStage = stage;
         createMainWindow();
         gameLogic = new GameLogic(this);
-        //new RandomPlayer(gameLogic);
+        new RandomPlayer(gameLogic);
+        //new CirclePlayer(gameLogic);
     }
 
     @Override
