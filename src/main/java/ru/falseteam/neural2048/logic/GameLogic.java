@@ -44,7 +44,7 @@ public class GameLogic extends GameData {
 
     private int mainFlag = 0;
 
-    public void move(Directions direction) {
+    public boolean move(Directions direction) {
         boolean moved = false;
         switch (direction) {
             case UP:
@@ -76,9 +76,11 @@ public class GameLogic extends GameData {
                 }
         }
         if (mainFlag == 0b1111) state = GameState.END;
-        else if (moved) genRandomNumber();
-        else return;
-        screen.redraw(this);
+        else if (moved) {
+            genRandomNumber();
+            screen.redraw(this);
+        }
+        return moved;
     }
 
     private boolean shift(int[] row) {
