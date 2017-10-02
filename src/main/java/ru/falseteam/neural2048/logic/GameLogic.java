@@ -19,6 +19,7 @@ public class GameLogic extends GameData {
 
     public void restart() {
         state = GameState.GAME;
+        score = 0;
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
                 theGrid[x][y] = 0;
@@ -26,7 +27,7 @@ public class GameLogic extends GameData {
         }
         genRandomNumber();
         genRandomNumber();
-        screen.redraw(this);
+        if (screen != null) screen.redraw(this);
     }
 
     private boolean genRandomNumber() {
@@ -74,10 +75,11 @@ public class GameLogic extends GameData {
         }
         if (moved) {
             genRandomNumber();
-        } else if (!canShift()) {
+        }
+        if (!canShift()) {
             state = GameState.END;
         }
-        screen.redraw(this);
+        if (screen != null) screen.redraw(this);
         return moved;
     }
 
