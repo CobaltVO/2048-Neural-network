@@ -1,7 +1,6 @@
 package ru.falseteam.neural2048.logic;
 
 import javafx.util.Pair;
-import org.apache.commons.lang3.ArrayUtils;
 import ru.falseteam.neural2048.gui.Screen;
 
 import java.util.Arrays;
@@ -45,40 +44,22 @@ public class GameLogic extends GameData {
 
     public boolean move(Directions direction) {
         boolean moved = false;
-        switch (direction) {
-            case UP:
-            case DOWN:
-                for (int i = 0; i < 4; ++i) {
-                    int[] row = Arrays.copyOf(theGrid[i], theGrid.length);
-
-                    if (direction.equals(Directions.DOWN)) ArrayUtils.reverse(row);
-                    if (shift(row)) {
-                        if (direction.equals(Directions.DOWN)) ArrayUtils.reverse(row);
-                        theGrid[i] = Arrays.copyOf(row, row.length);
-                        moved = true;
-                    }
-                }
-                break;
-            case LEFT:
-            case RIGHT:
-                for (int i = 0; i < 4; ++i) {
-                    int[] row = new int[theGrid.length];
-                    for (int k = 0; k < row.length; ++k) row[k] = theGrid[k][i];
-
-                    if (direction.equals(Directions.RIGHT)) ArrayUtils.reverse(row);
-                    if (shift(row)) {
-                        if (direction.equals(Directions.RIGHT)) ArrayUtils.reverse(row);
-                        for (int k = 0; k < row.length; ++k) theGrid[k][i] = row[k];
-                        moved = true;
-                    }
-                }
+        boolean needReverse = direction == Directions.DOWN || direction == Directions.RIGHT;
+        boolean needTranspose = direction == Directions.LEFT || direction == Directions.RIGHT;
+        for (int i = 0; i < theGrid.length; ++i) {
+            int[] row = new int[theGrid.length];
+            if (needTranspose) for (int k = 0; k < theGrid.length; ++k) row[k] = theGrid[k][i];
+            else row = theGrid[i];
+            if (needReverse) reverse(row);
+            if (shift(row)) {
+                if (needReverse) reverse(row);
+                if (needTranspose) for (int k = 0; k < row.length; ++k) theGrid[k][i] = row[k];
+                else theGrid[i] = row;
+                moved = true;
+            }
         }
-        if (moved) {
-            genRandomNumber();
-        }
-        if (!canShift()) {
-            state = GameState.END;
-        }
+        if (moved) genRandomNumber();
+        if (!canShift()) state = GameState.END;
         if (screen != null) screen.redraw(this);
         return moved;
     }
@@ -115,5 +96,13 @@ public class GameLogic extends GameData {
         if (Arrays.equals(reRow, row)) return false;
         System.arraycopy(reRow, 0, row, 0, reRow.length);
         return true;
+    }
+
+    private void reverse(final int[] array) {
+        for (int i = 0, j = array.length - 1; j > i; ++i, --j) {
+            array[i] ^= array[j];
+            array[j] ^= array[i];
+            array[i] ^= array[j];
+        }
     }
 }
