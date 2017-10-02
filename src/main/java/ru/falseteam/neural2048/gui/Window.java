@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import ru.falseteam.neural2048.players.RandomNeuralNetwork;
 import ru.falseteam.neural2048.players.RandomPlayer;
 import ru.falseteam.neural2048.logic.Directions;
 import ru.falseteam.neural2048.logic.GameData;
@@ -36,6 +37,7 @@ public class Window extends Application implements Screen {
         gameLogic = new GameLogic(this);
         new RandomPlayer(gameLogic);
         //new CirclePlayer(gameLogic);
+        //new RandomNeuralNetwork(gameLogic);
     }
 
     @Override
