@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Перечисление содержащие набор функций-активаторов
  *
- * @version 1.0
+ * @version 1.1
  */
 @XmlType(name = "basic-threshold-functions")
 @XmlEnum
@@ -43,7 +43,7 @@ public enum ThresholdFunction {
 
         @Override
         public List<Double> getDefaultParams() {
-            List<Double> ret = new LinkedList<Double>();
+            List<Double> ret = new LinkedList<>();
             ret.add(0d);
             return ret;
         }
@@ -64,7 +64,7 @@ public enum ThresholdFunction {
             double a = 1;
             double b = 1;
             double c = 1;
-            List<Double> ret = new ArrayList<Double>(3);
+            List<Double> ret = new ArrayList<>(3);
             ret.add(a);
             ret.add(b);
             ret.add(c);
