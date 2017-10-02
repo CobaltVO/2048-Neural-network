@@ -1,6 +1,7 @@
-package ru.falseteam.neural2048;
+package ru.falseteam.neural2048.gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -15,6 +16,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import ru.falseteam.neural2048.players.RandomPlayer;
+import ru.falseteam.neural2048.logic.Directions;
+import ru.falseteam.neural2048.logic.GameData;
+import ru.falseteam.neural2048.logic.GameLogic;
+import ru.falseteam.neural2048.logic.GameState;
 
 public class Window extends Application implements Screen {
     private Stage primaryStage;
@@ -28,15 +34,20 @@ public class Window extends Application implements Screen {
         primaryStage = stage;
         createMainWindow();
         gameLogic = new GameLogic(this);
+        new RandomPlayer(gameLogic);
+        //new CirclePlayer(gameLogic);
     }
 
     @Override
     public void redraw(GameData gameData) {
-        clearScreen();
-        drawTiles(gameData);
-        topLabel.setText((gameData.state.equals(GameState.WIN) ? "YOU WIN!!! " :
-                gameData.state.equals(GameState.END) ? "GAME OVER. " : "")
-                + "Score: " + gameData.score);
+        Platform.runLater(() -> {
+            clearScreen();
+            drawTiles(gameData);
+            topLabel.setText((gameData.state.equals(GameState.WIN) ? "YOU WIN!!! " :
+                    gameData.state.equals(GameState.END) ? "GAME OVER. " : "")
+                    + "Score: " + gameData.score);
+        });
+
     }
 
     private void createMainWindow() {
