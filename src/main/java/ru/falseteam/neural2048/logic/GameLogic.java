@@ -1,7 +1,8 @@
-package ru.falseteam.neural2048;
+package ru.falseteam.neural2048.logic;
 
 import javafx.util.Pair;
 import org.apache.commons.lang3.ArrayUtils;
+import ru.falseteam.neural2048.gui.Screen;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -9,9 +10,9 @@ import java.util.Vector;
 
 public class GameLogic extends GameData {
     private static final Random random = new Random();
-    private Screen screen;
+    private final Screen screen;
 
-    GameLogic(Screen screen) {
+    public GameLogic(Screen screen) {
         this.screen = screen;
         restart();
     }
@@ -41,22 +42,20 @@ public class GameLogic extends GameData {
         return true;
     }
 
-    private int mainFlag = 0;
-
-    public void move(Directions direction) {
+    public boolean move(Directions direction) {
         boolean moved = false;
         switch (direction) {
             case UP:
             case DOWN:
                 for (int i = 0; i < 4; ++i) {
                     int[] row = Arrays.copyOf(theGrid[i], theGrid.length);
+
                     if (direction.equals(Directions.DOWN)) ArrayUtils.reverse(row);
                     if (shift(row)) {
                         if (direction.equals(Directions.DOWN)) ArrayUtils.reverse(row);
                         theGrid[i] = Arrays.copyOf(row, row.length);
                         moved = true;
-                        mainFlag = 0;
-                    } else mainFlag |= direction.equals(Directions.UP) ? 0b1000 : 0b0100;
+                    }
                 }
                 break;
             case LEFT:
@@ -64,20 +63,34 @@ public class GameLogic extends GameData {
                 for (int i = 0; i < 4; ++i) {
                     int[] row = new int[theGrid.length];
                     for (int k = 0; k < row.length; ++k) row[k] = theGrid[k][i];
-                    if (direction.equals(Directions.DOWN) || direction.equals(Directions.RIGHT))
-                        ArrayUtils.reverse(row);
+
+                    if (direction.equals(Directions.RIGHT)) ArrayUtils.reverse(row);
                     if (shift(row)) {
                         if (direction.equals(Directions.RIGHT)) ArrayUtils.reverse(row);
                         for (int k = 0; k < row.length; ++k) theGrid[k][i] = row[k];
                         moved = true;
-                        mainFlag = 0;
-                    } else mainFlag |= direction.equals(Directions.LEFT) ? 0b0010 : 0b0001;
+                    }
                 }
         }
-        if (mainFlag == 0b1111) state = GameState.END;
-        else if (moved) genRandomNumber();
-        else return;
+        if (moved) {
+            genRandomNumber();
+        } else if (!canShift()) {
+            state = GameState.END;
+        }
         screen.redraw(this);
+        return moved;
+    }
+
+    private boolean canShift() {
+        for (int i = 0; i < theGrid.length; ++i) {
+            for (int j = 0; j < theGrid[i].length - 1; ++j) {
+                if (theGrid[i][j] == theGrid[i][j + 1] || theGrid[i][j] == 0) return true;
+                if (theGrid[j][i] == theGrid[j + 1][i]) return true;
+            }
+            if (theGrid[i][theGrid[i].length - 1] == 0) return true;
+            if (theGrid[theGrid[i].length - 1][i] == 0) return true;
+        }
+        return false;
     }
 
     private boolean shift(int[] row) {
