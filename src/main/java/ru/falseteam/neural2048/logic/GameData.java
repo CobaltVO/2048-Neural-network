@@ -1,4 +1,4 @@
-package ru.falseteam.neural2048;
+package ru.falseteam.neural2048.logic;
 
 public class GameData {
     public int theGrid[][] = new int[4][4];
