@@ -67,7 +67,7 @@ public class GameLogic extends GameData {
 
         if (moved) genRandomNumber();
         if (!canShift()) state = GameState.END;
-        if (screen != null && (moved || state == GameState.END)) screen.redraw(this);
+        if (screen != null) screen.redraw(this);
         return moved;
     }
 
