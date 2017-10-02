@@ -15,18 +15,12 @@
  ******************************************************************************/
 package com.lagodiuk.nn;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import com.lagodiuk.nn.serializing.xml.MapAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import com.lagodiuk.nn.serializing.xml.MapAdapter;
+import java.util.*;
 
 public class Links implements Cloneable {
 
