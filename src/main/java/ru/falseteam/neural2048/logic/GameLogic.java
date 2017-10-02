@@ -1,7 +1,8 @@
-package ru.falseteam.neural2048;
+package ru.falseteam.neural2048.logic;
 
 import javafx.util.Pair;
 import org.apache.commons.lang3.ArrayUtils;
+import ru.falseteam.neural2048.gui.Screen;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -9,9 +10,9 @@ import java.util.Vector;
 
 public class GameLogic extends GameData {
     private static final Random random = new Random();
-    private Screen screen;
+    private final Screen screen;
 
-    GameLogic(Screen screen) {
+    public GameLogic(Screen screen) {
         this.screen = screen;
         restart();
     }
