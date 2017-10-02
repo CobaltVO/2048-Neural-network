@@ -59,9 +59,9 @@ public class Window extends Application implements Screen {
             clearScreen();
             drawTiles(gameData);
             topLabel.setText((gameData.state.equals(GameState.WIN) ? "YOU WON!!! " :
-                gameData.state.equals(GameState.END) ? "GAME OVER. " : ""));
+                    gameData.state.equals(GameState.END) ? "GAME OVER. " : ""));
             scoreLabel.setText("Score: " + gameData.score);
-            maxTileLabel.setText("The highest tile: " + (int)(Math.pow(2, gameData.maxTileExp)));
+            maxTileLabel.setText("The highest tile: " + (int) (Math.pow(2, gameData.maxTileExp)));
         });
     }
 
@@ -95,7 +95,7 @@ public class Window extends Application implements Screen {
         Canvas stopButton = createGUIButton("stop");
         ComboBox<String> comboBox = createComboBox();
         Label testLabel = new Label();
-        testLabel.setPrefSize(100,30);
+        testLabel.setPrefSize(100, 30);
         HBox neuralBox = new HBox(10);
         neuralBox.getChildren().addAll(comboBox, playButton, pauseButton, stopButton, testLabel);
 
@@ -152,8 +152,8 @@ public class Window extends Application implements Screen {
     private ComboBox<String> createComboBox() {
         ObservableList<String> observableList = FXCollections.observableArrayList(
                 "lol",
-                        "kek",
-                        "cheburek"
+                "kek",
+                "cheburek"
         );
         final ComboBox<String> comboBox = new ComboBox<>(observableList);
         comboBox.setPromptText("Choose one state");
@@ -181,7 +181,7 @@ public class Window extends Application implements Screen {
         } catch (FileNotFoundException e) {
             System.out.println(which + ".png not found");
         }
-        gc.drawImage(play, 0,0);
+        gc.drawImage(play, 0, 0);
         return canvas;
     }
 
