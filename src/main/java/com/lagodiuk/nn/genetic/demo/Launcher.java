@@ -18,7 +18,7 @@ package com.lagodiuk.nn.genetic.demo;
 import ru.falseteam.neural2048.ga.Fitness;
 import com.lagodiuk.ga.GeneticAlgorithm;
 import ru.falseteam.neural2048.ga.IterationListener;
-import com.lagodiuk.ga.Population;
+import ru.falseteam.neural2048.ga.Population;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 import com.lagodiuk.nn.genetic.GeneticNeuralNetwork;
 
