@@ -2,7 +2,7 @@ package ru.falseteam.neural2048.players;
 
 import ru.falseteam.neural2048.ga.Fitness;
 import com.lagodiuk.ga.GeneticAlgorithm;
-import com.lagodiuk.ga.Population;
+import ru.falseteam.neural2048.ga.Population;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 import com.lagodiuk.nn.genetic.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.Directions;
@@ -11,6 +11,7 @@ import ru.falseteam.neural2048.logic.GameState;
 import ru.falseteam.neural2048.nn.NetworkCreator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -20,11 +21,12 @@ public class RandomNeuralNetwork {
             Population<GeneticNeuralNetwork> population = new Population<>();
 
             List<ThresholdFunction> functions = new ArrayList<>();
-            functions.add(ThresholdFunction.SIGMA);
-            functions.add(ThresholdFunction.TANH);
+            functions.addAll(Arrays.asList(ThresholdFunction.values()));
+            //functions.add(ThresholdFunction.SIGMA);
+            //functions.add(ThresholdFunction.TANH);
             GeneticNeuralNetwork nn = NetworkCreator.initNeuralNetwork(functions, 16, 8, 4, 2);
 
-            for (int i = 0; i < 80; i++) {
+            for (int i = 0; i < 50; i++) {
                 population.addChromosome(nn.mutate());
             }
 
@@ -51,14 +53,22 @@ public class RandomNeuralNetwork {
                     new GeneticAlgorithm<>(population, fit);
 
             final Random random = new Random();
+            final int[] maxScore = {0};
             env.addIterationListener(environment -> {
                 GeneticNeuralNetwork gene = environment.getBest();
-                Double d = environment.fitness(gene);
-                System.out.println(environment.getIteration() + "\t" + (0 - d));
+                int d = environment.fitness(gene).intValue();
+                d = -d;
+                if (maxScore[0] < d) {
+                    maxScore[0] = d;
+                    System.out.println(environment.getIteration() + "\t" + d + "\t(" + maxScore[0] + ")\t NEW RECORD");
+                } else
+                    System.out.println(environment.getIteration() + "\t" + d + "\t(" + maxScore[0] + ")\t");
 
-                environment.setParentChromosomesSurviveCount(
-                        random.nextInt(environment.getPopulation().getSize()) + 3);
-                //environment.setParentChromosomesSurviveCount(20);
+
+//                environment.setParentChromosomesSurviveCount(
+//                        random.nextInt(environment.getPopulation().getSize()) + 3);
+                environment.setParentChromosomesSurviveCount(3);
+                environment.clearCache();
             });
 
             env.evolve(10000);
