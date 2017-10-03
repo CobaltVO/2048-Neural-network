@@ -52,7 +52,7 @@ public class Window extends Application implements Screen {
         gameLogic = new GameLogic(this);
         //new RandomPlayer(gameLogic);
         //new CirclePlayer(gameLogic);
-        new RandomNeuralNetwork(gameLogic);
+        //new RandomNeuralNetwork(gameLogic);
     }
 
     @Override
