@@ -70,6 +70,23 @@ public enum ThresholdFunction {
             ret.add(c);
             return ret;
         }
+    },
+
+    TANH {
+        @Override
+        public double calculate(double value, List<Double> params) {
+            double a = params.get(0);
+            double b = params.get(1);
+            return Math.tanh(value * a + b);
+        }
+
+        @Override
+        public List<Double> getDefaultParams() {
+            List<Double> ret = new LinkedList<>();
+            ret.add(0d);
+            ret.add(0d);
+            return ret;
+        }
     };
 
     private static final Random random = new Random();
