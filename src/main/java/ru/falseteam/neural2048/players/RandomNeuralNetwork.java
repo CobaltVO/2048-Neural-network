@@ -3,7 +3,7 @@ package ru.falseteam.neural2048.players;
 import com.lagodiuk.ga.Fitness;
 import com.lagodiuk.ga.GeneticAlgorithm;
 import com.lagodiuk.ga.Population;
-import com.lagodiuk.nn.ThresholdFunction;
+import ru.falseteam.neural2048.nn.ThresholdFunction;
 import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
 import ru.falseteam.neural2048.logic.Directions;
 import ru.falseteam.neural2048.logic.GameLogic;
@@ -18,7 +18,7 @@ public class RandomNeuralNetwork {
     public RandomNeuralNetwork(GameLogic gameLogic) {
         new Thread(() -> {
             Population<OptimizableNeuralNetwork> population = new Population<>();
-            
+
             List<ThresholdFunction> functions = new ArrayList<>();
             functions.add(ThresholdFunction.SIGMA);
             functions.add(ThresholdFunction.TANH);
@@ -48,7 +48,7 @@ public class RandomNeuralNetwork {
             };
 
             GeneticAlgorithm<OptimizableNeuralNetwork, Double> env =
-                    new GeneticAlgorithm<OptimizableNeuralNetwork, Double>(population, fit);
+                    new GeneticAlgorithm<>(population, fit);
 
             final Random random = new Random();
             env.addIterationListener(environment -> {
