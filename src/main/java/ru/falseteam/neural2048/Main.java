@@ -10,8 +10,9 @@ public class Main {
         GameLogic gameLogic = new GameLogic(null);
 //        Statistics statistics = new Statistics(gameLogic, new RandomPlayer());
 //        Statistics statistics = new Statistics(gameLogic, new CirclePlayer());
-        Statistics statistics = new Statistics(gameLogic, new AdvancedCirclePlayer());
-        statistics.playGames(300_000);
-        statistics.printStatistics();
+//        Statistics statistics = new Statistics(gameLogic, new AdvancedCirclePlayer());
+//        statistics.playGames(300_000);
+//        statistics.printStatistics();
+        new RandomNeuralNetwork(gameLogic);
     }
 }
