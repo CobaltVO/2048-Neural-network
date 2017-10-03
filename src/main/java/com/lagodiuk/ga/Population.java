@@ -15,6 +15,8 @@
  ******************************************************************************/
 package com.lagodiuk.ga;
 
+import ru.falseteam.neural2048.ga.Chromosome;
+
 import java.util.*;
 
 public class Population<C extends Chromosome<C>> implements Iterable<C> {
