@@ -15,6 +15,7 @@
  ******************************************************************************/
 package com.lagodiuk.nn;
 
+import ru.falseteam.neural2048.nn.Links;
 import ru.falseteam.neural2048.nn.Neuron;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
