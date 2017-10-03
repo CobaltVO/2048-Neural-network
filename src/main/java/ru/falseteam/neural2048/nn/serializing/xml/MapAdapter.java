@@ -1,4 +1,4 @@
-package ru.falseteam.neural2048.nn.xml;
+package ru.falseteam.neural2048.nn.serializing.xml;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.HashMap;

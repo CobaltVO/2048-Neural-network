@@ -1,4 +1,4 @@
-package ru.falseteam.neural2048.nn.xml;
+package ru.falseteam.neural2048.nn.serializing.xml;
 
 
 public class MapElement {
