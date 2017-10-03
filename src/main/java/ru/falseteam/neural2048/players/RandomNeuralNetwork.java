@@ -2,7 +2,6 @@ package ru.falseteam.neural2048.players;
 
 import com.lagodiuk.ga.Fitness;
 import com.lagodiuk.ga.GeneticAlgorithm;
-import com.lagodiuk.ga.IterartionListener;
 import com.lagodiuk.ga.Population;
 import com.lagodiuk.nn.ThresholdFunction;
 import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
@@ -12,7 +11,6 @@ import ru.falseteam.neural2048.logic.GameState;
 import ru.falseteam.neural2048.nn.NetworkCreator;
 
 import java.util.Random;
-
 
 public class RandomNeuralNetwork {
     public RandomNeuralNetwork(GameLogic gameLogic) {
@@ -34,7 +32,7 @@ public class RandomNeuralNetwork {
                     int i = nn.getAfterActivationSignal(nn.getNeuronsCount() - 1) > 0.5 ? 0b01 : 0b00;
                     i |= nn.getAfterActivationSignal(nn.getNeuronsCount() - 2) > 0.5 ? 0b10 : 0b00;
                     while (!gameLogic.move(Directions.values()[i])) {
-                        i++;
+                        ++i;
                         i &= 3;
                     }
                 }
