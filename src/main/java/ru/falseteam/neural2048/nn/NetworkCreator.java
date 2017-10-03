@@ -1,6 +1,6 @@
 package ru.falseteam.neural2048.nn;
 
-import com.lagodiuk.nn.genetic.GeneticNeuralNetwork;
+import ru.falseteam.neural2048.GeneticNeuralNetwork;
 
 import java.util.List;
 import java.util.Random;

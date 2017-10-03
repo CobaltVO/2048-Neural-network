@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-package com.lagodiuk.nn.genetic;
+package ru.falseteam.neural2048;
 
 import ru.falseteam.neural2048.ga.Chromosome;
 import ru.falseteam.neural2048.nn.NeuralNetwork;

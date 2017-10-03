@@ -1,7 +1,5 @@
 package ru.falseteam.neural2048.ga;
 
-import com.lagodiuk.ga.GeneticAlgorithm;
-
 /**
  * @param <C> - тип особи
  * @param <T> - тип не справляемости с задачей

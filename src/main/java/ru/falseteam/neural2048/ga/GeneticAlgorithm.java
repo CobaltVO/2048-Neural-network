@@ -1,9 +1,4 @@
-package com.lagodiuk.ga;
-
-import ru.falseteam.neural2048.ga.Chromosome;
-import ru.falseteam.neural2048.ga.Fitness;
-import ru.falseteam.neural2048.ga.IterationListener;
-import ru.falseteam.neural2048.ga.Population;
+package ru.falseteam.neural2048.ga;
 
 import java.util.*;
 
@@ -17,8 +12,8 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
         @Override
         public int compare(C chr1, C chr2) {
-            T fit1 = this.fit(chr1);
-            T fit2 = this.fit(chr2);
+            T fit1 = fit(chr1);
+            T fit2 = fit(chr2);
             int ret = fit1.compareTo(fit2);
             return ret;
         }
@@ -33,7 +28,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         }
 
         public void clearCache() {
-            this.cache.clear();
+            cache.clear();
         }
     }
 
@@ -44,7 +39,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
     private Population<C> population;
 
     // listeners of genetic algorithm iterations (handle callback afterwards)
-    private final List<IterationListener<C, T>> iterationListeners = new LinkedList<IterationListener<C, T>>();
+    private final List<IterationListener<C, T>> iterationListeners = new LinkedList<>();
 
     private boolean terminate = false;
 
@@ -64,7 +59,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
     public void evolve() {
         int parentPopulationSize = this.population.getSize();
 
-        Population<C> newPopulation = new Population<C>();
+        Population<C> newPopulation = new Population<>();
 
         for (int i = 0; (i < parentPopulationSize) && (i < this.parentChromosomesSurviveCount); i++) {
             newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
