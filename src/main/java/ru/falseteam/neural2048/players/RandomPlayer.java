@@ -6,19 +6,16 @@ import ru.falseteam.neural2048.logic.GameState;
 
 import java.util.Random;
 
-public class RandomPlayer {
-    private static final Random random = new Random();
+/**
+ * Игрок делает случайные ходы
+ */
+public class RandomPlayer implements Player {
+    private final Random random = new Random();
 
-    public RandomPlayer(GameLogic gameLogic) {
-        new Thread(() -> {
-            while (gameLogic.state == GameState.GAME) {
-                gameLogic.move(Directions.values()[random.nextInt(3)]);
-                try {
-                    Thread.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+    @Override
+    public void playOneGame(GameLogic gameLogic) {
+        while (gameLogic.state == GameState.GAME) {
+            gameLogic.move(Directions.values()[random.nextInt(4)]);
+        }
     }
 }
