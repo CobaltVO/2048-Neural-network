@@ -15,6 +15,10 @@
  ******************************************************************************/
 package com.lagodiuk.nn;
 
+import ru.falseteam.neural2048.nn.Links;
+import ru.falseteam.neural2048.nn.Neuron;
+import ru.falseteam.neural2048.nn.ThresholdFunction;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;

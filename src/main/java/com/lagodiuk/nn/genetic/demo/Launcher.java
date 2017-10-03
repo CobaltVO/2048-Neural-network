@@ -19,7 +19,7 @@ import com.lagodiuk.ga.Fitness;
 import com.lagodiuk.ga.GeneticAlgorithm;
 import com.lagodiuk.ga.IterartionListener;
 import com.lagodiuk.ga.Population;
-import com.lagodiuk.nn.ThresholdFunction;
+import ru.falseteam.neural2048.nn.ThresholdFunction;
 import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
 
 import java.util.Random;
