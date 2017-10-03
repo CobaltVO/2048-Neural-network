@@ -15,12 +15,12 @@
  ******************************************************************************/
 package com.lagodiuk.nn.genetic.demo;
 
-import com.lagodiuk.ga.Fitness;
+import ru.falseteam.neural2048.ga.Fitness;
 import com.lagodiuk.ga.GeneticAlgorithm;
-import com.lagodiuk.ga.IterartionListener;
+import ru.falseteam.neural2048.ga.IterationListener;
 import com.lagodiuk.ga.Population;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
-import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
+import com.lagodiuk.nn.genetic.GeneticNeuralNetwork;
 
 import java.util.Random;
 
@@ -29,15 +29,15 @@ public class Launcher {
 	private static final int maxWeightNum = 10;
 
 	public static void main(String[] args) {
-		Population<OptimizableNeuralNetwork> population = new Population<OptimizableNeuralNetwork>();
-		OptimizableNeuralNetwork nn = initilNeuralNetwork();
+		Population<GeneticNeuralNetwork> population = new Population<GeneticNeuralNetwork>();
+		GeneticNeuralNetwork nn = initilNeuralNetwork();
 		for (int i = 0; i < 20; i++) {
 			population.addChromosome(nn.mutate());
 		}
 
-		Fitness<OptimizableNeuralNetwork, Double> fit = new Fitness<OptimizableNeuralNetwork, Double>() {
+		Fitness<GeneticNeuralNetwork, Double> fit = new Fitness<GeneticNeuralNetwork, Double>() {
 			@Override
-			public Double calculate(OptimizableNeuralNetwork nn) {
+			public Double calculate(GeneticNeuralNetwork nn) {
 				double delt = 0;
 				for (int i = -5; i < 6; i++) {
 					for (int j = -5; j < 6; j++) {
@@ -63,15 +63,15 @@ public class Launcher {
 			}
 		};
 
-		GeneticAlgorithm<OptimizableNeuralNetwork, Double> env =
-				new GeneticAlgorithm<OptimizableNeuralNetwork, Double>(population, fit);
+		GeneticAlgorithm<GeneticNeuralNetwork, Double> env =
+				new GeneticAlgorithm<GeneticNeuralNetwork, Double>(population, fit);
 
-		env.addIterationListener(new IterartionListener<OptimizableNeuralNetwork, Double>() {
+		env.addIterationListener(new IterationListener<GeneticNeuralNetwork, Double>() {
 			private Random random = new Random();
 
 			@Override
-			public void update(GeneticAlgorithm<OptimizableNeuralNetwork, Double> environment) {
-				OptimizableNeuralNetwork gene = environment.getBest();
+			public void update(GeneticAlgorithm<GeneticNeuralNetwork, Double> environment) {
+				GeneticNeuralNetwork gene = environment.getBest();
 				Double d = environment.fitness(gene);
 				System.out.println(environment.getIteration() + "\t" + d);
 
@@ -85,7 +85,7 @@ public class Launcher {
 
 		env.evolve(5500);
 
-		OptimizableNeuralNetwork evoNn = env.getBest();
+		GeneticNeuralNetwork evoNn = env.getBest();
 		for (int i = -10; i < -6; i++) {
 			System.out.println();
 			for (int j = -10; j < -6; j++) {
@@ -97,8 +97,8 @@ public class Launcher {
 		}
 	}
 
-	private static OptimizableNeuralNetwork initilNeuralNetwork() {
-		OptimizableNeuralNetwork nn = new OptimizableNeuralNetwork(6);
+	private static GeneticNeuralNetwork initilNeuralNetwork() {
+		GeneticNeuralNetwork nn = new GeneticNeuralNetwork(6);
 		for (int i = 0; i < 6; i++) {
 			ThresholdFunction f = ThresholdFunction.getRandomFunction();
 			nn.setNeuronFunction(i, f, f.getDefaultParams());

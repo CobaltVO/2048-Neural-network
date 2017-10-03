@@ -1,6 +1,6 @@
 package ru.falseteam.neural2048.nn;
 
-import com.lagodiuk.nn.serializing.xml.MapAdapter;
+import ru.falseteam.neural2048.nn.serializing.xml.MapAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
