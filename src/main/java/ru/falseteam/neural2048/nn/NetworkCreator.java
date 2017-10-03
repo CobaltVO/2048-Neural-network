@@ -1,6 +1,6 @@
 package ru.falseteam.neural2048.nn;
 
-import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
+import com.lagodiuk.nn.genetic.GeneticNeuralNetwork;
 
 import java.util.List;
 import java.util.Random;
@@ -15,12 +15,12 @@ public class NetworkCreator {
      * @param functions - список функций активации
      * @param config    - конфигурация нейронов
      */
-    public static OptimizableNeuralNetwork initNeuralNetwork(List<ThresholdFunction> functions, int... config) {
+    public static GeneticNeuralNetwork initNeuralNetwork(List<ThresholdFunction> functions, int... config) {
         int countOfNeuron = 0;
         for (int i : config) {
             countOfNeuron += i;
         }
-        OptimizableNeuralNetwork nn = new OptimizableNeuralNetwork(countOfNeuron);
+        GeneticNeuralNetwork nn = new GeneticNeuralNetwork(countOfNeuron);
 
         for (int i = 0; i < countOfNeuron; i++) {
             ThresholdFunction f = functions.get(rnd.nextInt(functions.size()));
