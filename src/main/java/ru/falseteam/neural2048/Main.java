@@ -1,5 +1,6 @@
-package ru.falseteam.neural2048.logic;
+package ru.falseteam.neural2048;
 
+import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.players.RandomNeuralNetwork;
 
 public class Main {
