@@ -1,6 +1,5 @@
 package ru.falseteam.neural2048.nn;
 
-import com.lagodiuk.nn.ThresholdFunction;
 import com.lagodiuk.nn.genetic.OptimizableNeuralNetwork;
 
 import java.util.List;

@@ -17,8 +17,8 @@ package com.lagodiuk.nn.genetic;
 
 import com.lagodiuk.ga.Chromosome;
 import com.lagodiuk.nn.NeuralNetwork;
-import com.lagodiuk.nn.Neuron;
-import com.lagodiuk.nn.ThresholdFunction;
+import ru.falseteam.neural2048.nn.Neuron;
+import ru.falseteam.neural2048.nn.ThresholdFunction;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;

@@ -1,4 +1,4 @@
-package com.lagodiuk.nn;
+package ru.falseteam.neural2048.nn;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Перечисление содержащие набор функций-активаторов
  *
- * @version 1.1
+ * @version 1.2
  */
 @XmlType(name = "basic-threshold-functions")
 @XmlEnum
