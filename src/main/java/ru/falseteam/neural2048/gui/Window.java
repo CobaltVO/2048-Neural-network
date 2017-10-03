@@ -26,7 +26,6 @@ import ru.falseteam.neural2048.logic.Directions;
 import ru.falseteam.neural2048.logic.GameData;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.logic.GameState;
-import ru.falseteam.neural2048.players.RandomNeuralNetwork;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -52,7 +51,7 @@ public class Window extends Application implements Screen {
         gameLogic = new GameLogic(this);
         //new RandomPlayer(gameLogic);
         //new CirclePlayer(gameLogic);
-        new RandomNeuralNetwork(gameLogic);
+        //new RandomNeuralNetwork(gameLogic);
     }
 
     @Override
