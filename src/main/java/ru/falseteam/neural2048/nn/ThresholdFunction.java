@@ -1,4 +1,4 @@
-package com.lagodiuk.nn;
+package ru.falseteam.neural2048.nn;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Перечисление содержащие набор функций-активаторов
  *
- * @version 1.1
+ * @version 1.2
  */
 @XmlType(name = "basic-threshold-functions")
 @XmlEnum
@@ -68,6 +68,23 @@ public enum ThresholdFunction {
             ret.add(a);
             ret.add(b);
             ret.add(c);
+            return ret;
+        }
+    },
+
+    TANH {
+        @Override
+        public double calculate(double value, List<Double> params) {
+            double a = params.get(0);
+            double b = params.get(1);
+            return Math.tanh(value * a + b);
+        }
+
+        @Override
+        public List<Double> getDefaultParams() {
+            List<Double> ret = new LinkedList<>();
+            ret.add(0d);
+            ret.add(0d);
             return ret;
         }
     };

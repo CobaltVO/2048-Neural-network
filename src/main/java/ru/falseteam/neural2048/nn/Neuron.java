@@ -1,4 +1,4 @@
-package com.lagodiuk.nn;
+package ru.falseteam.neural2048.nn;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -28,6 +28,7 @@ public class Neuron implements Cloneable {
     @XmlElement(name = "param")
     private List<Double> params;
 
+    @SuppressWarnings("unused")
     public Neuron() {
         // Required by JAXB
     }
@@ -88,7 +89,8 @@ public class Neuron implements Cloneable {
 
     @Override
     public String toString() {
-        return "Neuron [thresholdFunction=" + thresholdFunction + ", params=" + params + "]";
+        return "Neuron [thresholdFunction=" + thresholdFunction +
+                ", params=" + params + "]";
     }
 
 }
