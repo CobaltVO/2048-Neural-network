@@ -1,16 +1,19 @@
 package ru.falseteam.neural2048.gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -19,12 +22,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import ru.falseteam.neural2048.players.RandomNeuralNetwork;
-import ru.falseteam.neural2048.players.RandomPlayer;
 import ru.falseteam.neural2048.logic.Directions;
 import ru.falseteam.neural2048.logic.GameData;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.logic.GameState;
+import ru.falseteam.neural2048.players.RandomNeuralNetwork;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -128,6 +130,8 @@ public class Window extends Application implements Screen {
                 case RIGHT:
                     gameLogic.move(Directions.RIGHT);
                     break;
+                case ESCAPE:
+                    System.exit(0); // todo
             }
         });
         root.setTop(topBox);
@@ -138,14 +142,14 @@ public class Window extends Application implements Screen {
 
     private void createLabels() {
         topLabel = new Label();
-        topLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
+        topLabel.setStyle("-fx-font: bold italic 20px \"Times New Roman\";");
         topLabel.setAlignment(Pos.CENTER);
         topLabel.setPrefSize(250, 30);
         scoreLabel = new Label();
-        scoreLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
+        scoreLabel.setStyle("-fx-font: bold italic 20px \"Times New Roman\";");
         scoreLabel.setPrefSize(250, 30);
         maxTileLabel = new Label();
-        maxTileLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
+        maxTileLabel.setStyle("-fx-font: bold italic 20px \"Times New Roman\";");
         maxTileLabel.setPrefSize(250, 30);
     }
 
