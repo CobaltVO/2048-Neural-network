@@ -10,14 +10,19 @@ import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.logic.GameState;
 import ru.falseteam.neural2048.nn.NetworkCreator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class RandomNeuralNetwork {
     public RandomNeuralNetwork(GameLogic gameLogic) {
         new Thread(() -> {
             Population<OptimizableNeuralNetwork> population = new Population<>();
-//            OptimizableNeuralNetwork nn = initNeuralNetwork();
-            OptimizableNeuralNetwork nn = NetworkCreator.initNeuralNetwork(16, 64, 32, 16, 2);
+            
+            List<ThresholdFunction> functions = new ArrayList<>();
+            functions.add(ThresholdFunction.SIGMA);
+            functions.add(ThresholdFunction.TANH);
+            OptimizableNeuralNetwork nn = NetworkCreator.initNeuralNetwork(functions, 16, 8, 4, 2);
 
             for (int i = 0; i < 80; i++) {
                 population.addChromosome(nn.mutate());
@@ -51,50 +56,12 @@ public class RandomNeuralNetwork {
                 Double d = environment.fitness(gene);
                 System.out.println(environment.getIteration() + "\t" + (0 - d));
 
-//                    if (d <= 0.1) {
-//                        environment.terminate();
-//                    }
-                //environment.setParentChromosomesSurviveCount(random.nextInt(environment.getPopulation().getSize()));
-                environment.setParentChromosomesSurviveCount(40);
-                //environment.evolve(10);
+                environment.setParentChromosomesSurviveCount(
+                        random.nextInt(environment.getPopulation().getSize()) + 3);
+                //environment.setParentChromosomesSurviveCount(20);
             });
 
             env.evolve(10000);
         }).start();
-    }
-
-
-    private static OptimizableNeuralNetwork initNeuralNetwork() {
-        OptimizableNeuralNetwork nn = new OptimizableNeuralNetwork(82);
-        for (int i = 0; i < 82; i++) {
-            ThresholdFunction f = ThresholdFunction.getRandomFunction();
-            nn.setNeuronFunction(i, f, f.getDefaultParams());
-        }
-
-        Random rnd = new Random();
-
-        for (int i = 0; i < 16; ++i) {
-            nn.setNeuronFunction(i, ThresholdFunction.LINEAR, ThresholdFunction.LINEAR.getDefaultParams());
-            for (int j = 16; j < 48; ++j) {
-                nn.addLink(i, j, getRandomWeight(rnd));
-            }
-        }
-
-        for (int j = 16; j < 48; ++j) {
-            for (int k = 48; k < 80; ++k) {
-                nn.addLink(j, k, getRandomWeight(rnd));
-            }
-        }
-
-        for (int k = 48; k < 80; ++k) {
-            nn.addLink(k, 80, getRandomWeight(rnd));
-            nn.addLink(k, 81, getRandomWeight(rnd));
-        }
-        return nn;
-    }
-
-    private static int getRandomWeight(Random random) {
-        final int maxWeightNum = 10;
-        return random.nextInt(maxWeightNum) - random.nextInt(maxWeightNum);
     }
 }
