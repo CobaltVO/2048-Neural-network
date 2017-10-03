@@ -18,34 +18,37 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomNeuralNetwork {
+    private static final int[] NETWORK_CONFIG = {16, 8, 4, 2};
+    private static final ThresholdFunction[] thresholdFunctions = {
+            //ThresholdFunction.SIGMA,
+            ThresholdFunction.LINEAR,
+    };
+    private static final int POPULATION_SIZE = 10;
+    private static final int ITERATION = 100;
+
     public RandomNeuralNetwork(GameLogic gameLogic) {
+        //Создаем случайную нейронную сеть с задаными параметрами
+        GeneticNeuralNetwork nn = NetworkCreator.initNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
 
+        //Заполняем популяцию
         Population<GeneticNeuralNetwork> population = new Population<>();
-
-        List<ThresholdFunction> functions = new ArrayList<>();
-        functions.addAll(Arrays.asList(ThresholdFunction.values()));
-        //functions.add(ThresholdFunction.SIGMA);
-        //functions.add(ThresholdFunction.TANH);
-        GeneticNeuralNetwork nn = NetworkCreator.initNeuralNetwork(functions, 16, 8, 4, 2);
-
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < POPULATION_SIZE; i++) {
             population.addChromosome(nn.mutate());
         }
 
-        Fitness<GeneticNeuralNetwork, Double> fit = chromosome -> {
-            double score = 0;
-            for (int j = 0; j < 30; j++) {
 
+        Fitness<GeneticNeuralNetwork, Integer> fit = chromosome -> {
+            int score = 0;
+            for (int j = 0; j < ITERATION; j++) {
                 new NeuralNetworkPlayer(nn).playOneGame(gameLogic);
-                //double score = Double.MAX_VALUE - (double) gameLogic.score;
-                score += (double) gameLogic.score;
+                score += gameLogic.score;
                 gameLogic.restart();
             }
-            score /= 30;
+            score /= ITERATION;
             return -score;
         };
 
-        GeneticAlgorithm<GeneticNeuralNetwork, Double> env =
+        GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
                 new GeneticAlgorithm<>(population, fit);
 
         final Random random = new Random();
@@ -63,7 +66,7 @@ public class RandomNeuralNetwork {
 
 //                environment.setParentChromosomesSurviveCount(
 //                        random.nextInt(environment.getPopulation().getSize()) + 3);
-            environment.setParentChromosomesSurviveCount(2);
+            environment.setParentChromosomesSurviveCount(POPULATION_SIZE / 3);
             environment.clearCache();
         });
         env.evolve(10000);
