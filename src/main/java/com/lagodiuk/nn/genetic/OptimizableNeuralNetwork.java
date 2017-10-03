@@ -16,7 +16,7 @@
 package com.lagodiuk.nn.genetic;
 
 import com.lagodiuk.ga.Chromosome;
-import com.lagodiuk.nn.NeuralNetwork;
+import ru.falseteam.neural2048.nn.NeuralNetwork;
 import ru.falseteam.neural2048.nn.Neuron;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
