@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomNeuralNetwork {
-    private static final int[] NETWORK_CONFIG = {16, 8, 4, 2};
+    private static final int[] NETWORK_CONFIG = {16, 10, 6, 4};
     private static final ThresholdFunction[] thresholdFunctions = {
-            //ThresholdFunction.SIGMA,
-            ThresholdFunction.LINEAR,
+            ThresholdFunction.SIGMA,
+            //ThresholdFunction.LINEAR,
     };
-    private static final int POPULATION_SIZE = 10;
-    private static final int ITERATION = 100;
+    private static final int POPULATION_SIZE = 20;
+    private static final int ITERATION = 70;
 
     public RandomNeuralNetwork(GameLogic gameLogic) {
         //Создаем случайную нейронную сеть с задаными параметрами
@@ -51,23 +51,35 @@ public class RandomNeuralNetwork {
         GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
                 new GeneticAlgorithm<>(population, fit);
 
-        final Random random = new Random();
         final int[] maxScore = {0};
+        final int[] counter = {0};
+
+        final int[] scores = new int[10];
+
         env.addIterationListener(environment -> {
             GeneticNeuralNetwork gene = environment.getBest();
-            int d = environment.fitness(gene).intValue();
-            d = -d;
-            if (maxScore[0] < d) {
-                maxScore[0] = d;
-                System.out.println(environment.getIteration() + "\t" + d + "\t(" + maxScore[0] + ")\t NEW RECORD");
+            int score = -environment.fitness(gene);
+
+            System.out.print(environment.getIteration() + "\t");
+            System.out.print(score);
+
+            if (maxScore[0] < score) {
+                maxScore[0] = score;
+                System.out.print("\t(" + maxScore[0] + ")\t NEW RECORD");
             } else
-                System.out.println(environment.getIteration() + "\t" + d + "\t(" + maxScore[0] + ")\t");
+                System.out.print("\t(" + maxScore[0] + ")\t");
 
+            scores[counter[0]++] = score;
+            counter[0] %= 10;
+            int scoreAvg = 0;
+            for (int i = 0; i < 10; i++) {
+                scoreAvg += scores[i];
+            }
+            scoreAvg /= 10;
+            System.out.println("\t" + scoreAvg);
 
-//                environment.setParentChromosomesSurviveCount(
-//                        random.nextInt(environment.getPopulation().getSize()) + 3);
             environment.setParentChromosomesSurviveCount(POPULATION_SIZE / 3);
-            environment.clearCache();
+            environment.clearCache();//TODO Посмотреть подробнее
         });
         env.evolve(10000);
     }
