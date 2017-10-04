@@ -3,19 +3,11 @@ package ru.falseteam.neural2048;
 import ru.falseteam.neural2048.ga.Fitness;
 import ru.falseteam.neural2048.ga.GeneticAlgorithm;
 import ru.falseteam.neural2048.ga.Population;
-import ru.falseteam.neural2048.nn.NeuralNetwork;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
-import ru.falseteam.neural2048.GeneticNeuralNetwork;
-import ru.falseteam.neural2048.logic.Directions;
+import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.GameLogic;
-import ru.falseteam.neural2048.logic.GameState;
 import ru.falseteam.neural2048.nn.NetworkCreator;
 import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class RandomNeuralNetwork {
     private static final int[] NETWORK_CONFIG = {16, 10, 6, 4};

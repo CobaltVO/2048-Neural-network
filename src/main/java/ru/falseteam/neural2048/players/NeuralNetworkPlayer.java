@@ -1,7 +1,7 @@
 package ru.falseteam.neural2048.players;
 
 import javafx.util.Pair;
-import ru.falseteam.neural2048.GeneticNeuralNetwork;
+import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.Directions;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.logic.GameState;
