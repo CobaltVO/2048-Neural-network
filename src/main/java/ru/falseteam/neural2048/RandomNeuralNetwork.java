@@ -9,10 +9,6 @@ import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.nn.NetworkCreator;
 import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class RandomNeuralNetwork implements Fitness<GeneticNeuralNetwork, Integer> {
     // НАСТРОЙКИ
     private static final int[] NETWORK_CONFIG = {16, 10, 6, 4};
@@ -20,8 +16,9 @@ public class RandomNeuralNetwork implements Fitness<GeneticNeuralNetwork, Intege
             ThresholdFunction.SIGMA,
             //ThresholdFunction.LINEAR,
     };
-    private static final int POPULATION_SIZE = 20;
-    private static final int ITERATION = 70;
+    private static final int POPULATION_SIZE = 40;
+    private static final int ITERATION = 20;
+    private static final int POPULATION_SURVIVE = 5;
     // КОНЕЦ НАСТРОЕК
 
     private final GameLogic gameLogic;
@@ -71,7 +68,7 @@ public class RandomNeuralNetwork implements Fitness<GeneticNeuralNetwork, Intege
             scoreAvg /= 10;
             System.out.println("\t" + scoreAvg);
 
-            environment.setParentChromosomesSurviveCount(POPULATION_SIZE / 3);
+            environment.setParentChromosomesSurviveCount(POPULATION_SURVIVE);
             environment.clearCache();//TODO Посмотреть подробнее
         });
         env.evolve(10000);
