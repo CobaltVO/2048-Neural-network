@@ -1,10 +1,15 @@
 package ru.falseteam.neural2048.gui;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
 
 public class Learning {
+    private final LearningWindow window;
+    private
+
+
+    Learning(LearningWindow window) {
+        this.window = window;
+    }
 
     void save(File file) {
 
@@ -32,13 +37,5 @@ public class Learning {
 
     void pause() {
 
-    }
-
-    void setConsoleStream(OutputStream outputStream) {
-
-    }
-
-    String toPrintOnConsole() {
-        return "Здесь могла быть Ваша реклама";
     }
 }
