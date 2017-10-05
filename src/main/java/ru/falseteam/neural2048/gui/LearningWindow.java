@@ -1,6 +1,7 @@
 package ru.falseteam.neural2048.gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -8,12 +9,22 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 public class LearningWindow extends Application {
 
     private Learning learning;
     private Stage primaryStage;
-    private TextArea console; // окно для вывода информации
+    private TextArea textArea; // окно для вывода информации
+
+    private final OutputStream console = new OutputStream() {
+        @Override
+        public void write(int b) throws IOException {
+            Platform.runLater(() -> textArea.appendText(String.valueOf((char) b)));
+        }
+    };
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -24,19 +35,16 @@ public class LearningWindow extends Application {
         stage.setScene(scene);
         learning = new Learning(this);
 
-        console = new TextArea();
+        textArea = new TextArea();
 
         MenuBar menuBar = new MenuBar(); // верхнее меню
         Menu fileContainer = createFileContainer(); // создать контейнер (с кнопками) верхнего меню
         menuBar.getMenus().setAll(fileContainer);
 
+        System.setOut(new PrintStream(console, true));
         root.setTop(menuBar);
-        root.setCenter(console);
+        root.setCenter(textArea);
         primaryStage.show();
-    }
-
-    public void writeInConsole(String text) {
-        console.appendText(text);
     }
 
     private void setStage() {
@@ -55,14 +63,14 @@ public class LearningWindow extends Application {
         MenuItem menuItemSave = new MenuItem("Save as nn");
         MenuItem menuItemLoad = new MenuItem("Load from nn");
         // New listener
-        menuItemNew.setOnAction(event -> learning.create());
+        menuItemNew.setOnAction(event -> learning.createPopulation());
         // Save listener
         menuItemSave.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save file to ...");
             fileChooser.setInitialDirectory(new File("."));
             File file = fileChooser.showSaveDialog(primaryStage);
-            if (file != null) learning.save(file);
+            if (file != null) learning.saveNn(file);
         });
         // Load listener
         menuItemLoad.setOnAction(event -> {
@@ -70,7 +78,7 @@ public class LearningWindow extends Application {
             fileChooser.setTitle("Open file from ...");
             fileChooser.setInitialDirectory(new File("."));
             File file = fileChooser.showOpenDialog(primaryStage);
-            if (file != null) learning.load(file);
+            if (file != null) learning.loadFromNm(file);
         });
         menu.getItems().addAll(menuItemNew, menuItemSave, menuItemLoad);
 
@@ -82,7 +90,7 @@ public class LearningWindow extends Application {
 
         playItem.setOnAction(event -> learning.play());
         pauseItem.setOnAction(event -> learning.pause());
-        // save population listener
+        // saveNn population listener
         savePopItem.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save population to ...");
@@ -90,7 +98,7 @@ public class LearningWindow extends Application {
             File file = fileChooser.showSaveDialog(primaryStage);
             if (file != null) learning.savePopulation(file);
         });
-        // load population listener
+        // loadFromNm population listener
         loadPopItem.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Load population from ...");
