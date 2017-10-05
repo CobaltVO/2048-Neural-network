@@ -8,6 +8,12 @@ import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
 
+/**
+ * Класс для теренеровки нейронной сети.
+ *
+ * @author Vladialv Sumin
+ * @version 1.1
+ */
 public class NetworkTrainer implements Fitness<GeneticNeuralNetwork, Integer>,
         IterationListener<GeneticNeuralNetwork, Integer> {
     // НАСТРОЙКИ
