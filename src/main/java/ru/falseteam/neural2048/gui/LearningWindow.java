@@ -6,13 +6,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.File;
 
 public class LearningWindow extends Application {
 
-    Learning learning;
-    Stage primaryStage;
-    TextArea console; // окно для вывода информации
+    private Learning learning;
+    private Stage primaryStage;
+    private TextArea console; // окно для вывода информации
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -21,24 +22,21 @@ public class LearningWindow extends Application {
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        learning = new Learning();
+        learning = new Learning(this);
 
         console = new TextArea();
-        writeInConsole();
 
         MenuBar menuBar = new MenuBar(); // верхнее меню
         Menu fileContainer = createFileContainer(); // создать контейнер (с кнопками) верхнего меню
-        Menu NNContainer = createNNContainer();
-        MenuItem mn = new MenuItem("hee");
-        menuBar.getMenus().setAll(fileContainer, NNContainer);
+        menuBar.getMenus().setAll(fileContainer);
 
         root.setTop(menuBar);
         root.setCenter(console);
         primaryStage.show();
     }
 
-    private void writeInConsole() {
-        console.setText(learning.toPrintOnConsole());
+    public void writeInConsole(String text) {
+        console.appendText(text);
     }
 
     private void setStage() {
@@ -53,9 +51,9 @@ public class LearningWindow extends Application {
 
         Menu menu = new Menu("File");
 
-        MenuItem menuItemNew = new MenuItem("New");
-        MenuItem menuItemSave = new MenuItem("Save");
-        MenuItem menuItemLoad = new MenuItem("Load");
+        MenuItem menuItemNew = new MenuItem("New population");
+        MenuItem menuItemSave = new MenuItem("Save as nn");
+        MenuItem menuItemLoad = new MenuItem("Load from nn");
         // New listener
         menuItemNew.setOnAction(event -> learning.create());
         // Save listener
@@ -74,27 +72,16 @@ public class LearningWindow extends Application {
             File file = fileChooser.showOpenDialog(primaryStage);
             if (file != null) learning.load(file);
         });
-
         menu.getItems().addAll(menuItemNew, menuItemSave, menuItemLoad);
-        return menu;
-    }
 
-    private Menu createNNContainer() {
-
-        Menu menu = new Menu("Neural network");
 
         MenuItem playItem = new MenuItem("Play");
         MenuItem pauseItem = new MenuItem("Pause");
         MenuItem savePopItem = new MenuItem("Save population");
         MenuItem loadPopItem = new MenuItem("Load population");
 
-        playItem.setOnAction(event -> {
-
-        });
-
-        pauseItem.setOnAction(event -> {
-
-        });
+        playItem.setOnAction(event -> learning.play());
+        pauseItem.setOnAction(event -> learning.pause());
         // save population listener
         savePopItem.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
@@ -111,9 +98,8 @@ public class LearningWindow extends Application {
             File file = fileChooser.showOpenDialog(primaryStage);
             if (file != null) learning.loadPopulation(file);
         });
-
         menu.getItems().addAll(playItem, pauseItem, savePopItem, loadPopItem);
+
         return menu;
     }
-
 }
