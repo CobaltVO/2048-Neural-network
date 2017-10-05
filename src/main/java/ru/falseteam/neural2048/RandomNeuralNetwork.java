@@ -3,8 +3,7 @@ package ru.falseteam.neural2048;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.GameLogic;
-import ru.falseteam.neural2048.nn.NetworkCreator;
-import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
+import ru.falseteam.neural2048.gnn.GeneticNeuralNetworkManager;
 
 public class RandomNeuralNetwork{
     // НАСТРОЙКИ
@@ -19,7 +18,7 @@ public class RandomNeuralNetwork{
     public RandomNeuralNetwork(GameLogic gameLogic) {
         //Создаем случайную нейронную сеть с задаными параметрами
         GeneticNeuralNetwork nn =
-                NetworkCreator.initNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
+                GeneticNeuralNetworkManager.createNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
 
         new NetworkTrainer(gameLogic,nn);
     }
