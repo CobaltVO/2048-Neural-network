@@ -23,22 +23,28 @@ public class StartWindow extends Application{
         Label info = new Label("Please select mode: ");
         info.setAlignment(Pos.CENTER);
 
-        ToggleGroup toggleGroup = new ToggleGroup();
-        RadioButton selectGUI = new RadioButton("GUI");
-        selectGUI.setToggleGroup(toggleGroup);
-        selectGUI.setSelected(true);
-        RadioButton selectTrain = new RadioButton("Train");
-        selectTrain.setToggleGroup(toggleGroup);
-        VBox buttonBox = new VBox(10);
-        buttonBox.setPadding(new Insets(10,10,10, 10));
-        buttonBox.getChildren().addAll(selectGUI, selectTrain);
+        Button buttonGUI = new Button("GUI mode");
+        Button buttonTrain = new Button("Train mode");
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10,10,10, 10));
-        vBox.getChildren().addAll(info, buttonBox);
+        vBox.getChildren().addAll(info, buttonGUI, buttonTrain);
         vBox.setAlignment(Pos.CENTER);
-
         root.setCenter(vBox);
+
+        buttonGUI.setOnAction(event -> {
+            Window window = new Window();
+            window.start(new Stage());
+        });
+
+        buttonTrain.setOnAction(event -> {
+            LearningWindow learningWindow = new LearningWindow();
+            try {
+                learningWindow.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         primaryStage.setScene(scene);
         primaryStage.show();
