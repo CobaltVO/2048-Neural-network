@@ -56,7 +56,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         this.population.sortPopulationByFitness(this.chromosomesComparator);
     }
 
-    public void evolve() {
+    private void evolve() {
         int parentPopulationSize = this.population.getSize();
 
         Population<C> newPopulation = new Population<>();
@@ -91,7 +91,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
                 break;
             }
             this.evolve();
-            this.iteration = i;
+            this.iteration++;
             for (IterationListener<C, T> l : this.iterationListeners) {
                 l.update(this);
             }
