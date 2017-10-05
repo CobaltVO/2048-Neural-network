@@ -1,6 +1,7 @@
-package ru.falseteam.neural2048;
+package ru.falseteam.neural2048.gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -9,7 +10,10 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -18,6 +22,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import ru.falseteam.neural2048.logic.Directions;
+import ru.falseteam.neural2048.logic.GameData;
+import ru.falseteam.neural2048.logic.GameLogic;
+import ru.falseteam.neural2048.logic.GameState;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,16 +49,21 @@ public class Window extends Application implements Screen {
         primaryStage.setMinHeight(700);
         createMainWindow();
         gameLogic = new GameLogic(this);
+        //new RandomPlayer(gameLogic);
+        //new CirclePlayer(gameLogic);
+        //new RandomNeuralNetwork(gameLogic);
     }
 
     @Override
     public void redraw(GameData gameData) {
-        clearScreen();
-        drawTiles(gameData);
-        topLabel.setText((gameData.state.equals(GameState.WIN) ? "YOU WON!!! " :
-                gameData.state.equals(GameState.END) ? "GAME OVER. " : ""));
-        scoreLabel.setText("Score: " + gameData.score);
-        maxTileLabel.setText("The highest tile: " + (int)(Math.pow(2, gameData.maxTileExp)));
+        Platform.runLater(() -> {
+            clearScreen();
+            drawTiles(gameData);
+            topLabel.setText((gameData.state.equals(GameState.WIN) ? "YOU WON!!! " :
+                    gameData.state.equals(GameState.END) ? "GAME OVER. " : ""));
+            scoreLabel.setText("Score: " + gameData.score);
+            maxTileLabel.setText("The highest tile: " + (int) (Math.pow(2, gameData.maxTileExp)));
+        });
     }
 
     private void createMainWindow() {
@@ -83,7 +96,7 @@ public class Window extends Application implements Screen {
         Canvas stopButton = createGUIButton("stop");
         ComboBox<String> comboBox = createComboBox();
         Label testLabel = new Label();
-        testLabel.setPrefSize(100,30);
+        testLabel.setPrefSize(100, 30);
         HBox neuralBox = new HBox(10);
         neuralBox.getChildren().addAll(comboBox, playButton, pauseButton, stopButton, testLabel);
 
@@ -116,6 +129,8 @@ public class Window extends Application implements Screen {
                 case RIGHT:
                     gameLogic.move(Directions.RIGHT);
                     break;
+                case ESCAPE:
+                    System.exit(0); // todo
             }
         });
         root.setTop(topBox);
@@ -126,22 +141,22 @@ public class Window extends Application implements Screen {
 
     private void createLabels() {
         topLabel = new Label();
-        topLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
+        topLabel.setStyle("-fx-font: bold italic 20px \"Times New Roman\";");
         topLabel.setAlignment(Pos.CENTER);
         topLabel.setPrefSize(250, 30);
         scoreLabel = new Label();
-        scoreLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
+        scoreLabel.setStyle("-fx-font: bold italic 20px \"Times New Roman\";");
         scoreLabel.setPrefSize(250, 30);
         maxTileLabel = new Label();
-        maxTileLabel.setStyle("-fx-font: bold italic 20pt \"Times New Roman\";");
+        maxTileLabel.setStyle("-fx-font: bold italic 20px \"Times New Roman\";");
         maxTileLabel.setPrefSize(250, 30);
     }
 
     private ComboBox<String> createComboBox() {
         ObservableList<String> observableList = FXCollections.observableArrayList(
                 "lol",
-                        "kek",
-                        "cheburek"
+                "kek",
+                "cheburek"
         );
         final ComboBox<String> comboBox = new ComboBox<>(observableList);
         comboBox.setPromptText("Choose one state");
@@ -169,7 +184,7 @@ public class Window extends Application implements Screen {
         } catch (FileNotFoundException e) {
             System.out.println(which + ".png not found");
         }
-        gc.drawImage(play, 0,0);
+        gc.drawImage(play, 0, 0);
         return canvas;
     }
 
@@ -237,8 +252,11 @@ public class Window extends Application implements Screen {
                     case 16:
                         context.setFill(Color.rgb(63, 0, 191, 0.7));
                         break;
+                    case 17:
+                        context.setFill(Color.rgb(0, 127, 255, 0.7));
+                        break;
                     default:
-                        context.setFill(Color.rgb(0, 0, 255, 0.7));
+                        context.setFill(Color.rgb(0, 255, 127, 0.7));
                 }
                 context.fillRect(x * 100 + 11, y * 100 + 11, 98, 98);
                 context.setFill(Color.BLACK);
