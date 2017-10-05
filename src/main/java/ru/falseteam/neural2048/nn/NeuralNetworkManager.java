@@ -1,5 +1,6 @@
-package ru.falseteam.neural2048.gnn;
+package ru.falseteam.neural2048.nn;
 
+import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
 import javax.xml.bind.JAXBContext;
@@ -10,22 +11,28 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
-
-public class GeneticNeuralNetworkManager {
+/**
+ * Сохранение, загрузка и генерация нейронных сетей
+ *
+ * @author Vladislav Sumin
+ * @version 1.0
+ */
+public class NeuralNetworkManager {
     private static final Random rnd = new Random();
 
     /**
-     * Создает нейронную сеть по заданным параметрам
+     * Создает нейронную сеть по заданным параметрам.
+     * Каждый нейронн связывается со всемы нейронами следующего слоя
      *
-     * @param functions - список функций активации
+     * @param functions - список функций активации (функции из этого списка выбираются случайно для каждого нейрона)
      * @param config    - конфигурация нейронов
      */
-    public static GeneticNeuralNetwork createNeuralNetwork(ThresholdFunction[] functions, int[] config) {
+    public static NeuralNetwork createNeuralNetwork(ThresholdFunction[] functions, int[] config) {
         int countOfNeuron = 0;
         for (int i : config) {
             countOfNeuron += i;
         }
-        GeneticNeuralNetwork nn = new GeneticNeuralNetwork(countOfNeuron);
+        NeuralNetwork nn = new GeneticNeuralNetwork(countOfNeuron);
 
         for (int i = 0; i < countOfNeuron; i++) {
             ThresholdFunction f = functions[rnd.nextInt(functions.length)];
@@ -44,20 +51,25 @@ public class GeneticNeuralNetworkManager {
         return nn;
     }
 
-    public static void save(GeneticNeuralNetwork nn, OutputStream stream) throws JAXBException {
+    public static void save(NeuralNetwork nn, OutputStream stream) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(nn.getClass());
         Marshaller marshaller = context.createMarshaller();
         marshaller.marshal(nn, stream);
     }
 
-    public static GeneticNeuralNetwork load(Class<GeneticNeuralNetwork> nn, InputStream stream)
+    public static NeuralNetwork load(Class<NeuralNetwork> nn, InputStream stream)
             throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(nn);
         Unmarshaller marshaller = context.createUnmarshaller();
-        GeneticNeuralNetwork unmarshal = (GeneticNeuralNetwork) marshaller.unmarshal(stream);
+        NeuralNetwork unmarshal = (NeuralNetwork) marshaller.unmarshal(stream);
         return unmarshal;
     }
 
+    /**
+     * Генерирует случайное значение веса для нейрона
+     *
+     * @return - вес
+     */
     private static int getRandomWeight() {
         final int maxWeightNum = 10;
         return rnd.nextInt(maxWeightNum) - rnd.nextInt(maxWeightNum);

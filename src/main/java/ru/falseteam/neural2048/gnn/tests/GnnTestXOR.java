@@ -4,7 +4,7 @@ import ru.falseteam.neural2048.ga.Fitness;
 import ru.falseteam.neural2048.ga.GeneticAlgorithm;
 import ru.falseteam.neural2048.ga.Population;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
-import ru.falseteam.neural2048.gnn.GeneticNeuralNetworkManager;
+import ru.falseteam.neural2048.nn.NeuralNetworkManager;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
 import java.util.ArrayList;
@@ -26,7 +26,8 @@ public class GnnTestXOR {
 
     public static void main(String[] args) {
         //Создаем случайную нейронную сеть с задаными параметрами
-        GeneticNeuralNetwork nn = GeneticNeuralNetworkManager.createNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
+        GeneticNeuralNetwork nn = new GeneticNeuralNetwork(
+                NeuralNetworkManager.createNeuralNetwork(thresholdFunctions, NETWORK_CONFIG));
         nn.setNeuronFunction(nn.getNeuronsCount() - 1,
                 ThresholdFunction.SIGN, ThresholdFunction.SIGN.getDefaultParams());
 
