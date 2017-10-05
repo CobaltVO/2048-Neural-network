@@ -56,6 +56,6 @@ class Learning {
     }
 
     void pause() {
-        if (trainer != null) trainer.stop();
+        if (trainer != null) trainer.stop();//TODO Пофиксить баг с паузой
     }
 }
