@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RandomNeuralNetwork {
+public class RandomNeuralNetwork implements Fitness<GeneticNeuralNetwork, Integer> {
+    // НАСТРОЙКИ
     private static final int[] NETWORK_CONFIG = {16, 10, 6, 4};
     private static final ThresholdFunction[] thresholdFunctions = {
             ThresholdFunction.SIGMA,
@@ -21,15 +22,18 @@ public class RandomNeuralNetwork {
     };
     private static final int POPULATION_SIZE = 20;
     private static final int ITERATION = 70;
+    // КОНЕЦ НАСТРОЕК
+
+    private final GameLogic gameLogic;
+    private final NeuralNetworkPlayer player;
 
     public RandomNeuralNetwork(GameLogic gameLogic) {
+        this.gameLogic = gameLogic;
+        player = new NeuralNetworkPlayer(null);
+
         //Создаем случайную нейронную сеть с задаными параметрами
-        GeneticNeuralNetwork nn = NetworkCreator.initNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
-
-        List<Double> weightsOfLinks = new ArrayList<>(
-                Collections.nCopies(nn.getWeightsOfLinks().size(), 1d));
-        nn.setWeightsOfLinks(weightsOfLinks);
-
+        GeneticNeuralNetwork nn =
+                NetworkCreator.initNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
 
         //Заполняем популяцию
         Population<GeneticNeuralNetwork> population = new Population<>();
@@ -37,26 +41,15 @@ public class RandomNeuralNetwork {
             population.addChromosome(nn.mutate());
         }
 
-        Fitness<GeneticNeuralNetwork, Integer> fit = chromosome -> {
-            int score = 0;
-            for (int j = 0; j < ITERATION; j++) {
-                new NeuralNetworkPlayer(nn).playOneGame(gameLogic);
-                score += gameLogic.score;
-                gameLogic.restart();
-            }
-            score /= ITERATION;
-            return -score;
-        };
-
         GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
-                new GeneticAlgorithm<>(population, fit);
+                new GeneticAlgorithm<>(population, this);
 
         final int[] maxScore = {0};
         final int[] counter = {0};
 
         final int[] scores = new int[10];
 
-        env.addIterationListener(environment -> {
+        env.addIterationListener(environment -> {//TODO переписать
             GeneticNeuralNetwork gene = environment.getBest();
             int score = -environment.fitness(gene);
 
@@ -82,5 +75,23 @@ public class RandomNeuralNetwork {
             environment.clearCache();//TODO Посмотреть подробнее
         });
         env.evolve(10000);
+    }
+
+    /**
+     * Проводит ITERATION игр для каждой хромосомы
+     *
+     * @return 0 - усредненный счет за ITERATION игр
+     */
+    @Override
+    public Integer calculate(GeneticNeuralNetwork chromosome) {
+        int score = 0;
+        for (int i = 0; i < ITERATION; i++) {
+            player.setNeuralNetwork(chromosome);
+            player.playOneGame(gameLogic);
+            score += gameLogic.score;
+            gameLogic.restart();
+        }
+        score /= ITERATION;
+        return -score;
     }
 }
