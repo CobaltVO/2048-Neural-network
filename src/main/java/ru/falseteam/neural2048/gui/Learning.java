@@ -4,7 +4,6 @@ import java.io.File;
 
 public class Learning {
     private final LearningWindow window;
-    private
 
 
     Learning(LearningWindow window) {
