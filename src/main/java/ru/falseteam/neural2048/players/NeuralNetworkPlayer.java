@@ -70,7 +70,7 @@ public class NeuralNetworkPlayer implements Player {
 
         @Override
         public int compareTo(@NotNull Pair o) {
-            return Double.compare(value, o.value);
+            return Double.compare(o.value, value);
         }
     }
 }
