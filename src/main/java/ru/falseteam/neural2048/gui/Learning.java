@@ -20,6 +20,7 @@ class Learning {
     private final LearningWindow window;
     private NeuralNetworkTrainer trainer;
     private final GameLogic gameLogic = new GameLogic(null);
+    private volatile boolean started = false;
 
     Learning(LearningWindow window) {
         this.window = window;
@@ -52,10 +53,22 @@ class Learning {
     }
 
     void play() {
-        if (trainer != null) trainer.strart();
+        if (started) return;
+        if (trainer != null) {
+            trainer.start();
+            started = true;
+            System.out.println("Training begin");
+        } else
+            System.out.println("Population not created");
     }
 
     void pause() {
-        if (trainer != null) trainer.stop();//TODO Пофиксить баг с паузой
+        if (!started || trainer == null) return;
+        new Thread(() -> {
+            System.out.println("Wait before evolve cycle finish...");
+            trainer.stop();
+            System.out.println("Pause");
+            started = false;
+        }).start();
     }
 }

@@ -24,8 +24,20 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
 
     private final GameLogic gameLogic;
     private final NeuralNetworkPlayer player;
-    private final GeneticAlgorithm<GeneticNeuralNetwork, Integer> env;
+    private GeneticAlgorithm<GeneticNeuralNetwork, Integer> env;
     private volatile boolean work = false;
+
+
+    private final Object lock = new Object();
+    private final Runnable runner = new Runnable() {
+        @Override
+        public void run() {
+            while (work) {
+                env.evolve(1);
+            }
+        }
+    };
+    private Thread run;
 
     public NeuralNetworkTrainer(GameLogic gameLogic, GeneticNeuralNetwork nn) {
         this.gameLogic = gameLogic;
@@ -41,19 +53,25 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
         env.addIterationListener(this);
     }
 
-    public void strart() {
-        if (work) return;
-        work = true;
-        new Thread(() -> {
-            while (work) {
-                env.evolve(1);
-            }
-        }).start();
-
+    public void start() {
+        synchronized (lock) {
+            if (work) return;
+            work = true;
+            run = new Thread(runner);
+            run.start();
+        }
     }
 
     public void stop() {
-        work = false;
+        synchronized (lock) {
+            if (!work) return;
+            work = false;
+            try {
+                run.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
