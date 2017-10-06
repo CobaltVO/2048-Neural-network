@@ -8,7 +8,13 @@ import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
 
-public class NetworkTrainer implements Fitness<GeneticNeuralNetwork, Integer>,
+/**
+ * Класс для теренеровки нейронной сети.
+ *
+ * @author Vladialv Sumin
+ * @version 1.1
+ */
+public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integer>,
         IterationListener<GeneticNeuralNetwork, Integer> {
     // НАСТРОЙКИ
     private static final int POPULATION_SIZE = 40;
@@ -18,8 +24,10 @@ public class NetworkTrainer implements Fitness<GeneticNeuralNetwork, Integer>,
 
     private final GameLogic gameLogic;
     private final NeuralNetworkPlayer player;
+    private final GeneticAlgorithm<GeneticNeuralNetwork, Integer> env;
+    private volatile boolean work = false;
 
-    public NetworkTrainer(GameLogic gameLogic, GeneticNeuralNetwork nn) {
+    public NeuralNetworkTrainer(GameLogic gameLogic, GeneticNeuralNetwork nn) {
         this.gameLogic = gameLogic;
         player = new NeuralNetworkPlayer(null);
 
@@ -29,11 +37,23 @@ public class NetworkTrainer implements Fitness<GeneticNeuralNetwork, Integer>,
             population.addChromosome(nn.mutate());
         }
 
-        GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
-                new GeneticAlgorithm<>(population, this);
-
+        env = new GeneticAlgorithm<>(population, this);
         env.addIterationListener(this);
-        env.evolve(10000);
+    }
+
+    public void strart() {
+        if (work) return;
+        work = true;
+        new Thread(() -> {
+            while (work) {
+                env.evolve(1);
+            }
+        }).start();
+
+    }
+
+    public void stop() {
+        work = false;
     }
 
     /**
