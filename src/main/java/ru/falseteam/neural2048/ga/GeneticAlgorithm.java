@@ -66,7 +66,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         }
 
         for (int i = 0; i < parentPopulationSize; i++) {
-            C chromosome = this.population.getChromosomeByIndex(i);
+            C chromosome = this.population.getChromosomeByIndex(i);//TODO автор петух
             C mutated = chromosome.mutate();
 
             C otherChromosome = this.population.getRandomChromosome();
