@@ -56,7 +56,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         this.population.sortPopulationByFitness(this.chromosomesComparator);//TODO мазафака
     }
 
-    private void evolve() {
+    private void evolveOld() {
         int parentPopulationSize = this.population.getSize();
 
         Population<C> newPopulation = new Population<>();
@@ -66,7 +66,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         }
 
         for (int i = 0; i < parentPopulationSize; i++) {
-            C chromosome = this.population.getChromosomeByIndex(i);
+            C chromosome = this.population.getChromosomeByIndex(i);//TODO автор петух
             C mutated = chromosome.mutate();
 
             C otherChromosome = this.population.getRandomChromosome();
@@ -74,6 +74,46 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
             newPopulation.addChromosome(mutated);
             for (C c : crossovered) {
+                newPopulation.addChromosome(c);
+            }
+        }
+
+        newPopulation.sortPopulationByFitness(this.chromosomesComparator);
+        newPopulation.trim(parentPopulationSize);
+        this.population = newPopulation;
+    }
+
+    private final Random random = new Random();
+
+    private void evolve() {
+        int parentPopulationSize = population.getSize();
+
+        Population<C> newPopulation = new Population<>();
+
+        //Копируем лучшие хромосомы
+        for (int i = 0; (i < parentPopulationSize) && (i < parentChromosomesSurviveCount); i++) {
+            newPopulation.addChromosome(population.getChromosomeByIndex(i));
+        }
+        int newPopulationSize = newPopulation.getSize();
+
+        //Мутируем лучшие хромосомы
+        for (int i = 0; i < newPopulationSize; i++) {
+            newPopulation.addChromosome(newPopulation.getChromosomeByIndex(i).mutate());
+        }
+
+        for (int i = 0; i < newPopulationSize; i++) {
+            List<C> crossover = newPopulation.getChromosomeByIndex(i).crossover(
+                    newPopulation.getChromosomeByIndex(random.nextInt(newPopulationSize)));
+            for (C c : crossover) {
+                newPopulation.addChromosome(c);
+            }
+        }
+        while (newPopulation.getSize() < parentPopulationSize) { //TODO написать красиво
+            List<C> crossover = newPopulation
+                    .getChromosomeByIndex(random.
+                            nextInt(newPopulationSize)).crossover(
+                            newPopulation.getChromosomeByIndex(random.nextInt(newPopulationSize)));
+            for (C c : crossover) {
                 newPopulation.addChromosome(c);
             }
         }

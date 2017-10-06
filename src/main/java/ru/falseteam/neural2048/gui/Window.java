@@ -98,7 +98,8 @@ public class Window extends Application implements Screen {
         Label testLabel = new Label();
         testLabel.setPrefSize(100, 30);
         HBox neuralBox = new HBox(10);
-        neuralBox.getChildren().addAll(comboBox, playButton, pauseButton, stopButton, testLabel);
+        neuralBox.getChildren().addAll(playButton, pauseButton, stopButton, testLabel);
+        //TODO пердак сгорел убрал комбобокс
 
         playButton.setOnMouseClicked(event -> testLabel.setText("playing " + comboBox.getSelectionModel().getSelectedItem()));
         pauseButton.setOnMouseClicked(event -> testLabel.setText("pause " + comboBox.getSelectionModel().getSelectedItem()));
