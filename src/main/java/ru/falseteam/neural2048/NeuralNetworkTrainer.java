@@ -6,6 +6,7 @@ import ru.falseteam.neural2048.ga.IterationListener;
 import ru.falseteam.neural2048.ga.Population;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.GameLogic;
+import ru.falseteam.neural2048.nn.NeuralNetwork;
 import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
 
 /**
@@ -121,5 +122,12 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
 
         environment.setParentChromosomesSurviveCount(POPULATION_SURVIVE);
         environment.clearCache();//TODO Посмотреть подробнее
+    }
+
+    public NeuralNetwork getBest() {
+        synchronized (lock) {
+            if (work) throw new RuntimeException();
+            return env.getBest();
+        }
     }
 }
