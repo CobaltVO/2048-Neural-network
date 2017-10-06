@@ -53,7 +53,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         this.population = population;
         this.fitnessFunc = fitnessFunc;
         this.chromosomesComparator = new ChromosomesComparator();
-        this.population.sortPopulationByFitness(this.chromosomesComparator);
+        this.population.sortPopulationByFitness(this.chromosomesComparator);//TODO мазафака
     }
 
     private void evolve() {
