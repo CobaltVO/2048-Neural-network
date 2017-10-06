@@ -174,9 +174,9 @@ public class GeneticNeuralNetwork extends NeuralNetwork
             }
             break;
             case 2: {
-                this.mutateChangeNeuronsFunctions(mutated.neurons);
+                //this.mutateChangeNeuronsFunctions(mutated.neurons);//TODO
             }
-            break;
+            //break;
             case 3: {
                 List<Double> weights = mutated.neuronsLinks.getAllWeights();
                 this.shuffleWeightsOnSubinterval(weights);
