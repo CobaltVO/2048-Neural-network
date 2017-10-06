@@ -78,7 +78,7 @@ public class LearningWindow extends Application {
             fileChooser.setTitle("Open file from ...");
             fileChooser.setInitialDirectory(new File("."));
             File file = fileChooser.showOpenDialog(primaryStage);
-            if (file != null) learning.loadFromNm(file);
+            if (file != null) learning.loadFromNn(file);
         });
         menu.getItems().addAll(menuItemNew, menuItemSave, menuItemLoad);
 
@@ -98,7 +98,7 @@ public class LearningWindow extends Application {
             File file = fileChooser.showSaveDialog(primaryStage);
             if (file != null) learning.savePopulation(file);
         });
-        // loadFromNm population listener
+        // loadFromNn population listener
         loadPopItem.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Load population from ...");

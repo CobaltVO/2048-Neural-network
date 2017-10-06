@@ -3,10 +3,12 @@ package ru.falseteam.neural2048.gui;
 import ru.falseteam.neural2048.NeuralNetworkTrainer;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.GameLogic;
+import ru.falseteam.neural2048.nn.NeuralNetwork;
 import ru.falseteam.neural2048.nn.NeuralNetworkManager;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
-import java.io.File;
+import javax.xml.bind.JAXBException;
+import java.io.*;
 
 class Learning {
     // НАСТРОЙКИ
@@ -27,11 +29,37 @@ class Learning {
     }
 
     void saveNn(File file) {
+        if (started) {
+            System.out.println("Can not save when evolve");
+            return;
+        }
+        if (trainer == null) {
+            System.out.println("Can not save, population not crated");
+            return;
+        }
 
+        try {
+            System.out.println("Saving...");
+            NeuralNetworkManager.save(trainer.getBest(), new FileOutputStream(file));
+            System.out.println("Saved");
+        } catch (FileNotFoundException | JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
-    void loadFromNm(File file) {
-
+    void loadFromNn(File file) {
+        if (started) {
+            System.out.println("Yet works");
+            return;
+        }
+        try {
+            System.out.println("Loading...");
+            trainer = new NeuralNetworkTrainer(gameLogic, new GeneticNeuralNetwork(
+                    NeuralNetworkManager.load(new FileInputStream(file))));
+            System.out.println("Loaded");
+        } catch (JAXBException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     void savePopulation(File file) {
