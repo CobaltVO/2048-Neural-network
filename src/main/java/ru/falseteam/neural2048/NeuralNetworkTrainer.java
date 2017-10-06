@@ -19,7 +19,7 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
         IterationListener<GeneticNeuralNetwork, Integer> {
     // НАСТРОЙКИ
     private static final int POPULATION_SIZE = 40;
-    private static final int ITERATION = 20;
+    private static final int ITERATION = 30;
     private static final int POPULATION_SURVIVE = 5;
     // КОНЕЦ НАСТРОЕК
 

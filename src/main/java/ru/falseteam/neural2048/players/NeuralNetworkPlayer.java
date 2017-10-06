@@ -17,6 +17,7 @@ import java.util.*;
  */
 public class NeuralNetworkPlayer implements Player {
     private NeuralNetwork nn;
+
     private final Pair pairUp = new Pair(Directions.UP);
     private final Pair pairDown = new Pair(Directions.DOWN);
     private final Pair pairLeft = new Pair(Directions.LEFT);
@@ -70,6 +71,7 @@ public class NeuralNetworkPlayer implements Player {
 
         @Override
         public int compareTo(@NotNull Pair o) {
+            //Сортировка по убыванию
             return Double.compare(o.value, value);
         }
     }
