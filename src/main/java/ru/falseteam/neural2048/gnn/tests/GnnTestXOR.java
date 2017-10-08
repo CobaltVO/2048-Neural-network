@@ -2,7 +2,6 @@ package ru.falseteam.neural2048.gnn.tests;
 
 import ru.falseteam.neural2048.ga.Fitness;
 import ru.falseteam.neural2048.ga.GeneticAlgorithm;
-import ru.falseteam.neural2048.ga.Population;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.nn.NeuralNetworkManager;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
@@ -36,11 +35,7 @@ public class GnnTestXOR {
         nn.setWeightsOfLinks(weightsOfLinks);
 
 
-        //Заполняем популяцию
-        Population<GeneticNeuralNetwork> population = new Population<>();
-        for (int i = 0; i < POPULATION_SIZE; i++) {
-            population.addChromosome(nn.mutate());
-        }
+
 
         Fitness<GeneticNeuralNetwork, Integer> fit = chromosome -> {
             int score = 0;
@@ -57,8 +52,11 @@ public class GnnTestXOR {
         };
 
         GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
-                new GeneticAlgorithm<>(population, fit);
-
+                new GeneticAlgorithm<>(fit);
+        //Заполняем популяцию
+        for (int i = 0; i < POPULATION_SIZE; i++) {
+            env.addChromosome(nn.mutate());
+        }
 
         env.addIterationListener(environment -> {
             GeneticNeuralNetwork gene = environment.getBest();
