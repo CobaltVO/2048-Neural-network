@@ -59,8 +59,7 @@ public class GnnTestXOR {
         }
 
         env.addIterationListener(environment -> {
-            GeneticNeuralNetwork gene = environment.getBest();
-            int score = environment.fitness(gene);
+            int score = environment.getBestFitness();
 
             System.out.print(environment.getIteration() + "\t");
             System.out.println(score);
@@ -68,7 +67,6 @@ public class GnnTestXOR {
             if (score == 0) env.terminate();
 
             environment.setParentChromosomesSurviveCount(POPULATION_SIZE / 3);
-            environment.clearCache();
         });
         env.evolve(100000);
 
