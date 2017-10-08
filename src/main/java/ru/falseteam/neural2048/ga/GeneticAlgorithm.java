@@ -18,6 +18,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
 
     private final Fitness<C, T> fitnessFunc;
+    private final MutatorCrossover<C> mutatorCrossover;
     private List<Pair<C, T>> chromosomes = new ArrayList<>();
     private final List<IterationListener<C, T>> iterationListeners = new LinkedList<>();
     private boolean terminate = false;
@@ -26,8 +27,9 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
     //Кол-во прошедших итераций
     private int iteration = 0;
 
-    public GeneticAlgorithm(Fitness<C, T> fitnessFunc) {
+    public GeneticAlgorithm(Fitness<C, T> fitnessFunc, MutatorCrossover<C> mutatorCrossover) {
         this.fitnessFunc = fitnessFunc;
+        this.mutatorCrossover = mutatorCrossover;
         sortPopulationByFitness(chromosomes);//TODO мазафака
     }
 
@@ -46,7 +48,9 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
         //Мутируем лучшие хромосомы
         for (int i = 0; i < newPopulationSize; i++) {
-            newChromosomes.add(new Pair<>(newChromosomes.get(i).chromosome.mutate()));
+            newChromosomes.add(new Pair<>(
+                    mutatorCrossover.mutate(
+                            newChromosomes.get(i).chromosome)));
         }
 
         for (int i = 0; i < newPopulationSize; i++) {
@@ -57,8 +61,8 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
             }
         }
         while (newChromosomes.size() < parentPopulationSize) { //TODO написать красиво
-            List<C> crossover = newChromosomes.get(random.nextInt(newPopulationSize)).chromosome.crossover(
-                    newChromosomes.get(random.nextInt(newPopulationSize)).chromosome);
+            List<C> crossover = newChromosomes.get(random.nextInt(newPopulationSize))
+                    .chromosome.crossover(newChromosomes.get(random.nextInt(newPopulationSize)).chromosome);
             for (C c : crossover) {
                 newChromosomes.add(new Pair<>(c));
             }

@@ -158,7 +158,7 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         }
     }
 
-    @Override
+    //@Override //TODO
     public GeneticNeuralNetwork mutate() {
         GeneticNeuralNetwork mutated = this.clone();
 
