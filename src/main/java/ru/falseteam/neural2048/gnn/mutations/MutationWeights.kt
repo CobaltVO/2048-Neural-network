@@ -4,7 +4,7 @@ import ru.falseteam.neural2048.ga.Mutation
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork
 import java.util.*
 
-class MutatationWeights : Mutation<GeneticNeuralNetwork> {
+class MutationWeights : Mutation<GeneticNeuralNetwork> {
     private val random = Random()
 
     override fun mutate(chromosome: GeneticNeuralNetwork): GeneticNeuralNetwork {

@@ -77,8 +77,8 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         List<GeneticNeuralNetwork> ret = new ArrayList<GeneticNeuralNetwork>();
         ret.add(anotherClone);
         ret.add(thisClone);
-        ret.add(anotherClone.mutate_());
-        ret.add(thisClone.mutate_());
+        //ret.add(anotherClone.mutate_());
+        //ret.add(thisClone.mutate_());//TODO мазафака
         return ret;
     }
 
