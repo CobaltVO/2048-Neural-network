@@ -4,6 +4,7 @@ import ru.falseteam.neural2048.ga.Fitness;
 import ru.falseteam.neural2048.ga.GeneticAlgorithm;
 import ru.falseteam.neural2048.ga.MutatorCrossover;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
+import ru.falseteam.neural2048.gnn.mutations.MutatationWeights;
 import ru.falseteam.neural2048.nn.NeuralNetworkManager;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
@@ -36,8 +37,6 @@ public class GnnTestXOR {
         nn.setWeightsOfLinks(weightsOfLinks);
 
 
-
-
         Fitness<GeneticNeuralNetwork, Integer> fit = chromosome -> {
             int score = 0;
             for (int i = 0; i < 4; i++) {
@@ -52,11 +51,14 @@ public class GnnTestXOR {
             return 4 - score;
         };
 
+        MutatorCrossover<GeneticNeuralNetwork> mutatorCrossover = new MutatorCrossover<>();
+        mutatorCrossover.addMutations(new MutatationWeights());
+
         GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
-                new GeneticAlgorithm<>(fit, new MutatorCrossover<>());
+                new GeneticAlgorithm<>(fit, mutatorCrossover);
         //Заполняем популяцию
         for (int i = 0; i < POPULATION_SIZE; i++) {
-            env.addChromosome(nn.mutate());
+            env.addChromosome(mutatorCrossover.mutate(nn));
         }
 
         env.addIterationListener(environment -> {

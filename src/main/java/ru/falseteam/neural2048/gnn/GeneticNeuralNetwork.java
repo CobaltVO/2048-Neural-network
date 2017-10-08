@@ -77,8 +77,8 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         List<GeneticNeuralNetwork> ret = new ArrayList<GeneticNeuralNetwork>();
         ret.add(anotherClone);
         ret.add(thisClone);
-        ret.add(anotherClone.mutate());
-        ret.add(thisClone.mutate());
+        ret.add(anotherClone.mutate_());
+        ret.add(thisClone.mutate_());
         return ret;
     }
 
@@ -159,7 +159,7 @@ public class GeneticNeuralNetwork extends NeuralNetwork
     }
 
     //@Override //TODO
-    public GeneticNeuralNetwork mutate() {
+    public GeneticNeuralNetwork mutate_() {
         GeneticNeuralNetwork mutated = this.clone();
 
         switch (this.random.nextInt(4)) {
