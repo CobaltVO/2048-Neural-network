@@ -5,7 +5,7 @@ import ru.falseteam.neural2048.ga.GeneticAlgorithm;
 import ru.falseteam.neural2048.ga.IterationListener;
 import ru.falseteam.neural2048.ga.MutatorCrossover;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
-import ru.falseteam.neural2048.gnn.mutations.MutatationWeights;
+import ru.falseteam.neural2048.gnn.mutations.MutationWeights;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.nn.NeuralNetwork;
 import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
@@ -46,7 +46,7 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
         player = new NeuralNetworkPlayer(null);
 
         MutatorCrossover<GeneticNeuralNetwork> mutatorCrossover = new MutatorCrossover<>();
-        mutatorCrossover.addMutations(new MutatationWeights());
+        mutatorCrossover.addMutations(new MutationWeights());
 
         env = new GeneticAlgorithm<>(this, mutatorCrossover);
 

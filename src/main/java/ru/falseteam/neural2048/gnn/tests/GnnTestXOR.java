@@ -4,7 +4,7 @@ import ru.falseteam.neural2048.ga.Fitness;
 import ru.falseteam.neural2048.ga.GeneticAlgorithm;
 import ru.falseteam.neural2048.ga.MutatorCrossover;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
-import ru.falseteam.neural2048.gnn.mutations.MutatationWeights;
+import ru.falseteam.neural2048.gnn.mutations.MutationWeights;
 import ru.falseteam.neural2048.nn.NeuralNetworkManager;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
@@ -52,7 +52,7 @@ public class GnnTestXOR {
         };
 
         MutatorCrossover<GeneticNeuralNetwork> mutatorCrossover = new MutatorCrossover<>();
-        mutatorCrossover.addMutations(new MutatationWeights());
+        mutatorCrossover.addMutations(new MutationWeights());
 
         GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
                 new GeneticAlgorithm<>(fit, mutatorCrossover);
