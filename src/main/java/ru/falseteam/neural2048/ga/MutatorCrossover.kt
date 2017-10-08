@@ -20,4 +20,9 @@ class MutatorCrossover<C : Chromosome<C>> {
         val mutation = mutations[random.nextInt(mutations.size)]
         return mutation.mutate(chromosome)
     }
+
+    fun crossover(chromosome1: C, chromosome2: C): List<C> {
+        val crossover = crosses[random.nextInt(crosses.size)]
+        return crossover.crossing(chromosome1, chromosome2)
+    }
 }

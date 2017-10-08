@@ -54,15 +54,17 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         }
 
         for (int i = 0; i < newPopulationSize; i++) {
-            List<C> crossover = newChromosomes.get(i).chromosome.crossover(
+            List<C> crossover = mutatorCrossover.crossover(
+                    newChromosomes.get(i).chromosome,
                     newChromosomes.get(random.nextInt(newPopulationSize)).chromosome);
             for (C c : crossover) {
                 newChromosomes.add(new Pair<>(c));
             }
         }
         while (newChromosomes.size() < parentPopulationSize) { //TODO написать красиво
-            List<C> crossover = newChromosomes.get(random.nextInt(newPopulationSize))
-                    .chromosome.crossover(newChromosomes.get(random.nextInt(newPopulationSize)).chromosome);
+            List<C> crossover = mutatorCrossover.crossover(
+                    newChromosomes.get(random.nextInt(newPopulationSize)).chromosome,
+                    newChromosomes.get(random.nextInt(newPopulationSize)).chromosome);
             for (C c : crossover) {
                 newChromosomes.add(new Pair<>(c));
             }

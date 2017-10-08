@@ -34,7 +34,7 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         this.neuronsLinks = nn.getNeuronsLinks();
     }
 
-    @Override
+    //@Override
     public List<GeneticNeuralNetwork> crossover(GeneticNeuralNetwork anotherChromosome) {
         GeneticNeuralNetwork anotherClone = anotherChromosome.clone();
         GeneticNeuralNetwork thisClone = this.clone();
