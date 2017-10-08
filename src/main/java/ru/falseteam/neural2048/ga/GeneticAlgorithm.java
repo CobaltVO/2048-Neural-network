@@ -1,126 +1,71 @@
 package ru.falseteam.neural2048.ga;
 
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> {
 
-    private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;//TODO что это?
+    private static class Pair<C extends Chromosome<C>, T extends Comparable<T>> {
+        final C chromosome;
+        T fitness;
 
-    private class ChromosomesComparator implements Comparator<C> {
-
-        private final Map<C, T> cache = new WeakHashMap<>();
-
-        @Override
-        public int compare(C chr1, C chr2) {
-            T fit1 = fit(chr1);
-            T fit2 = fit(chr2);
-            int ret = fit1.compareTo(fit2);
-            return ret;
-        }
-
-        public T fit(C chr) {
-            T fit = this.cache.get(chr);
-            if (fit == null) {
-                fit = GeneticAlgorithm.this.fitnessFunc.calculate(chr);
-                this.cache.put(chr, fit);
-            }
-            return fit;
-        }
-
-        public void clearCache() {
-            cache.clear();
+        Pair(C chromosome) {
+            this.chromosome = chromosome;
         }
     }
 
-    private final ChromosomesComparator chromosomesComparator;
 
     private final Fitness<C, T> fitnessFunc;
-
-    private Population<C> population;
-
-    // listeners of genetic algorithm iterations (handle callback afterwards)
+    private List<Pair<C, T>> chromosomes = new ArrayList<>();
     private final List<IterationListener<C, T>> iterationListeners = new LinkedList<>();
-
     private boolean terminate = false;
-
-    // number of parental chromosomes, which survive (and move to new
-    // population)
-    private int parentChromosomesSurviveCount = ALL_PARENTAL_CHROMOSOMES;
-
+    //Количество родительских хромосом, которые выживают и учавствуют в размножении
+    private int parentChromosomesSurviveCount = Integer.MAX_VALUE;
+    //Кол-во прошедших итераций
     private int iteration = 0;
 
-    public GeneticAlgorithm(Population<C> population, Fitness<C, T> fitnessFunc) {
-        this.population = population;
+    public GeneticAlgorithm(Fitness<C, T> fitnessFunc) {
         this.fitnessFunc = fitnessFunc;
-        this.chromosomesComparator = new ChromosomesComparator();
-        this.population.sortPopulationByFitness(this.chromosomesComparator);//TODO мазафака
-    }
-
-    private void evolveOld() {
-        int parentPopulationSize = this.population.getSize();
-
-        Population<C> newPopulation = new Population<>();
-
-        for (int i = 0; (i < parentPopulationSize) && (i < this.parentChromosomesSurviveCount); i++) {
-            newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
-        }
-
-        for (int i = 0; i < parentPopulationSize; i++) {
-            C chromosome = this.population.getChromosomeByIndex(i);//TODO автор петух
-            C mutated = chromosome.mutate();
-
-            C otherChromosome = this.population.getRandomChromosome();
-            List<C> crossovered = chromosome.crossover(otherChromosome);
-
-            newPopulation.addChromosome(mutated);
-            for (C c : crossovered) {
-                newPopulation.addChromosome(c);
-            }
-        }
-
-        newPopulation.sortPopulationByFitness(this.chromosomesComparator);
-        newPopulation.trim(parentPopulationSize);
-        this.population = newPopulation;
+        sortPopulationByFitness(chromosomes);//TODO мазафака
     }
 
     private final Random random = new Random();
 
     private void evolve() {
-        int parentPopulationSize = population.getSize();
+        int parentPopulationSize = chromosomes.size();
 
-        Population<C> newPopulation = new Population<>();
+        List<Pair<C, T>> newChromosomes = new ArrayList<>();
 
         //Копируем лучшие хромосомы
         for (int i = 0; (i < parentPopulationSize) && (i < parentChromosomesSurviveCount); i++) {
-            newPopulation.addChromosome(population.getChromosomeByIndex(i));
+            newChromosomes.add(chromosomes.get(i));
         }
-        int newPopulationSize = newPopulation.getSize();
+        int newPopulationSize = newChromosomes.size();
 
         //Мутируем лучшие хромосомы
         for (int i = 0; i < newPopulationSize; i++) {
-            newPopulation.addChromosome(newPopulation.getChromosomeByIndex(i).mutate());
+            newChromosomes.add(new Pair<>(newChromosomes.get(i).chromosome.mutate()));
         }
 
         for (int i = 0; i < newPopulationSize; i++) {
-            List<C> crossover = newPopulation.getChromosomeByIndex(i).crossover(
-                    newPopulation.getChromosomeByIndex(random.nextInt(newPopulationSize)));
+            List<C> crossover = newChromosomes.get(i).chromosome.crossover(
+                    newChromosomes.get(random.nextInt(newPopulationSize)).chromosome);
             for (C c : crossover) {
-                newPopulation.addChromosome(c);
+                newChromosomes.add(new Pair<>(c));
             }
         }
-        while (newPopulation.getSize() < parentPopulationSize) { //TODO написать красиво
-            List<C> crossover = newPopulation
-                    .getChromosomeByIndex(random.
-                            nextInt(newPopulationSize)).crossover(
-                            newPopulation.getChromosomeByIndex(random.nextInt(newPopulationSize)));
+        while (newChromosomes.size() < parentPopulationSize) { //TODO написать красиво
+            List<C> crossover = newChromosomes.get(random.nextInt(newPopulationSize)).chromosome.crossover(
+                    newChromosomes.get(random.nextInt(newPopulationSize)).chromosome);
             for (C c : crossover) {
-                newPopulation.addChromosome(c);
+                newChromosomes.add(new Pair<>(c));
             }
         }
 
-        newPopulation.sortPopulationByFitness(this.chromosomesComparator);
-        newPopulation.trim(parentPopulationSize);
-        this.population = newPopulation;
+        sortPopulationByFitness(newChromosomes);
+        chromosomes = trim(newChromosomes, parentPopulationSize);
     }
 
     public void evolve(int count) {
@@ -138,6 +83,25 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         }
     }
 
+    /**
+     * Сортирует особей с помощью компаратора
+     */
+    private void sortPopulationByFitness(List<Pair<C, T>> chromosomes) {
+        //Collections.shuffle(chromosomes);//TODO зачем перемешивать перед сортировкой?
+        chromosomes.forEach(ctPair -> ctPair.fitness = fitnessFunc.calculate(ctPair.chromosome));
+        chromosomes.sort(Comparator.comparing(o -> o.fitness));
+    }
+
+    /**
+     * Сокращает количество особей до указанного
+     *
+     * @param len - количество особей
+     */
+    @NotNull
+    private List<Pair<C, T>> trim(List<Pair<C, T>> chromosomes, int len) {
+        return chromosomes.subList(0, len);
+    }
+
     public int getIteration() {
         return this.iteration;
     }
@@ -146,16 +110,16 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         this.terminate = true;
     }
 
-    public Population<C> getPopulation() {
-        return this.population;
-    }
+//    public List<C> getChromosomes() {
+//        return chromosomes;
+//    }
 
     public C getBest() {
-        return this.population.getChromosomeByIndex(0);
+        return chromosomes.get(0).chromosome;
     }
 
     public C getWorst() {
-        return this.population.getChromosomeByIndex(this.population.getSize() - 1);
+        return chromosomes.get(chromosomes.size() - 1).chromosome;
     }
 
     public void setParentChromosomesSurviveCount(int parentChromosomesCount) {
@@ -174,11 +138,12 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         this.iterationListeners.remove(listener);
     }
 
-    public T fitness(C chromosome) {
-        return this.chromosomesComparator.fit(chromosome);
+    public T getBestFitness() {
+        return chromosomes.get(0).fitness;
     }
 
-    public void clearCache() {
-        this.chromosomesComparator.clearCache();
+
+    public void addChromosome(C chromosome) {
+        chromosomes.add(new Pair<>(chromosome));
     }
 }
