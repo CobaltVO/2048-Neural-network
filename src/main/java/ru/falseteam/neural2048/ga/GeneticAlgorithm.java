@@ -4,7 +4,7 @@ import java.util.*;
 
 public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> {
 
-    private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;//TODO что это?
+    private static final int ALL_PARENTAL_CHROMOSOMES = Integer.MAX_VALUE;
 
     private class ChromosomesComparator implements Comparator<C> {
 
@@ -36,7 +36,8 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
     private final Fitness<C, T> fitnessFunc;
 
-    private Population<C> population;
+    //private Population<C> population;
+    private List<C> chromosomes = new ArrayList<>();
 
     // listeners of genetic algorithm iterations (handle callback afterwards)
     private final List<IterationListener<C, T>> iterationListeners = new LinkedList<>();
@@ -49,78 +50,71 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
     private int iteration = 0;
 
-    public GeneticAlgorithm(Population<C> population, Fitness<C, T> fitnessFunc) {
-        this.population = population;
+    public GeneticAlgorithm(Fitness<C, T> fitnessFunc) {
         this.fitnessFunc = fitnessFunc;
         this.chromosomesComparator = new ChromosomesComparator();
-        this.population.sortPopulationByFitness(this.chromosomesComparator);//TODO мазафака
+        sortPopulationByFitness();//TODO мазафака
     }
 
-    private void evolveOld() {
-        int parentPopulationSize = this.population.getSize();
-
-        Population<C> newPopulation = new Population<>();
-
-        for (int i = 0; (i < parentPopulationSize) && (i < this.parentChromosomesSurviveCount); i++) {
-            newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
-        }
-
-        for (int i = 0; i < parentPopulationSize; i++) {
-            C chromosome = this.population.getChromosomeByIndex(i);//TODO автор петух
-            C mutated = chromosome.mutate();
-
-            C otherChromosome = this.population.getRandomChromosome();
-            List<C> crossovered = chromosome.crossover(otherChromosome);
-
-            newPopulation.addChromosome(mutated);
-            for (C c : crossovered) {
-                newPopulation.addChromosome(c);
-            }
-        }
-
-        newPopulation.sortPopulationByFitness(this.chromosomesComparator);
-        newPopulation.trim(parentPopulationSize);
-        this.population = newPopulation;
-    }
+//    private void evolveOld() {
+//        int parentPopulationSize = this.population.getSize();
+//
+//        Population<C> newPopulation = new Population<>();
+//
+//        for (int i = 0; (i < parentPopulationSize) && (i < this.parentChromosomesSurviveCount); i++) {
+//            newPopulation.addChromosome(this.population.getChromosomeByIndex(i));
+//        }
+//
+//        for (int i = 0; i < parentPopulationSize; i++) {
+//            C chromosome = this.population.getChromosomeByIndex(i);//TODO автор петух
+//            C mutated = chromosome.mutate();
+//
+//            C otherChromosome = this.population.getRandomChromosome();
+//            List<C> crossovered = chromosome.crossover(otherChromosome);
+//
+//            newPopulation.addChromosome(mutated);
+//            for (C c : crossovered) {
+//                newPopulation.addChromosome(c);
+//            }
+//        }
+//
+//        newPopulation.sortPopulationByFitness(this.chromosomesComparator);
+//        newPopulation.trim(parentPopulationSize);
+//        this.population = newPopulation;
+//    }
 
     private final Random random = new Random();
 
     private void evolve() {
-        int parentPopulationSize = population.getSize();
+        int parentPopulationSize = chromosomes.size();
 
-        Population<C> newPopulation = new Population<>();
+        List<C> newChromosomes = new ArrayList<>();
 
         //Копируем лучшие хромосомы
         for (int i = 0; (i < parentPopulationSize) && (i < parentChromosomesSurviveCount); i++) {
-            newPopulation.addChromosome(population.getChromosomeByIndex(i));
+            newChromosomes.add(chromosomes.get(i));
         }
-        int newPopulationSize = newPopulation.getSize();
+        int newPopulationSize = newChromosomes.size();
 
         //Мутируем лучшие хромосомы
         for (int i = 0; i < newPopulationSize; i++) {
-            newPopulation.addChromosome(newPopulation.getChromosomeByIndex(i).mutate());
+            newChromosomes.add(newChromosomes.get(i).mutate());
         }
 
         for (int i = 0; i < newPopulationSize; i++) {
-            List<C> crossover = newPopulation.getChromosomeByIndex(i).crossover(
-                    newPopulation.getChromosomeByIndex(random.nextInt(newPopulationSize)));
-            for (C c : crossover) {
-                newPopulation.addChromosome(c);
-            }
+            List<C> crossover = newChromosomes.get(i).crossover(
+                    newChromosomes.get(random.nextInt(newPopulationSize)));
+            newChromosomes.addAll(crossover);
         }
-        while (newPopulation.getSize() < parentPopulationSize) { //TODO написать красиво
-            List<C> crossover = newPopulation
-                    .getChromosomeByIndex(random.
-                            nextInt(newPopulationSize)).crossover(
-                            newPopulation.getChromosomeByIndex(random.nextInt(newPopulationSize)));
-            for (C c : crossover) {
-                newPopulation.addChromosome(c);
-            }
+        while (newChromosomes.size() < parentPopulationSize) { //TODO написать красиво
+            List<C> crossover = newChromosomes.get(random.nextInt(newPopulationSize)).crossover(
+                    newChromosomes.get(random.nextInt(newPopulationSize)));
+            newChromosomes.addAll(crossover);
         }
 
-        newPopulation.sortPopulationByFitness(this.chromosomesComparator);
-        newPopulation.trim(parentPopulationSize);
-        this.population = newPopulation;
+        sortPopulationByFitness();
+        trim(parentPopulationSize);
+        chromosomes = newChromosomes;
     }
 
     public void evolve(int count) {
@@ -138,6 +132,23 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         }
     }
 
+    /**
+     * Сортирует особей с помощью компаратора
+     */
+    public void sortPopulationByFitness() {
+        Collections.shuffle(this.chromosomes);//TODO зачем перемешивать перед сортировкой?
+        chromosomes.sort(chromosomesComparator);
+    }
+
+    /**
+     * Сокращает количество особей до указанного
+     *
+     * @param len - количество особей
+     */
+    public void trim(int len) {
+        chromosomes = chromosomes.subList(0, len);
+    }
+
     public int getIteration() {
         return this.iteration;
     }
@@ -146,16 +157,16 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         this.terminate = true;
     }
 
-    public Population<C> getPopulation() {
-        return this.population;
-    }
+//    public Population<C> getPopulation() {
+//        return this.population;
+//    }
 
     public C getBest() {
-        return this.population.getChromosomeByIndex(0);
+        return chromosomes.get(0);
     }
 
     public C getWorst() {
-        return this.population.getChromosomeByIndex(this.population.getSize() - 1);
+        return chromosomes.get(chromosomes.size() - 1);
     }
 
     public void setParentChromosomesSurviveCount(int parentChromosomesCount) {
@@ -180,5 +191,9 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
     public void clearCache() {
         this.chromosomesComparator.clearCache();
+    }
+
+    public void addChromosome(C chromosome){
+        chromosomes.add(chromosome);
     }
 }

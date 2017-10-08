@@ -3,7 +3,6 @@ package ru.falseteam.neural2048;
 import ru.falseteam.neural2048.ga.Fitness;
 import ru.falseteam.neural2048.ga.GeneticAlgorithm;
 import ru.falseteam.neural2048.ga.IterationListener;
-import ru.falseteam.neural2048.ga.Population;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.nn.NeuralNetwork;
@@ -44,13 +43,12 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
         this.gameLogic = gameLogic;
         player = new NeuralNetworkPlayer(null);
 
-        //Заполняем популяцию
-        Population<GeneticNeuralNetwork> population = new Population<>();
+        env = new GeneticAlgorithm<>(this);
+
         for (int i = 0; i < POPULATION_SIZE; i++) {
-            population.addChromosome(nn.mutate());
+            env.addChromosome(nn.mutate());
         }
 
-        env = new GeneticAlgorithm<>(population, this);
         env.addIterationListener(this);
     }
 
