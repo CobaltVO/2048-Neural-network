@@ -97,8 +97,7 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
 
     @Override
     public void update(GeneticAlgorithm<GeneticNeuralNetwork, Integer> environment) {
-        GeneticNeuralNetwork gene = environment.getBest();
-        int score = -environment.fitness(gene);
+        int score = -environment.getBestFitness();
 
         System.out.print(environment.getIteration() + "\t");
         System.out.print(score);
@@ -119,7 +118,6 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
         System.out.println("\t" + scoreAvg);
 
         environment.setParentChromosomesSurviveCount(POPULATION_SURVIVE);
-        environment.clearCache();//TODO Посмотреть подробнее
     }
 
     public NeuralNetwork getBest() {
