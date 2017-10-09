@@ -50,10 +50,10 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
         gameLogic[3] = new GameLogic(null);
 
         player = new NeuralNetworkPlayer[4];
-        player[0] = new NeuralNetworkPlayer(null,gameLogic[1]);
-        player[1] = new NeuralNetworkPlayer(null,gameLogic[2]);
-        player[2] = new NeuralNetworkPlayer(null,gameLogic[3]);
-        player[3] = new NeuralNetworkPlayer(null,gameLogic[4]);
+        player[0] = new NeuralNetworkPlayer(null,gameLogic[0]);
+        player[1] = new NeuralNetworkPlayer(null,gameLogic[1]);
+        player[2] = new NeuralNetworkPlayer(null,gameLogic[2]);
+        player[3] = new NeuralNetworkPlayer(null,gameLogic[3]);
 
         MutatorCrossover<GeneticNeuralNetwork> mutatorCrossover = new MutatorCrossover<>();
         mutatorCrossover.addMutations(new MutationWeights());

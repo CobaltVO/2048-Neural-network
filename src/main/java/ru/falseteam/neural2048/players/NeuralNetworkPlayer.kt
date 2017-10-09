@@ -40,6 +40,7 @@ class NeuralNetworkPlayer(private var nn: NeuralNetwork?, gameLogic: GameLogic) 
 
             //Обработка хода
             Arrays.sort(pairs)
+            @Suppress("LoopToCallChain")
             for (move in pairs) {
                 if (gameLogic.move(move.direction)) break
             }
@@ -53,8 +54,8 @@ class NeuralNetworkPlayer(private var nn: NeuralNetwork?, gameLogic: GameLogic) 
     /**
      * Вспомогательный класс для корректной обработки приоретета ходов.
      */
-    private class Pair internal constructor(internal val direction: Directions) : Comparable<Pair> {
-        internal var value: Double? = null
+    private class Pair(val direction: Directions) : Comparable<Pair> {
+        var value: Double? = null
 
         override fun compareTo(other: Pair): Int {
             //Сортировка по убыванию
