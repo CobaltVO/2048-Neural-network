@@ -102,21 +102,14 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
 
     override fun update(environment: GeneticAlgorithm<GeneticNeuralNetwork, Int>) {
         val score = -environment.bestFitness
-
-        print(environment.iteration.toString() + "\t")
-        print(score)
-
-        if (maxScore < score) {
-            maxScore = score
-            print("\t($maxScore)\t NEW RECORD")
-        } else
-            print("\t($maxScore)\t")
+        if (maxScore < score) maxScore = score
 
         scores[counter++] = score
         counter %= 10
         var scoreAvg = (0..9).sumBy { scores[it] }
         scoreAvg /= 10
-        println("\t" + scoreAvg)
+
+        print("${environment.iteration}.    $score (avg $scoreAvg, record $maxScore)")
 
         environment.parentChromosomesSurviveCount = POPULATION_SURVIVE
     }
