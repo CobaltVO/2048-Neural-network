@@ -2,7 +2,6 @@ package ru.falseteam.neural2048
 
 import ru.falseteam.neural2048.ga.Fitness
 import ru.falseteam.neural2048.ga.GeneticAlgorithm
-import ru.falseteam.neural2048.ga.IterationListener
 import ru.falseteam.neural2048.ga.MutatorCrossover
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork
 import ru.falseteam.neural2048.gnn.crossower.CrossoverAllInOne
@@ -19,7 +18,7 @@ import ru.falseteam.neural2048.players.NeuralNetworkPlayer
  * @author Vladislav Sumin
  * @version 1.2
  */
-class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetwork, Int>, IterationListener<GeneticNeuralNetwork, Int> {
+class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetwork, Int>, GeneticAlgorithm.IterationListener<GeneticNeuralNetwork, Int> {
 
     companion object {
         private val ITERATION = 100
