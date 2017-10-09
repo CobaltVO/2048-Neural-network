@@ -7,6 +7,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GeneticAlgorithm<C, T extends Comparable<T>> {
+    public interface IterationListener<C, T extends Comparable<T>> {
+        void update(GeneticAlgorithm<C, T> environment);
+    }
 
     private static class Pair<C, T extends Comparable<T>> {
         final C chromosome;
