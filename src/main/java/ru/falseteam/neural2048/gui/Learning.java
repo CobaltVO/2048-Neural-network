@@ -11,14 +11,6 @@ import javax.xml.bind.JAXBException;
 import java.io.*;
 
 class Learning {
-    // НАСТРОЙКИ
-    private static final int[] NETWORK_CONFIG = {16, 32, 16, 4};
-    private static final ThresholdFunction[] thresholdFunctions = {
-            ThresholdFunction.SIGMA,
-            //ThresholdFunction.LINEAR,
-    };
-    // КОНЕЦ НАСТРОЕК
-
     private final LearningWindow window;
     private NeuralNetworkTrainer trainer;
     private volatile boolean started = false;
@@ -69,12 +61,13 @@ class Learning {
 
     }
 
+    /**
+     * Создает тренера по умолчанию.
+     */
     void createPopulation() {
         new Thread(() -> {
             System.out.println("Creating population...");
-            GeneticNeuralNetwork nn = new GeneticNeuralNetwork(
-                    NeuralNetworkManager.createNeuralNetwork(thresholdFunctions, NETWORK_CONFIG));
-            trainer = new NeuralNetworkTrainer(nn);
+            trainer = NeuralNetworkTrainer.Companion.getDefault();
             System.out.println("Population created");
         }).start();
     }
