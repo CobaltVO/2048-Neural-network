@@ -61,7 +61,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
     val best: NeuralNetwork
         get() = synchronized(lock) {
             if (work) throw RuntimeException()
-            return env.best
+            return env.getBest()
         }
 
     init {
@@ -122,7 +122,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
     }
 
     override fun update(environment: GeneticAlgorithm<GeneticNeuralNetwork, Int>) {
-        val score = -environment.bestFitness
+        val score = -environment.getBestFitness()!!
 
         scores[counter++] = score
         counter %= 10
