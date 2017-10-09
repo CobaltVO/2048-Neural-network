@@ -1,6 +1,5 @@
 package ru.falseteam.neural2048.gnn;
 
-import ru.falseteam.neural2048.ga.Chromosome;
 import ru.falseteam.neural2048.nn.NeuralNetwork;
 import ru.falseteam.neural2048.nn.Neuron;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
@@ -11,7 +10,7 @@ import java.util.*;
 
 @XmlRootElement
 public class GeneticNeuralNetwork extends NeuralNetwork
-        implements Chromosome<GeneticNeuralNetwork>, Cloneable {
+        implements Cloneable {
 
     private static double weightsMutationInterval = 1;
 
@@ -34,7 +33,7 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         this.neuronsLinks = nn.getNeuronsLinks();
     }
 
-    @Override
+    //@Override
     public List<GeneticNeuralNetwork> crossover(GeneticNeuralNetwork anotherChromosome) {
         GeneticNeuralNetwork anotherClone = anotherChromosome.clone();
         GeneticNeuralNetwork thisClone = this.clone();
@@ -77,8 +76,8 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         List<GeneticNeuralNetwork> ret = new ArrayList<GeneticNeuralNetwork>();
         ret.add(anotherClone);
         ret.add(thisClone);
-        ret.add(anotherClone.mutate());
-        ret.add(thisClone.mutate());
+        //ret.add(anotherClone.mutate_());
+        //ret.add(thisClone.mutate_());//TODO мазафака
         return ret;
     }
 
@@ -158,8 +157,8 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         }
     }
 
-    @Override
-    public GeneticNeuralNetwork mutate() {
+    //@Override //TODO
+    public GeneticNeuralNetwork mutate_() {
         GeneticNeuralNetwork mutated = this.clone();
 
         switch (this.random.nextInt(4)) {
@@ -174,9 +173,9 @@ public class GeneticNeuralNetwork extends NeuralNetwork
             }
             break;
             case 2: {
-                this.mutateChangeNeuronsFunctions(mutated.neurons);
+                //this.mutateChangeNeuronsFunctions(mutated.neurons);//TODO
             }
-            break;
+            //break;
             case 3: {
                 List<Double> weights = mutated.neuronsLinks.getAllWeights();
                 this.shuffleWeightsOnSubinterval(weights);

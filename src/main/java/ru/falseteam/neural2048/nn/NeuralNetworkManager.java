@@ -52,14 +52,14 @@ public class NeuralNetworkManager {
     }
 
     public static void save(NeuralNetwork nn, OutputStream stream) throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(nn.getClass());
+        JAXBContext context = JAXBContext.newInstance(NeuralNetwork.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.marshal(nn, stream);
     }
 
-    public static NeuralNetwork load(Class<NeuralNetwork> nn, InputStream stream)
+    public static NeuralNetwork load(InputStream stream)
             throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(nn);
+        JAXBContext context = JAXBContext.newInstance(NeuralNetwork.class);
         Unmarshaller marshaller = context.createUnmarshaller();
         NeuralNetwork unmarshal = (NeuralNetwork) marshaller.unmarshal(stream);
         return unmarshal;
