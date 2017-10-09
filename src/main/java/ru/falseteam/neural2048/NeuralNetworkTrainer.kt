@@ -22,9 +22,9 @@ import ru.falseteam.neural2048.players.NeuralNetworkPlayer
 class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetwork, Int>, IterationListener<GeneticNeuralNetwork, Int> {
 
     companion object {
-        private val POPULATION_SIZE = 20
         private val ITERATION = 100
         private val POPULATION_SURVIVE = 5
+        private val POPULATION_SIZE = POPULATION_SURVIVE * 4
         private val NEURAL_CONFIG = intArrayOf(16, 128, 64, 4)
         private val thresholdFunctions = arrayOf(ThresholdFunction.SIGMA)//ThresholdFunction.LINEAR,
 
@@ -74,6 +74,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
             env.addChromosome(mutatorCrossover.mutate(nn))
         }
         env.addIterationListener(this)
+        env.parentChromosomesSurviveCount = POPULATION_SURVIVE
 
         runner = Runnable {
             while (work) env.evolve(1)
@@ -132,7 +133,5 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
         println("${environment.iteration}.    $score (avg $scoreAvg)" +
                 " time ${System.currentTimeMillis() - time}ms")
         time = System.currentTimeMillis()
-
-        environment.parentChromosomesSurviveCount = POPULATION_SURVIVE
     }
 }
