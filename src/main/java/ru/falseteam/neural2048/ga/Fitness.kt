@@ -6,7 +6,7 @@ package ru.falseteam.neural2048.ga
  * @param <C> - особь
  * @param <T> - степень не справляемости с задачем, чем меньше тем лучше
 </T></C> */
-interface Fitness<C : Chromosome<C>, T : Comparable<T>> {
+interface Fitness<in C, T : Comparable<T>> {
 
     /**
      * Assume that chromosome1 is better than chromosome2 <br></br>

@@ -1,6 +1,5 @@
 package ru.falseteam.neural2048.gnn;
 
-import ru.falseteam.neural2048.ga.Chromosome;
 import ru.falseteam.neural2048.nn.NeuralNetwork;
 import ru.falseteam.neural2048.nn.Neuron;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
@@ -11,7 +10,7 @@ import java.util.*;
 
 @XmlRootElement
 public class GeneticNeuralNetwork extends NeuralNetwork
-        implements Chromosome<GeneticNeuralNetwork>, Cloneable {
+        implements Cloneable {
 
     private static double weightsMutationInterval = 1;
 
