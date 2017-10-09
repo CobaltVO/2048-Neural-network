@@ -7,24 +7,20 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GeneticAlgorithm<C, T extends Comparable<T>> {
+
+    // Слушатель итераций
     public interface IterationListener<C, T extends Comparable<T>> {
         void update(GeneticAlgorithm<C, T> environment);
     }
 
-    private static class Pair<C, T extends Comparable<T>> {
-        final C chromosome;
-        T fitness;
-
-        Pair(C chromosome) {
-            this.chromosome = chromosome;
-        }
-    }
-
-
-    private final Fitness<C, T> fitnessFunc;
-    private final MutatorCrossover<C> mutatorCrossover;
-    private List<Pair<C, T>> chromosomes = new ArrayList<>();
     private final List<IterationListener<C, T>> iterationListeners = new LinkedList<>();
+
+    // Функция роста
+    private final Fitness<C, T> fitnessFunc;
+    // Мутатор
+    private final MutatorCrossover<C> mutatorCrossover;
+    //Набор хромосом
+    private List<Pair<C, T>> chromosomes = new ArrayList<>();
     private boolean terminate = false;
     //Количество родительских хромосом, которые выживают и учавствуют в размножении
     private int parentChromosomesSurviveCount = Integer.MAX_VALUE;
@@ -42,7 +38,7 @@ public class GeneticAlgorithm<C, T extends Comparable<T>> {
     private void evolve() {
         int parentPopulationSize = chromosomes.size();
 
-        List<Pair<C, T>> newChromosomes = new ArrayList<>();
+        List<Pair<C, T>> newChromosomes = new ArrayList<>();//TODO убрать
 
         //Копируем лучшие хромосомы
         for (int i = 0; (i < parentPopulationSize) && (i < parentChromosomesSurviveCount); i++) {
@@ -75,7 +71,7 @@ public class GeneticAlgorithm<C, T extends Comparable<T>> {
         }
 
         sortPopulationByFitness(newChromosomes);
-        chromosomes = trim(newChromosomes, parentPopulationSize);
+        chromosomes = newChromosomes.subList(0, parentPopulationSize);
     }
 
     public void evolve(int count) {
@@ -140,16 +136,6 @@ public class GeneticAlgorithm<C, T extends Comparable<T>> {
         }
     }
 
-    /**
-     * Сокращает количество особей до указанного
-     *
-     * @param len - количество особей
-     */
-    @NotNull
-    private List<Pair<C, T>> trim(List<Pair<C, T>> chromosomes, int len) {
-        return chromosomes.subList(0, len);
-    }
-
     public int getIteration() {
         return this.iteration;
     }
@@ -196,5 +182,15 @@ public class GeneticAlgorithm<C, T extends Comparable<T>> {
 
     public void setThreadCount(int threadCount) {
         this.threadCount = threadCount;
+    }
+
+
+    private static class Pair<C, T extends Comparable<T>> {
+        final C chromosome;
+        T fitness;
+
+        Pair(C chromosome) {
+            this.chromosome = chromosome;
+        }
     }
 }
