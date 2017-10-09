@@ -20,9 +20,9 @@ import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
 public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integer>,
         IterationListener<GeneticNeuralNetwork, Integer> {
     // НАСТРОЙКИ
-    private static final int POPULATION_SIZE = 40;
-    private static final int ITERATION = 30;
-    private static final int POPULATION_SURVIVE = 5;
+    private static final int POPULATION_SIZE = 60;
+    private static final int ITERATION = 100;
+    private static final int POPULATION_SURVIVE = 15;
     // КОНЕЦ НАСТРОЕК
 
     private final GameLogic[] gameLogic;
@@ -50,10 +50,10 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
         gameLogic[3] = new GameLogic(null);
 
         player = new NeuralNetworkPlayer[4];
-        player[0] = new NeuralNetworkPlayer(null);
-        player[1] = new NeuralNetworkPlayer(null);
-        player[2] = new NeuralNetworkPlayer(null);
-        player[3] = new NeuralNetworkPlayer(null);
+        player[0] = new NeuralNetworkPlayer(null,gameLogic[1]);
+        player[1] = new NeuralNetworkPlayer(null,gameLogic[2]);
+        player[2] = new NeuralNetworkPlayer(null,gameLogic[3]);
+        player[3] = new NeuralNetworkPlayer(null,gameLogic[4]);
 
         MutatorCrossover<GeneticNeuralNetwork> mutatorCrossover = new MutatorCrossover<>();
         mutatorCrossover.addMutations(new MutationWeights());
@@ -101,7 +101,7 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
         int score = 0;
         for (int i = 0; i < ITERATION; i++) {
             player_.setNeuralNetwork(chromosome);
-            player_.playOneGame(gameLogic_);
+            player_.playOneGame();
             score += gameLogic_.score;
             gameLogic_.restart();
         }
