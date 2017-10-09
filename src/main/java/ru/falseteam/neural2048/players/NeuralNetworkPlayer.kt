@@ -23,8 +23,8 @@ class NeuralNetworkPlayer(private var nn: NeuralNetwork?, gameLogic: GameLogic) 
     private val pairs = arrayOf(pairUp, pairDown, pairLeft, pairRight)
 
     override fun playOneGame() {
+        val nn = nn ?: throw IllegalStateException()
         while (gameLogic.state == GameState.GAME) {
-            val nn = nn ?: throw IllegalStateException()
             //Установка входных значений нейронов
             for (i in 0..15) {
                 nn.putSignalToNeuron(i, gameLogic.theGrid[i / 4][i % 4].toDouble())
