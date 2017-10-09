@@ -109,7 +109,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
         var scoreAvg = (0..9).sumBy { scores[it] }
         scoreAvg /= 10
 
-        print("${environment.iteration}.    $score (avg $scoreAvg, record $maxScore)")
+        println("${environment.iteration}.    $score (avg $scoreAvg, record $maxScore)")
 
         environment.parentChromosomesSurviveCount = POPULATION_SURVIVE
     }
