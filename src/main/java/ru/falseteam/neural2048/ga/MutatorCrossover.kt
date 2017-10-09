@@ -4,6 +4,21 @@ import java.util.*
 
 
 class MutatorCrossover<C> {
+    interface Crossing<C> {
+        /**
+         * Возвращает скрещенные КОПИИ хромосом
+         */
+        fun crossing(chromosome1: C, chromosome2: C): List<C>
+    }
+
+    interface Mutation<C> {
+        /**
+         * Создает КОПИЮ данной хромосомы, после чего мутирует ее
+         * @return - мутированная копия хромосомы
+         */
+        fun mutate(chromosome: C): C
+    }
+
     private val mutations = ArrayList<Mutation<C>>()
     private val crosses = ArrayList<Crossing<C>>()
     private val random = Random()

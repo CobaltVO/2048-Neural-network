@@ -1,14 +1,13 @@
 package ru.falseteam.neural2048.gnn.crossower
 
-import ru.falseteam.neural2048.ga.Crossing
+import ru.falseteam.neural2048.ga.MutatorCrossover
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork
+import ru.falseteam.neural2048.nn.NeuralNetwork
 import ru.falseteam.neural2048.nn.Neuron
 import java.util.*
 
-/**
- * Created by admin on 08.10.2017.
- */
-class CrossoverAllInOne:Crossing<GeneticNeuralNetwork> {
+
+class CrossoverAllInOne:MutatorCrossover.Crossing<GeneticNeuralNetwork> {
     private val random = Random()
 
     override fun crossing(chromosome1: GeneticNeuralNetwork, chromosome2: GeneticNeuralNetwork): List<GeneticNeuralNetwork> {
