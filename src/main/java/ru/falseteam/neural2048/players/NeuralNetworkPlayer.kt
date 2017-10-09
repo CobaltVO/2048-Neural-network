@@ -25,9 +25,10 @@ class NeuralNetworkPlayer(private var nn: NeuralNetwork?, gameLogic: GameLogic) 
     override fun playOneGame() {
         val nn = nn ?: throw IllegalStateException()
         while (gameLogic.state == GameState.GAME) {
+            val maxTile: Double = gameLogic.maxTileExp.toDouble()
             //Установка входных значений нейронов
             for (i in 0..15) {
-                nn.putSignalToNeuron(i, gameLogic.theGrid[i / 4][i % 4].toDouble())
+                nn.putSignalToNeuron(i, gameLogic.theGrid[i / 4][i % 4].toDouble() / maxTile)
             }
 
             //Активация
