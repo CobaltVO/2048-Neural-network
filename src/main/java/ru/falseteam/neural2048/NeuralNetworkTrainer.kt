@@ -35,9 +35,9 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
     private val runner: Runnable
     private var run: Thread? = null
 
-    private var maxScore = 0
     private var counter = 0
     private val scores = IntArray(10)
+    private var time: Long = 0L
 
     val best: NeuralNetwork
         get() = synchronized(lock) {
@@ -64,6 +64,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
         synchronized(lock) {
             if (work) return
             work = true
+            time = System.currentTimeMillis()
             run = Thread(runner)
             run!!.start()
         }
@@ -102,14 +103,15 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
 
     override fun update(environment: GeneticAlgorithm<GeneticNeuralNetwork, Int>) {
         val score = -environment.bestFitness
-        if (maxScore < score) maxScore = score
 
         scores[counter++] = score
         counter %= 10
         var scoreAvg = (0..9).sumBy { scores[it] }
         scoreAvg /= 10
 
-        println("${environment.iteration}.    $score (avg $scoreAvg, record $maxScore)")
+        println("${environment.iteration}.    $score (avg $scoreAvg)" +
+                " time ${System.currentTimeMillis() - time}ms")
+        time = System.currentTimeMillis()
 
         environment.parentChromosomesSurviveCount = POPULATION_SURVIVE
     }
