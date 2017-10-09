@@ -32,7 +32,6 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
     public GeneticAlgorithm(Fitness<C, T> fitnessFunc, MutatorCrossover<C> mutatorCrossover) {
         this.fitnessFunc = fitnessFunc;
         this.mutatorCrossover = mutatorCrossover;
-        sortPopulationByFitness(chromosomes);//TODO мазафака
     }
 
     private final Random random = new Random();
