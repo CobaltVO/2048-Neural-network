@@ -32,7 +32,6 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
     public GeneticAlgorithm(Fitness<C, T> fitnessFunc, MutatorCrossover<C> mutatorCrossover) {
         this.fitnessFunc = fitnessFunc;
         this.mutatorCrossover = mutatorCrossover;
-        sortPopulationByFitness(chromosomes);//TODO мазафака
     }
 
     private final Random random = new Random();
@@ -42,7 +41,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
         List<Pair<C, T>> newChromosomes = new ArrayList<>();
 
-        //Копируем лучшие хромосомы //TODO сохранить рещультат лучших
+        //Копируем лучшие хромосомы
         for (int i = 0; (i < parentPopulationSize) && (i < parentChromosomesSurviveCount); i++) {
             newChromosomes.add(chromosomes.get(i));
         }
@@ -116,6 +115,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
                     int chromosomeNumber = counter.getAndAdd(1);
                     if (chromosomeNumber >= chromosomes.size()) return;
                     Pair<C, T> pair = chromosomes.get(chromosomeNumber);
+                    if (pair.fitness != null) continue; // избегает повторных игр
                     pair.fitness = fitnessFunc.calculate(pair.chromosome, threadNumber);
                 }
             }

@@ -99,8 +99,8 @@ public class GameLogic extends GameData {
                 score += 1 << reRow[k];
                 if (reRow[k++] > maxTileExp) maxTileExp = reRow[k - 1];
                 if (maxTileExp == 11) {
-                    state = GameState.WIN;
-                    System.out.println("WIIIIIIIIIIIIIIIIIIIIN!!!");
+                    //state = GameState.WIN;//TODO временно отключил
+                    System.out.println("WIN GAME!!!");
                 }
                 i = j++;
             } else {
