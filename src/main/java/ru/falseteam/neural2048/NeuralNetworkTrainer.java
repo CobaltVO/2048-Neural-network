@@ -86,7 +86,7 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
      * @return 0 - усредненный счет за ITERATION игр
      */
     @Override
-    public Integer calculate(GeneticNeuralNetwork chromosome) {
+    public Integer calculate(GeneticNeuralNetwork chromosome, int threadNumber) {
         int score = 0;
         for (int i = 0; i < ITERATION; i++) {
             player.setNeuralNetwork(chromosome);

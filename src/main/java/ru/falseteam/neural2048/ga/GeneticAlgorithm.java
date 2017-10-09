@@ -94,7 +94,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
      */
     private void sortPopulationByFitness(List<Pair<C, T>> chromosomes) {
         //Collections.shuffle(chromosomes);//TODO зачем перемешивать перед сортировкой?
-        chromosomes.forEach(ctPair -> ctPair.fitness = fitnessFunc.calculate(ctPair.chromosome));
+        chromosomes.forEach(ctPair -> ctPair.fitness = fitnessFunc.calculate(ctPair.chromosome, 0));//TODO переделать
         chromosomes.sort(Comparator.comparing(o -> o.fitness));
     }
 
