@@ -37,7 +37,7 @@ public class GnnTestXOR {
         nn.setWeightsOfLinks(weightsOfLinks);
 
 
-        Fitness<GeneticNeuralNetwork, Integer> fit = chromosome -> {
+        Fitness<GeneticNeuralNetwork, Integer> fit = (chromosome, threadNumber) -> {
             int score = 0;
             for (int i = 0; i < 4; i++) {
                 chromosome.putSignalToNeuron(0, a[i]);
