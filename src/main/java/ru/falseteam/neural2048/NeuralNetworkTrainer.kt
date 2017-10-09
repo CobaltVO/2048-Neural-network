@@ -25,7 +25,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
         private val ITERATION = 100
         private val POPULATION_SURVIVE = 5
         private val POPULATION_SIZE = POPULATION_SURVIVE * 4
-        private val NEURAL_CONFIG = intArrayOf(16, 128, 64, 4)
+        private val NEURAL_CONFIG = intArrayOf(16, 32, 16, 4)
         private val thresholdFunctions = arrayOf(ThresholdFunction.SIGMA)//ThresholdFunction.LINEAR,
 
         /**
