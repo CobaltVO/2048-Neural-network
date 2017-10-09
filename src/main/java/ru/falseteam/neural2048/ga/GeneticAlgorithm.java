@@ -4,6 +4,7 @@ package ru.falseteam.neural2048.ga;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> {
 
@@ -26,6 +27,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
     private int parentChromosomesSurviveCount = Integer.MAX_VALUE;
     //Кол-во прошедших итераций
     private int iteration = 0;
+    private int threadCount = 4;
 
     public GeneticAlgorithm(Fitness<C, T> fitnessFunc, MutatorCrossover<C> mutatorCrossover) {
         this.fitnessFunc = fitnessFunc;
@@ -40,7 +42,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
 
         List<Pair<C, T>> newChromosomes = new ArrayList<>();
 
-        //Копируем лучшие хромосомы
+        //Копируем лучшие хромосомы //TODO сохранить рещультат лучших
         for (int i = 0; (i < parentPopulationSize) && (i < parentChromosomesSurviveCount); i++) {
             newChromosomes.add(chromosomes.get(i));
         }
@@ -94,8 +96,43 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
      */
     private void sortPopulationByFitness(List<Pair<C, T>> chromosomes) {
         //Collections.shuffle(chromosomes);//TODO зачем перемешивать перед сортировкой?
-        chromosomes.forEach(ctPair -> ctPair.fitness = fitnessFunc.calculate(ctPair.chromosome, 0));//TODO переделать
+        //chromosomes.forEach(ctPair -> ctPair.fitness = fitnessFunc.calculate(ctPair.chromosome, 0));
+        updateFitness(chromosomes);
         chromosomes.sort(Comparator.comparing(o -> o.fitness));
+    }
+
+    private void updateFitness(List<Pair<C, T>> chromosomes) {
+        AtomicInteger counter = new AtomicInteger(0);
+        class MyThread extends Thread {
+            private int threadNumber;
+
+            private MyThread(int threadNumber) {
+                this.threadNumber = threadNumber;
+            }
+
+            @Override
+            public void run() {
+                while (true) {
+                    int chromosomeNumber = counter.getAndAdd(1);
+                    if (chromosomeNumber >= chromosomes.size()) return;
+                    Pair<C, T> pair = chromosomes.get(chromosomeNumber);
+                    pair.fitness = fitnessFunc.calculate(pair.chromosome, threadNumber);
+                }
+            }
+        }
+        List<MyThread> threads = new ArrayList<>(threadCount);
+        for (int i = 0; i < threadCount; i++) {
+            threads.add(new MyThread(i));
+            threads.get(i).start();
+        }
+        for (int i = 0; i < threadCount; i++) {
+            try {
+                threads.get(i).join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     /**
@@ -148,8 +185,11 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
         return chromosomes.get(0).fitness;
     }
 
-
     public void addChromosome(C chromosome) {
         chromosomes.add(new Pair<>(chromosome));
+    }
+
+    public void setThreadCount(int threadCount) {
+        this.threadCount = threadCount;
     }
 }

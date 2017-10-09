@@ -21,7 +21,6 @@ class Learning {
 
     private final LearningWindow window;
     private NeuralNetworkTrainer trainer;
-    private final GameLogic gameLogic = new GameLogic(null);
     private volatile boolean started = false;
 
     Learning(LearningWindow window) {
@@ -54,7 +53,7 @@ class Learning {
         }
         try {
             System.out.println("Loading...");
-            trainer = new NeuralNetworkTrainer(gameLogic, new GeneticNeuralNetwork(
+            trainer = new NeuralNetworkTrainer(new GeneticNeuralNetwork(
                     NeuralNetworkManager.load(new FileInputStream(file))));
             System.out.println("Loaded");
         } catch (JAXBException | FileNotFoundException e) {
@@ -75,7 +74,7 @@ class Learning {
             System.out.println("Creating population...");
             GeneticNeuralNetwork nn = new GeneticNeuralNetwork(
                     NeuralNetworkManager.createNeuralNetwork(thresholdFunctions, NETWORK_CONFIG));
-            trainer = new NeuralNetworkTrainer(gameLogic, nn);
+            trainer = new NeuralNetworkTrainer(nn);
             System.out.println("Population created");
         }).start();
     }
