@@ -15,6 +15,6 @@ public interface Fitness<C extends Chromosome<C>, T extends Comparable<T>> {
      * So the following condition must be true <br/>
      * fit1.compareTo(fit2) <= 0 <br/>
      */
-    T calculate(C chromosome);
+    T calculate(C chromosome, int threadNumber);
 
 }

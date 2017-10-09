@@ -34,7 +34,7 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         this.neuronsLinks = nn.getNeuronsLinks();
     }
 
-    @Override
+    //@Override
     public List<GeneticNeuralNetwork> crossover(GeneticNeuralNetwork anotherChromosome) {
         GeneticNeuralNetwork anotherClone = anotherChromosome.clone();
         GeneticNeuralNetwork thisClone = this.clone();
@@ -77,8 +77,8 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         List<GeneticNeuralNetwork> ret = new ArrayList<GeneticNeuralNetwork>();
         ret.add(anotherClone);
         ret.add(thisClone);
-        ret.add(anotherClone.mutate());
-        ret.add(thisClone.mutate());
+        //ret.add(anotherClone.mutate_());
+        //ret.add(thisClone.mutate_());//TODO мазафака
         return ret;
     }
 
@@ -158,8 +158,8 @@ public class GeneticNeuralNetwork extends NeuralNetwork
         }
     }
 
-    @Override
-    public GeneticNeuralNetwork mutate() {
+    //@Override //TODO
+    public GeneticNeuralNetwork mutate_() {
         GeneticNeuralNetwork mutated = this.clone();
 
         switch (this.random.nextInt(4)) {
