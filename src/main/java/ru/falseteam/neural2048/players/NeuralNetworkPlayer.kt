@@ -24,19 +24,20 @@ class NeuralNetworkPlayer(private var nn: NeuralNetwork?, gameLogic: GameLogic) 
 
     override fun playOneGame() {
         while (gameLogic.state == GameState.GAME) {
+            val nn = nn ?: throw IllegalStateException()
             //Установка входных значений нейронов
             for (i in 0..15) {
-                nn!!.putSignalToNeuron(i, gameLogic.theGrid[i / 4][i % 4].toDouble())
+                nn.putSignalToNeuron(i, gameLogic.theGrid[i / 4][i % 4].toDouble())
             }
 
             //Активация
-            nn!!.activate()
+            nn.activate()
 
             //Снятие значений с выходных нейронов
-            pairUp.value = nn!!.getAfterActivationSignal(nn!!.neuronsCount - 1)
-            pairDown.value = nn!!.getAfterActivationSignal(nn!!.neuronsCount - 2)
-            pairLeft.value = nn!!.getAfterActivationSignal(nn!!.neuronsCount - 3)
-            pairRight.value = nn!!.getAfterActivationSignal(nn!!.neuronsCount - 4)
+            pairUp.value = nn.getAfterActivationSignal(nn.neuronsCount - 1)
+            pairDown.value = nn.getAfterActivationSignal(nn.neuronsCount - 2)
+            pairLeft.value = nn.getAfterActivationSignal(nn.neuronsCount - 3)
+            pairRight.value = nn.getAfterActivationSignal(nn.neuronsCount - 4)
 
             //Обработка хода
             Arrays.sort(pairs)

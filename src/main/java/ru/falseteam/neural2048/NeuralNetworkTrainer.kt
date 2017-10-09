@@ -87,7 +87,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
      *
      * @return 0 - усредненный счет за ITERATION игр
      */
-    override fun calculate(chromosome: GeneticNeuralNetwork, threadNumber: Int): Int? {
+    override fun calculate(chromosome: GeneticNeuralNetwork, threadNumber: Int): Int {
         val player = players[threadNumber]
         var score = 0
         for (i in 0 until ITERATION) {
