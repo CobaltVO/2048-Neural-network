@@ -2,8 +2,9 @@ package ru.falseteam.neural2048.gnn.tests;
 
 import ru.falseteam.neural2048.ga.Fitness;
 import ru.falseteam.neural2048.ga.GeneticAlgorithm;
-import ru.falseteam.neural2048.ga.Population;
+import ru.falseteam.neural2048.ga.MutatorCrossover;
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
+import ru.falseteam.neural2048.gnn.mutations.MutationWeights;
 import ru.falseteam.neural2048.nn.NeuralNetworkManager;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
@@ -36,13 +37,7 @@ public class GnnTestXOR {
         nn.setWeightsOfLinks(weightsOfLinks);
 
 
-        //Заполняем популяцию
-        Population<GeneticNeuralNetwork> population = new Population<>();
-        for (int i = 0; i < POPULATION_SIZE; i++) {
-            population.addChromosome(nn.mutate());
-        }
-
-        Fitness<GeneticNeuralNetwork, Integer> fit = chromosome -> {
+        Fitness<GeneticNeuralNetwork, Integer> fit = (chromosome, threadNumber) -> {
             int score = 0;
             for (int i = 0; i < 4; i++) {
                 chromosome.putSignalToNeuron(0, a[i]);
@@ -56,13 +51,18 @@ public class GnnTestXOR {
             return 4 - score;
         };
 
-        GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
-                new GeneticAlgorithm<>(population, fit);
+        MutatorCrossover<GeneticNeuralNetwork> mutatorCrossover = new MutatorCrossover<>();
+        mutatorCrossover.addMutations(new MutationWeights());
 
+        GeneticAlgorithm<GeneticNeuralNetwork, Integer> env =
+                new GeneticAlgorithm<>(fit, mutatorCrossover);
+        //Заполняем популяцию
+        for (int i = 0; i < POPULATION_SIZE; i++) {
+            env.addChromosome(mutatorCrossover.mutate(nn));
+        }
 
         env.addIterationListener(environment -> {
-            GeneticNeuralNetwork gene = environment.getBest();
-            int score = environment.fitness(gene);
+            int score = environment.getBestFitness();
 
             System.out.print(environment.getIteration() + "\t");
             System.out.println(score);
@@ -70,7 +70,6 @@ public class GnnTestXOR {
             if (score == 0) env.terminate();
 
             environment.setParentChromosomesSurviveCount(POPULATION_SIZE / 3);
-            environment.clearCache();
         });
         env.evolve(100000);
 
