@@ -126,7 +126,7 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
             threads.get(i).start();
         }
 
-        new MyThread(threadCount - 1).start();
+        new MyThread(threadCount - 1).run();
 
         for (int i = 0; i < threadCount - 1; i++) {
             try {
