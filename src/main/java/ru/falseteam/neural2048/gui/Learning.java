@@ -12,7 +12,7 @@ import java.io.*;
 
 class Learning {
     // НАСТРОЙКИ
-    private static final int[] NETWORK_CONFIG = {16, 32, 16, 8, 4};
+    private static final int[] NETWORK_CONFIG = {16, 32, 16, 4};
     private static final ThresholdFunction[] thresholdFunctions = {
             ThresholdFunction.SIGMA,
             //ThresholdFunction.LINEAR,
