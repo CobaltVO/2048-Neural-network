@@ -120,19 +120,21 @@ public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> 
                 }
             }
         }
-        List<MyThread> threads = new ArrayList<>(threadCount);
-        for (int i = 0; i < threadCount; i++) {
+        List<MyThread> threads = new ArrayList<>(threadCount - 1);
+        for (int i = 0; i < threadCount - 1; i++) {
             threads.add(new MyThread(i));
             threads.get(i).start();
         }
-        for (int i = 0; i < threadCount; i++) {
+
+        new MyThread(threadCount - 1).run();
+
+        for (int i = 0; i < threadCount - 1; i++) {
             try {
                 threads.get(i).join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     /**

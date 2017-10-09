@@ -1,6 +1,6 @@
-package ru.falseteam.neural2048.players;
+package ru.falseteam.neural2048.players
 
-import ru.falseteam.neural2048.logic.GameLogic;
+import ru.falseteam.neural2048.logic.GameLogic
 
 /**
  * Интерфейс от которого должен наследоваться любой алгоритм игры.
@@ -8,9 +8,9 @@ import ru.falseteam.neural2048.logic.GameLogic;
  * @author Vladislav Sumin
  * @version 1.0
  */
-public interface Player {
+abstract class Player(val gameLogic: GameLogic) {
     /**
      * Игрок играет одну игру.
      */
-    void playOneGame(GameLogic gameLogic);
+    abstract fun playOneGame()
 }
