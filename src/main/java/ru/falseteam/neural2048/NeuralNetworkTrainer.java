@@ -25,8 +25,8 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
     private static final int POPULATION_SURVIVE = 5;
     // КОНЕЦ НАСТРОЕК
 
-    private final GameLogic gameLogic;
-    private final NeuralNetworkPlayer player;
+    private final GameLogic[] gameLogic;
+    private final NeuralNetworkPlayer player[];
     private GeneticAlgorithm<GeneticNeuralNetwork, Integer> env;
     private volatile boolean work = false;
 
@@ -42,9 +42,18 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
     };
     private Thread run;
 
-    public NeuralNetworkTrainer(GameLogic gameLogic, GeneticNeuralNetwork nn) {
-        this.gameLogic = gameLogic;
-        player = new NeuralNetworkPlayer(null);
+    public NeuralNetworkTrainer(GeneticNeuralNetwork nn) {
+        this.gameLogic = new GameLogic[4];
+        gameLogic[0] = new GameLogic(null);
+        gameLogic[1] = new GameLogic(null);
+        gameLogic[2] = new GameLogic(null);
+        gameLogic[3] = new GameLogic(null);
+
+        player = new NeuralNetworkPlayer[4];
+        player[0] = new NeuralNetworkPlayer(null);
+        player[1] = new NeuralNetworkPlayer(null);
+        player[2] = new NeuralNetworkPlayer(null);
+        player[3] = new NeuralNetworkPlayer(null);
 
         MutatorCrossover<GeneticNeuralNetwork> mutatorCrossover = new MutatorCrossover<>();
         mutatorCrossover.addMutations(new MutationWeights());
@@ -87,12 +96,14 @@ public class NeuralNetworkTrainer implements Fitness<GeneticNeuralNetwork, Integ
      */
     @Override
     public Integer calculate(GeneticNeuralNetwork chromosome, int threadNumber) {
+        GameLogic gameLogic_ = gameLogic[threadNumber];
+        NeuralNetworkPlayer player_ = player[threadNumber];
         int score = 0;
         for (int i = 0; i < ITERATION; i++) {
-            player.setNeuralNetwork(chromosome);
-            player.playOneGame(gameLogic);
-            score += gameLogic.score;
-            gameLogic.restart();
+            player_.setNeuralNetwork(chromosome);
+            player_.playOneGame(gameLogic_);
+            score += gameLogic_.score;
+            gameLogic_.restart();
         }
         score /= ITERATION;
         return -score;
