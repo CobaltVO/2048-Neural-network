@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GeneticAlgorithm<C extends Chromosome<C>, T extends Comparable<T>> {
+public class GeneticAlgorithm<C, T extends Comparable<T>> {
 
-    private static class Pair<C extends Chromosome<C>, T extends Comparable<T>> {
+    private static class Pair<C, T extends Comparable<T>> {
         final C chromosome;
         T fitness;
 

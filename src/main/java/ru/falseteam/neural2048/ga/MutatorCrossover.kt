@@ -3,7 +3,7 @@ package ru.falseteam.neural2048.ga
 import java.util.*
 
 
-class MutatorCrossover<C : Chromosome<C>> {
+class MutatorCrossover<C> {
     private val mutations = ArrayList<Mutation<C>>()
     private val crosses = ArrayList<Crossing<C>>()
     private val random = Random()
