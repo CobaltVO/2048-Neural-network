@@ -4,7 +4,7 @@ import ru.falseteam.neural2048.ga.Fitness
 import ru.falseteam.neural2048.ga.GeneticAlgorithm
 import ru.falseteam.neural2048.ga.MutatorCrossover
 import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork
-import ru.falseteam.neural2048.gnn.crossower.CrossoverAllInOne
+import ru.falseteam.neural2048.gnn.crossower.*
 import ru.falseteam.neural2048.gnn.mutations.MutationWeights
 import ru.falseteam.neural2048.logic.GameLogic
 import ru.falseteam.neural2048.nn.NeuralNetwork
@@ -67,7 +67,10 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
     init {
         val mutatorCrossover = MutatorCrossover<GeneticNeuralNetwork>()
         mutatorCrossover.addMutations(MutationWeights())
-        mutatorCrossover.addCrosses(CrossoverAllInOne())
+        mutatorCrossover.addCrosses(TwoPointsWeightsCrossover())
+        mutatorCrossover.addCrosses(UniformelyDistributedWeightsCrossover())
+        mutatorCrossover.addCrosses(TwoPointsNeuronsCrossover())
+        mutatorCrossover.addCrosses(UniformelyDistributedNeuronsCrossover())
         env = GeneticAlgorithm(this, mutatorCrossover)
         for (i in 0 until POPULATION_SIZE) {
             env.addChromosome(mutatorCrossover.mutate(nn))
