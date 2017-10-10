@@ -27,7 +27,7 @@ public class GnnTestXOR {
 
     public static void main(String[] args) {
         //Создаем случайную нейронную сеть с задаными параметрами
-        NeuralNetwork nn = NeuralNetworkManager.createNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
+        NeuralNetwork nn = NeuralNetworkManager.INSTANCE.createNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
         nn.setNeuronFunction(nn.getNeuronsCount() - 1,
                 ThresholdFunction.SIGN, ThresholdFunction.SIGN.getDefaultParams());
 
