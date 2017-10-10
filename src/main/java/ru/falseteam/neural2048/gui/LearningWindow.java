@@ -33,7 +33,7 @@ public class LearningWindow extends Application {
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        learning = new Learning(this);
+        learning = new Learning();
 
         textArea = new TextArea();
 
