@@ -1,7 +1,6 @@
 package ru.falseteam.neural2048.gui;
 
 import ru.falseteam.neural2048.NeuralNetworkTrainer;
-import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.nn.NeuralNetwork;
 import ru.falseteam.neural2048.nn.NeuralNetworkManager;
@@ -45,8 +44,7 @@ class Learning {
         }
         try {
             System.out.println("Loading...");
-            trainer = new NeuralNetworkTrainer(new GeneticNeuralNetwork(
-                    NeuralNetworkManager.load(new FileInputStream(file))));
+            trainer = new NeuralNetworkTrainer(NeuralNetworkManager.load(new FileInputStream(file)));
             System.out.println("Loaded");
         } catch (JAXBException | FileNotFoundException e) {
             e.printStackTrace();

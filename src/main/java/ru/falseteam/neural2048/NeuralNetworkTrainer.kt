@@ -3,7 +3,6 @@ package ru.falseteam.neural2048
 import ru.falseteam.neural2048.ga.Fitness
 import ru.falseteam.neural2048.ga.GeneticAlgorithm
 import ru.falseteam.neural2048.ga.MutatorCrossover
-import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork
 import ru.falseteam.neural2048.gnn.crossower.*
 import ru.falseteam.neural2048.gnn.mutations.MutationWeights
 import ru.falseteam.neural2048.logic.GameLogic
@@ -18,7 +17,7 @@ import ru.falseteam.neural2048.players.NeuralNetworkPlayer
  * @author Vladislav Sumin
  * @version 1.2
  */
-class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetwork, Int>, GeneticAlgorithm.IterationListener<GeneticNeuralNetwork, Int> {
+class NeuralNetworkTrainer(nn:NeuralNetwork) : Fitness<NeuralNetwork, Int>, GeneticAlgorithm.IterationListener<NeuralNetwork, Int> {
 
     companion object {
         private val ITERATION = 100
@@ -36,7 +35,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
                 nn.setNeuronFunction(i, ThresholdFunction.LINEAR, ThresholdFunction.LINEAR.defaultParams)
             for (i in nn.neuronsCount - 4 until nn.neuronsCount - 1)
                 nn.setNeuronFunction(i, ThresholdFunction.LINEAR, ThresholdFunction.LINEAR.defaultParams)
-            return NeuralNetworkTrainer(GeneticNeuralNetwork(nn))
+            return NeuralNetworkTrainer(nn)
         }
     }
 
@@ -46,7 +45,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
             NeuralNetworkPlayer(null, GameLogic(null)),
             NeuralNetworkPlayer(null, GameLogic(null)))
 
-    private val env: GeneticAlgorithm<GeneticNeuralNetwork, Int>
+    private val env: GeneticAlgorithm<NeuralNetwork, Int>
     @Volatile private var work = false
 
 
@@ -65,7 +64,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
         }
 
     init {
-        val mutatorCrossover = MutatorCrossover<GeneticNeuralNetwork>()
+        val mutatorCrossover = MutatorCrossover<NeuralNetwork>()
         mutatorCrossover.addMutations(MutationWeights())
         mutatorCrossover.addCrosses(TwoPointsWeightsCrossover())
         mutatorCrossover.addCrosses(UniformelyDistributedWeightsCrossover())
@@ -111,7 +110,7 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
      *
      * @return 0 - усредненный счет за ITERATION игр
      */
-    override fun calculate(chromosome: GeneticNeuralNetwork, threadNumber: Int): Int {
+    override fun calculate(chromosome: NeuralNetwork, threadNumber: Int): Int {
         val player = players[threadNumber]
         var score = 0
         for (i in 0 until ITERATION) {
@@ -124,8 +123,8 @@ class NeuralNetworkTrainer(nn: GeneticNeuralNetwork) : Fitness<GeneticNeuralNetw
         return -score
     }
 
-    override fun update(environment: GeneticAlgorithm<GeneticNeuralNetwork, Int>) {
-        val score = -environment.getBestFitness()!!
+    override fun update(environment: GeneticAlgorithm<NeuralNetwork, Int>) {
+        val score = -environment.getBestFitness()
 
         scores[counter++] = score
         counter %= 10
