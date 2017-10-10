@@ -1,13 +1,13 @@
 package ru.falseteam.neural2048.gnn.mutations
 
 import ru.falseteam.neural2048.ga.MutatorCrossover
-import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork
+import ru.falseteam.neural2048.nn.NeuralNetwork
 import java.util.*
 
-class MutationWeights : MutatorCrossover.Mutation<GeneticNeuralNetwork> {
+class MutationWeights : MutatorCrossover.Mutation<NeuralNetwork> {
     private val random = Random()
 
-    override fun mutate(chromosome: GeneticNeuralNetwork): GeneticNeuralNetwork {
+    override fun mutate(chromosome: NeuralNetwork): NeuralNetwork {
         val weights = chromosome.weightsOfLinks
         val weightsSize = weights.size
         var itersCount = this.random.nextInt(weightsSize)

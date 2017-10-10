@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * в противном случае сеть будет работать не корректно (см. функцию activate())
  */
 @XmlRootElement
-public class NeuralNetwork implements Cloneable {
+public class NeuralNetwork implements Cloneable, Serializable {
 
     @XmlElementWrapper(name = "neurons")
     @XmlElement(name = "neuron")
