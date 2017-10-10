@@ -1,6 +1,5 @@
 package ru.falseteam.neural2048.nn;
 
-import ru.falseteam.neural2048.gnn.GeneticNeuralNetwork;
 import ru.falseteam.neural2048.nn.ThresholdFunction;
 
 import javax.xml.bind.JAXBContext;
@@ -32,7 +31,7 @@ public class NeuralNetworkManager {
         for (int i : config) {
             countOfNeuron += i;
         }
-        NeuralNetwork nn = new GeneticNeuralNetwork(countOfNeuron);
+        NeuralNetwork nn = new NeuralNetwork(countOfNeuron);
 
         for (int i = 0; i < countOfNeuron; i++) {
             ThresholdFunction f = functions[rnd.nextInt(functions.length)];
