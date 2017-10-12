@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.*;
 
 /**
- * Перечисление содержащие набор функций-активаторов
+ * Перечисления, содержащие набор функций-активаторов
  *
  * @author Vladislav Sumin
  * @version 1.3

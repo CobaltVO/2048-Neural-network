@@ -8,8 +8,8 @@ import ru.falseteam.neural2048.nn.NeuralNetwork
 import java.util.*
 
 /**
- * Игрок играющий с помощью нейронной сети.
- * Сеть должна иметь 16 входных нейронов и 4 выходных нейрона.
+ * Игрок, играющий с помощью нейронной сети.
+ * Сеть должна иметь 16 входных и 4 выходных нейрона.
  *
  * @author Vladislav Sumin
  * @version 2.0
@@ -26,21 +26,21 @@ class NeuralNetworkPlayer(private var nn: NeuralNetwork?, gameLogic: GameLogic) 
         val nn = nn ?: throw IllegalStateException()
         while (gameLogic.state == GameState.GAME) {
             val maxTile: Double = gameLogic.maxTileExp.toDouble()
-            //Установка входных значений нейронов
+            // Установка входных значений нейронов
             for (i in 0..15) {
                 nn.putSignalToNeuron(i, gameLogic.theGrid[i / 4][i % 4].toDouble() / maxTile)
             }
 
-            //Активация
+            // Активация
             nn.activate()
 
-            //Снятие значений с выходных нейронов
+            // Снятие значений с выходных нейронов
             pairUp.value = nn.getAfterActivationSignal(nn.neuronsCount - 1)
             pairDown.value = nn.getAfterActivationSignal(nn.neuronsCount - 2)
             pairLeft.value = nn.getAfterActivationSignal(nn.neuronsCount - 3)
             pairRight.value = nn.getAfterActivationSignal(nn.neuronsCount - 4)
 
-            //Обработка хода
+            // Обработка хода
             Arrays.sort(pairs)
             @Suppress("LoopToCallChain")
             for (move in pairs) {

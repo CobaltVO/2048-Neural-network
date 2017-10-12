@@ -26,7 +26,7 @@ public class GnnTestXOR {
     private static final int b[] = {0, 1, 0, 1};
 
     public static void main(String[] args) {
-        //Создаем случайную нейронную сеть с задаными параметрами
+        // Создаем случайную нейронную сеть с задаными параметрами
         NeuralNetwork nn = NeuralNetworkManager.INSTANCE.createNeuralNetwork(thresholdFunctions, NETWORK_CONFIG);
         nn.setNeuronFunction(nn.getNeuronsCount() - 1,
                 ThresholdFunction.SIGN, ThresholdFunction.SIGN.getDefaultParams());
@@ -55,7 +55,7 @@ public class GnnTestXOR {
 
         GeneticAlgorithm<NeuralNetwork, Integer> env =
                 new GeneticAlgorithm<>(fit, mutatorCrossover);
-        //Заполняем популяцию
+        // Заполняем популяцию
         for (int i = 0; i < POPULATION_SIZE; i++) {
             env.addChromosome(mutatorCrossover.mutate(nn));
         }

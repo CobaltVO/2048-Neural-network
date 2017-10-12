@@ -16,8 +16,8 @@ import java.util.List;
 /**
  * Основной класс нейронной сети
  *
- * @implNote нейроны могут быть связанны только с нейронами с большим номером,
- * в противном случае сеть будет работать не корректно (см. функцию activate())
+ * @implNote нейроны могут быть связаны только с нейронами с большим номером,
+ * в противном случае сеть будет работать некорректно (см. функцию activate())
  */
 @XmlRootElement
 public class NeuralNetwork implements Cloneable, Serializable {
@@ -38,7 +38,7 @@ public class NeuralNetwork implements Cloneable, Serializable {
     }
 
     /**
-     * Создает сеть из заданного кол-ва нейронов без связей между ними
+     * Создает сеть из заданного количества нейронов без связей между ними
      *
      * @param numberOfNeurons - количество нейронов в сети
      */
@@ -59,8 +59,8 @@ public class NeuralNetwork implements Cloneable, Serializable {
      */
     public void setNeuronFunction(int neuronNumber, ThresholdFunction function, List<Double> params) {
         if (neuronNumber >= neurons.size()) {
-            throw new IllegalArgumentException("Neural network has " + neurons.size()
-                    + " neurons. But there was trying to access neuron with index " + neuronNumber);
+            throw new IllegalArgumentException("The neural network has " + neurons.size()
+                    + " neurons. There was a try to access the neuron with index " + neuronNumber);
         }
         neurons.get(neuronNumber).setFunctionAndParams(function, params);
     }
@@ -68,8 +68,8 @@ public class NeuralNetwork implements Cloneable, Serializable {
     /**
      * Устанавливает свзяь между заданными нейронами с заданным весом
      *
-     * @param activatorNeuronNumber - нейрон активатор
-     * @param receiverNeuronNumber  - нейрон приемник
+     * @param activatorNeuronNumber - нейрон-активатор
+     * @param receiverNeuronNumber  - нейрон-приемник
      * @param weight                - вес
      */
     public void addLink(int activatorNeuronNumber, int receiverNeuronNumber, double weight) {
@@ -89,7 +89,7 @@ public class NeuralNetwork implements Cloneable, Serializable {
     }
 
     /**
-     * Возвращает послеактивационные сигнал данного нейрона
+     * Возвращает послеактивационные сигналы данного нейрона
      *
      * @param neuronIndex - номер нейрона
      * @return - сигнал нейрона
@@ -101,7 +101,7 @@ public class NeuralNetwork implements Cloneable, Serializable {
     }
 
     /**
-     * Активирет сеть
+     * Активирует сеть
      */
     public void activate() {
         for (int iteration = 0; iteration < activationIterations; iteration++) {
@@ -115,7 +115,7 @@ public class NeuralNetwork implements Cloneable, Serializable {
                 for (Integer receiverNum : neuronsLinks.getReceivers(i)) {
                     if (receiverNum >= neurons.size()) {
                         throw new RuntimeException("Neural network has " + neurons.size()
-                                + " neurons. But there was trying to access neuron with index " + receiverNum);
+                                + " neurons. There was a try to access the neuron with index " + receiverNum);
                     }
                     Neuron receiver = neurons.get(receiverNum);
                     double weight = neuronsLinks.getWeight(i, receiverNum);
@@ -153,7 +153,7 @@ public class NeuralNetwork implements Cloneable, Serializable {
     }
 
     /**
-     * Кто знает зачем это здесь?
+     * Кто знает, зачем это здесь? P.S. никто
      */
     @Deprecated
     public void setNeurons(List<Neuron> newNeurons) {
@@ -166,7 +166,7 @@ public class NeuralNetwork implements Cloneable, Serializable {
     }
 
     /**
-     * Вот тут вообще не понятно что это TODO
+     * Вот тут вообще непонятно, что это TODO
      *
      * @param activationIterations
      */
