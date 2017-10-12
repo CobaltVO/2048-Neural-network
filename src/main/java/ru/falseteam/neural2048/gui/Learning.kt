@@ -16,7 +16,7 @@ internal class Learning{
             return
         }
         if (trainer == null) {
-            println("Can not saveAsXML, population not crated")
+            println("Can not saveAsXML, population is not crated")
             return
         }
         println("Saving...")
@@ -50,7 +50,7 @@ internal class Learning{
         Thread {
             println("Creating population...")
             trainer = NeuralNetworkTrainer.getDefault()
-            println("Population created")
+            println("Population was created")
         }.start()
     }
 
@@ -59,15 +59,15 @@ internal class Learning{
         if (trainer != null) {
             trainer!!.start()
             started = true
-            println("Training begin")
+            println("The beginning of training")
         } else
-            println("Population not created")
+            println("Population was not created")
     }
 
     fun pause() {
         if (!started || trainer == null) return
         Thread {
-            println("Wait before evolve cycle finish...")
+            println("Wait before the evolve cycle will finish...")
             trainer!!.stop()
             println("Pause")
             started = false
