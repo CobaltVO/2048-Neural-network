@@ -3,7 +3,7 @@ package ru.falseteam.neural2048.players
 import ru.falseteam.neural2048.logic.GameLogic
 
 /**
- * Интерфейс от которого должен наследоваться любой алгоритм игры.
+ * Интерфейс, от которого должен наследоваться любой алгоритм игры.
  *
  * @author Vladislav Sumin
  * @version 1.0

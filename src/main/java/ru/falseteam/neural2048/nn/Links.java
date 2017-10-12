@@ -17,9 +17,9 @@ public class Links implements Cloneable, Serializable {
     private int totalLinksCount = 0;
 
     /**
-     * Возвращает список нейронов приемников
+     * Возвращает список нейронов-приемников
      *
-     * @param activatorNeuronNumber - номер нейрона активатора
+     * @param activatorNeuronNumber - номер нейрона-активатора
      */
     public Collection<Integer> getReceivers(int activatorNeuronNumber) {
         Collection<Integer> ret;
@@ -32,10 +32,10 @@ public class Links implements Cloneable, Serializable {
     }
 
     /**
-     * Возарвщяет вес связи между двумя  нейронами
+     * Возвращает вес связи между двумя нейронами
      *
-     * @param activatorNeuronNumber - номер нейрона активатора
-     * @param receiverNeuronNumber  - номер нейрона приемника
+     * @param activatorNeuronNumber - номер нейрона-активатора
+     * @param receiverNeuronNumber  - номер нейрона-приемника
      * @return - вес сзавязи
      * @throws IllegalAccessException - если между данными нейронами связи нет
      */
@@ -59,8 +59,8 @@ public class Links implements Cloneable, Serializable {
     /**
      * Устанавливает связь между нейронами с заданным весом.
      *
-     * @param activatorNeuronNumber - номер нейрона активатора
-     * @param receiverNeuronNumber  - номер нейрона приемника
+     * @param activatorNeuronNumber - номер нейрона-активатора
+     * @param receiverNeuronNumber  - номер нейрона-приемника
      * @param weight                - значение веса
      * @throws IllegalStateException - если связь между данными нейронами уже существует
      */
@@ -71,13 +71,13 @@ public class Links implements Cloneable, Serializable {
         if (links.get(activatorNeuronNumber).put(receiverNeuronNumber, weight) == null)
             totalLinksCount++;
         else
-            throw new IllegalStateException("This link already exist");
+            throw new IllegalStateException("This link already exists");
     }
 
     /**
-     * Возавращает список всех весов в особом порядке
+     * Возвращает список всех весов в особом порядке
      *
-     * @return - Список всех весов
+     * @return - список всех весов
      */
     @XmlTransient
     public List<Double> getAllWeights() {
@@ -100,8 +100,8 @@ public class Links implements Cloneable, Serializable {
      */
     public void setAllWeights(List<Double> weights) {
         if (weights.size() != this.totalLinksCount)
-            throw new IllegalArgumentException("Number of links is " + totalLinksCount
-                    + ". But weights list has size " + weights.size());
+            throw new IllegalArgumentException("Number of links: " + totalLinksCount
+                    + ". The size of weight list: " + weights.size());
 
 
         int index = 0;

@@ -16,12 +16,12 @@ class GeneticAlgorithm<C, T : Comparable<T>>(
 
     private val iterationListeners = LinkedList<IterationListener<C, T>>()
 
-    //Набор хромосом
+    // Набор хромосом
     private var chromosomes: MutableList<Pair<C, T>> = ArrayList()
     private var terminate = false
-    //Количество родительских хромосом, которые выживают и учавствуют в размножении
+    // Количество родительских хромосом, которые выживают и участвуют в размножении
     var parentChromosomesSurviveCount = Integer.MAX_VALUE
-    //Кол-во прошедших итераций
+    // Количество прошедших итераций
     var iteration = 0
         private set
     var threadCount = 4
@@ -32,7 +32,7 @@ class GeneticAlgorithm<C, T : Comparable<T>>(
         val parentPopulationSize = chromosomes.size
         val newChromosomes = ArrayList<Pair<C, T>>()//TODO убрать
 
-        //Копируем лучшие хромосомы
+        // Копируем лучшие хромосомы
         run {
             var i = 0
             while (i < parentPopulationSize && i < parentChromosomesSurviveCount)
@@ -40,7 +40,7 @@ class GeneticAlgorithm<C, T : Comparable<T>>(
         }
         val newPopulationSize = newChromosomes.size
 
-        //Мутируем лучшие хромосомы
+        // Мутируем лучшие хромосомы
         for (i in 0 until newPopulationSize) {
             newChromosomes.add(Pair(mutatorCrossover.mutate(newChromosomes[i].chromosome)))
         }
@@ -79,7 +79,7 @@ class GeneticAlgorithm<C, T : Comparable<T>>(
     }
 
     /**
-     * Сортирует особей с помощью компаратора
+     * Сортирует особи при помощи компаратора
      */
     private fun sortPopulationByFitness(chromosomes: MutableList<Pair<C, T>>) {
         updateFitness(chromosomes)

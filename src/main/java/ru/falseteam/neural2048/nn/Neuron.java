@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Класс описывающий нейрон
+ * Класс, описывающий нейрон
  *
  * @author Vladislav Sumin
  * @version 1.1
@@ -51,12 +51,12 @@ public class Neuron implements Cloneable, Serializable {
      *
      * @param function - функция активации
      * @param params   - параметры функции активации
-     * @throws IllegalArgumentException если количество переданных аргументов не соответствует функции активации
+     * @throws IllegalArgumentException - если количество переданных аргументов не соответствует функции активации
      */
     public void setFunctionAndParams(ThresholdFunction function, List<Double> params) {
         if (params.size() != function.getDefaultParams().size())//TODO тут можно упростить
-            throw new IllegalArgumentException("Function needs " + function.getDefaultParams().size()
-                    + " parameters. But params count is " + params.size());
+            throw new IllegalArgumentException("The function requires " + function.getDefaultParams().size()
+                    + " parameters. But the number of parameters is " + params.size());
         thresholdFunction = function;
         this.params = params;
     }
