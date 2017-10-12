@@ -5,9 +5,10 @@ import ru.falseteam.neural2048.nn.serializing.xml.MapAdapter;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 import java.util.*;
 
-public class Links implements Cloneable {
+public class Links implements Cloneable, Serializable {
 
     @XmlJavaTypeAdapter(value = MapAdapter.class)
     private Map<Integer, Map<Integer, Double>> links = new LinkedHashMap<>();

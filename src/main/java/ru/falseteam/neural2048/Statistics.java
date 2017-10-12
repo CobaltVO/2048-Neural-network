@@ -23,7 +23,7 @@ public class Statistics {
     public void playGames(int count) {
         gameLogic.restart();
         for (int i = 0; i < count; i++) {
-            player.playOneGame(gameLogic);
+            player.playOneGame();
             int score = gameLogic.score;
             scopeSum += score;
             gameCount++;
