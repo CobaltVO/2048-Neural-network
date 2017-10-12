@@ -4,16 +4,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Класс описывающий нейрон
  *
- * @version 1.0
+ * @author Vladislav Sumin
+ * @version 1.1
  */
 @XmlRootElement(name = "neuron")
-public class Neuron implements Cloneable {
+public class Neuron implements Cloneable, Serializable {
 
     @XmlTransient
     private double inputSignal;
@@ -34,7 +36,13 @@ public class Neuron implements Cloneable {
     }
 
 
-    public Neuron(ThresholdFunction function, List<Double> params) {
+    /**
+     * Создает нейрон с заданными параметрами
+     *
+     * @param function - функция активации
+     * @param params   - параметры функции активации
+     */
+    Neuron(ThresholdFunction function, List<Double> params) {
         setFunctionAndParams(function, params);
     }
 
@@ -53,16 +61,16 @@ public class Neuron implements Cloneable {
         this.params = params;
     }
 
-    public void addSignal(double value) {
+    void addSignal(double value) {
         this.inputSignal += value;
     }
 
-    public void activate() {
+    void activate() {
         afterActivationSignal = thresholdFunction.calculate(inputSignal, params);
         inputSignal = 0;
     }
 
-    public double getAfterActivationSignal() {
+    double getAfterActivationSignal() {
         return this.afterActivationSignal;
     }
 
@@ -92,5 +100,4 @@ public class Neuron implements Cloneable {
         return "Neuron [thresholdFunction=" + thresholdFunction +
                 ", params=" + params + "]";
     }
-
 }
