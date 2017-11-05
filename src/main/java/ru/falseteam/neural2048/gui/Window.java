@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -44,7 +46,6 @@ public class Window extends Application implements Screen {
         primaryStage = stage;
         primaryStage.setTitle("2048 Game with a neural network");
         primaryStage.centerOnScreen();
-        //primaryStage.setMaximized(true);
         primaryStage.setMinWidth(700);
         primaryStage.setMinHeight(700);
         createMainWindow();
@@ -78,6 +79,7 @@ public class Window extends Application implements Screen {
 
         Button restartButton = new Button("Restart");
         restartButton.setPrefSize(100, 30);
+        restartButton.setFocusTraversable(false);
         restartButton.setOnAction(event -> {
             clearScreen();
             gameLogic.score = 0;
@@ -86,6 +88,7 @@ public class Window extends Application implements Screen {
 
         CheckBox checkBox = new CheckBox("Fullscreen");
         checkBox.setPrefSize(100, 30);
+        checkBox.setFocusTraversable(false);
         checkBox.setOnAction(event -> {
             if (!primaryStage.isFullScreen()) primaryStage.setFullScreen(true);
             else primaryStage.setFullScreen(false);
@@ -98,8 +101,7 @@ public class Window extends Application implements Screen {
         Label testLabel = new Label();
         testLabel.setPrefSize(100, 30);
         HBox neuralBox = new HBox(10);
-        neuralBox.getChildren().addAll(playButton, pauseButton, stopButton, testLabel);
-        //TODO пердак сгорел убрал комбобокс
+        neuralBox.getChildren().addAll(playButton, pauseButton, stopButton, comboBox, testLabel);
 
         playButton.setOnMouseClicked(event -> testLabel.setText("playing " + comboBox.getSelectionModel().getSelectedItem()));
         pauseButton.setOnMouseClicked(event -> testLabel.setText("pause " + comboBox.getSelectionModel().getSelectedItem()));
@@ -116,7 +118,7 @@ public class Window extends Application implements Screen {
         bottomBox.getChildren().addAll(restartButton, checkBox);
 
         Canvas canvas = createGameWindow();
-        root.setOnKeyPressed(event -> {
+        scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP:
                     gameLogic.move(Directions.UP);
@@ -163,6 +165,7 @@ public class Window extends Application implements Screen {
         comboBox.setPromptText("Choose one state");
         comboBox.setPrefWidth(150);
         comboBox.setPrefHeight(30);
+        comboBox.setFocusTraversable(false);
         return comboBox;
     }
 
