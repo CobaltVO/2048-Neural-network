@@ -61,7 +61,7 @@ public class StartWindow extends Application{
                         e.printStackTrace();
                     }
                 }
-            }
+            } else if (event.getCode().compareTo(KeyCode.ESCAPE) == 0) System.exit(0);
         });
 
         primaryStage.setScene(scene);
