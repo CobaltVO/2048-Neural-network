@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -44,6 +45,23 @@ public class StartWindow extends Application{
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        });
+
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode().compareTo(KeyCode.ENTER) == 0) {
+                if (buttonGUI.isFocused()) {
+                    Window window = new Window();
+                    window.start(new Stage());
+                }
+                else {
+                    LearningWindow learningWindow = new LearningWindow();
+                    try {
+                        learningWindow.start(new Stage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (event.getCode().compareTo(KeyCode.ESCAPE) == 0) System.exit(0);
         });
 
         primaryStage.setScene(scene);
