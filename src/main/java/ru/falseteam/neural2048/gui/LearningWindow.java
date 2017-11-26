@@ -85,28 +85,28 @@ public class LearningWindow extends Application {
 
         MenuItem playItem = new MenuItem("Play");
         MenuItem pauseItem = new MenuItem("Pause");
-        MenuItem savePopItem = new MenuItem("Save population");
-        MenuItem loadPopItem = new MenuItem("Load population");
+        //MenuItem savePopItem = new MenuItem("Save population");
+        //MenuItem loadPopItem = new MenuItem("Load population");
 
         playItem.setOnAction(event -> learning.play());
         pauseItem.setOnAction(event -> learning.pause());
-        // saveNn population listener
-        savePopItem.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save population to ...");
-            fileChooser.setInitialDirectory(new File("."));
-            File file = fileChooser.showSaveDialog(primaryStage);
-            if (file != null) learning.savePopulation(file);
-        });
-        // loadFromNn population listener
-        loadPopItem.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Load population from ...");
-            fileChooser.setInitialDirectory(new File("."));
-            File file = fileChooser.showOpenDialog(primaryStage);
-            if (file != null) learning.loadPopulation(file);
-        });
-        menu.getItems().addAll(playItem, pauseItem, savePopItem, loadPopItem);
+//        // saveNn population listener
+//        savePopItem.setOnAction(event -> {
+//            FileChooser fileChooser = new FileChooser();
+//            fileChooser.setTitle("Save population to ...");
+//            fileChooser.setInitialDirectory(new File("."));
+//            File file = fileChooser.showSaveDialog(primaryStage);
+//            if (file != null) learning.savePopulation(file);
+//        });
+//        // loadFromNn population listener
+//        loadPopItem.setOnAction(event -> {
+//            FileChooser fileChooser = new FileChooser();
+//            fileChooser.setTitle("Load population from ...");
+//            fileChooser.setInitialDirectory(new File("."));
+//            File file = fileChooser.showOpenDialog(primaryStage);
+//            if (file != null) learning.loadPopulation(file);
+//        });
+        menu.getItems().addAll(playItem, pauseItem);//, savePopItem, loadPopItem);
 
         return menu;
     }

@@ -21,8 +21,13 @@ class NeuralNetworkPlayer(private var nn: NeuralNetwork?, gameLogic: GameLogic) 
     private val pairLeft = Pair(Directions.LEFT)
     private val pairRight = Pair(Directions.RIGHT)
     private val pairs = arrayOf(pairUp, pairDown, pairLeft, pairRight)
+    var delay: Long = 0L
+    @Volatile
+    var play: Boolean = false
+        private set
 
     override fun playOneGame() {
+        play = true
         val nn = nn ?: throw IllegalStateException()
         while (gameLogic.state == GameState.GAME) {
             val maxTile: Double = gameLogic.maxTileExp.toDouble()
@@ -46,7 +51,9 @@ class NeuralNetworkPlayer(private var nn: NeuralNetwork?, gameLogic: GameLogic) 
             for (move in pairs) {
                 if (gameLogic.move(move.direction)) break
             }
+            Thread.sleep(delay)
         }
+        play = false
     }
 
     fun setNeuralNetwork(nn: NeuralNetwork) {

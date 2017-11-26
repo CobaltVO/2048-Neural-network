@@ -10,10 +10,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -21,19 +18,25 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.falseteam.neural2048.logic.Directions;
 import ru.falseteam.neural2048.logic.GameData;
 import ru.falseteam.neural2048.logic.GameLogic;
 import ru.falseteam.neural2048.logic.GameState;
+import ru.falseteam.neural2048.nn.NeuralNetwork;
+import ru.falseteam.neural2048.nn.NeuralNetworkManager;
+import ru.falseteam.neural2048.players.NeuralNetworkPlayer;
+import ru.falseteam.neural2048.players.Player;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.Optional;
 
 public class Window extends Application implements Screen {
     private Stage primaryStage;
     private GraphicsContext context;
     private GameLogic gameLogic;
+    private NeuralNetworkPlayer player;
 
     private Label topLabel;
     private Label scoreLabel;
@@ -51,6 +54,43 @@ public class Window extends Application implements Screen {
         //new RandomPlayer(gameLogic);
         //new CirclePlayer(gameLogic);
         //new RandomNeuralNetwork(gameLogic);
+
+        while (true) {
+            // load nn.
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open file from ...");
+            fileChooser.setInitialDirectory(new File("."));
+            File file = fileChooser.showOpenDialog(primaryStage);
+            if (file == null) {
+                alertDialig("You mast select network file");
+                continue;
+            }
+            try {
+                NeuralNetwork neuralNetwork = NeuralNetworkManager
+                        .INSTANCE.loadFromBinary(new FileInputStream(file));
+                player = new NeuralNetworkPlayer(neuralNetwork, gameLogic);
+                player.setDelay(150);
+                break;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                alertDialig("Incorrect neural network file");
+            }
+        }
+    }
+
+    private void alertDialig(String err) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(err);
+
+        ButtonType ok = new ButtonType("Ok");
+        ButtonType exit = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(ok, exit);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ok) return;
+        System.exit(0);
     }
 
     @Override
@@ -93,17 +133,21 @@ public class Window extends Application implements Screen {
         });
 
         Canvas playButton = createGUIButton("play");
-        Canvas pauseButton = createGUIButton("pause");
-        Canvas stopButton = createGUIButton("stop");
-        ComboBox<String> comboBox = createComboBox();
+        playButton.setOnMouseClicked(event -> {
+            if (!player.getPlay()) new Thread(() -> player.playOneGame()).start();
+        });
+        //Canvas pauseButton = createGUIButton("pause");
+        //Canvas stopButton = createGUIButton("stop");
+        //ComboBox<String> comboBox = createComboBox();
         Label testLabel = new Label();
         testLabel.setPrefSize(100, 30);
         HBox neuralBox = new HBox(10);
-        neuralBox.getChildren().addAll(playButton, pauseButton, stopButton, comboBox, testLabel);
+        //neuralBox.getChildren().addAll(playButton, pauseButton, stopButton, testLabel);
+        neuralBox.getChildren().addAll(playButton, testLabel);
 
-        playButton.setOnMouseClicked(event -> testLabel.setText("playing " + comboBox.getSelectionModel().getSelectedItem()));
-        pauseButton.setOnMouseClicked(event -> testLabel.setText("pause " + comboBox.getSelectionModel().getSelectedItem()));
-        stopButton.setOnMouseClicked(event -> testLabel.setText("stopped " + comboBox.getSelectionModel().getSelectedItem()));
+//        playButton.setOnMouseClicked(event -> testLabel.setText("playing " + comboBox.getSelectionModel().getSelectedItem()));
+//        pauseButton.setOnMouseClicked(event -> testLabel.setText("pause " + comboBox.getSelectionModel().getSelectedItem()));
+//        stopButton.setOnMouseClicked(event -> testLabel.setText("stopped " + comboBox.getSelectionModel().getSelectedItem()));
 
         // top toolbar
         HBox topBox = new HBox(25);
@@ -154,11 +198,8 @@ public class Window extends Application implements Screen {
     }
 
     private ComboBox<String> createComboBox() {
-        ObservableList<String> observableList = FXCollections.observableArrayList(
-                "lol",
-                "kek",
-                "cheburek"
-        );
+        ObservableList<String> observableList = FXCollections
+                .observableArrayList("1", "2", "3");
         final ComboBox<String> comboBox = new ComboBox<>(observableList);
         comboBox.setPromptText("Choose one state");
         comboBox.setPrefWidth(150);
